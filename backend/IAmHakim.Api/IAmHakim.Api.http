@@ -1,0 +1,6 @@
+@IAmHakim.Api_HostAddress = http://localhost:5172
+
+GET {{IAmHakim.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
