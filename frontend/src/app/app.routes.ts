@@ -9,13 +9,75 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { StatusComponent } from './pages/status/status.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, title: 'I am Hakim' },
-  { path: 'flow', component: FlowComponent, title: 'I am Hakim · Backend Flow' },
-  { path: 'status', component: StatusComponent, title: 'I am Hakim · Live Status' },
-  { path: 'projects', component: ProjectsComponent, title: 'I am Hakim · Projects' },
-  { path: 'about', component: AboutComponent, title: 'I am Hakim · About' },
-  { path: 'book', component: BookComponent, title: 'I am Hakim · Book a slot' },
-  { path: 'book/manage', component: BookManageComponent, title: 'I am Hakim · Manage booking' },
-  { path: 'privacy', component: PrivacyComponent, title: 'I am Hakim · Privacy' },
-  { path: '**', redirectTo: '' }
+  {
+    path: '',
+    component: HomeComponent,
+    data: {
+      title: 'Hakim - Full-stack Developer',
+      description:
+        'Personal portfolio - .NET/Angular developer building access-management tools, backend APIs, and graph-routing projects. Charleroi → Brussels.',
+    },
+  },
+  {
+    path: 'flow',
+    component: FlowComponent,
+    data: {
+      title: 'Backend Flow - Hakim',
+      description:
+        'Visual walkthrough of the iamhakim.com architecture: Caddy reverse proxy, ASP.NET Core API, SignalR realtime hub, Angular SSR frontend.',
+    },
+  },
+  {
+    path: 'status',
+    component: StatusComponent,
+    data: {
+      title: 'Live Status - Hakim',
+      description:
+        'Real-time uptime, latency and traffic stats for iamhakim.com. Streamed over SignalR from the ASP.NET Core backend.',
+    },
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
+    data: {
+      title: 'Projects - Hakim',
+      description:
+        'Selected projects from Hakim: A* routing engine, ADAMO governed access-management system, RootShell Discord bot, and more.',
+    },
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+    data: {
+      title: 'About - Hakim',
+      description:
+        'About Hakim - .NET/Angular developer at Infrabel (Belgian railway), CS Master\u2019s student at UMONS Charleroi. Background in IAM, graph algorithms, and architecture.',
+    },
+  },
+  {
+    path: 'book',
+    component: BookComponent,
+    data: {
+      title: 'Book a slot - Hakim',
+      description:
+        'Schedule a 30-minute call with Hakim to discuss .NET, Angular, IAM, graph algorithms, or career advice.',
+    },
+  },
+  {
+    path: 'book/manage',
+    component: BookManageComponent,
+    data: {
+      title: 'Manage booking - Hakim',
+      description: 'Edit or cancel your booking with Hakim.',
+    },
+  },
+  {
+    path: 'privacy',
+    component: PrivacyComponent,
+    data: {
+      title: 'Privacy - Hakim',
+      description: 'Privacy policy for iamhakim.com - what we track, how long we keep it, and why.',
+    },
+  },
+  { path: '**', redirectTo: '' },
 ];

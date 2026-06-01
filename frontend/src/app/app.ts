@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LiveConnectionService } from './core/live-connection.service';
 import { ClickTrackerService } from './core/click-tracker.service';
 import { VisitTrackerService } from './core/visit-tracker.service';
+import { SeoService } from './core/seo.service';
 import { TranslationService } from './i18n/translation.service';
 import { TranslatePipe } from './i18n/translate.pipe';
 import { Lang } from './i18n/translations';
@@ -18,6 +19,7 @@ export class App {
   protected readonly i18n = inject(TranslationService);
   private readonly clickTracker = inject(ClickTrackerService);
   private readonly visitTracker = inject(VisitTrackerService);
+  private readonly seo = inject(SeoService);
 
   protected setLang(code: string): void {
     this.i18n.setLang(code as Lang);
@@ -34,5 +36,6 @@ export class App {
     void this.live.start();
     this.clickTracker.start();
     this.visitTracker.start();
+    this.seo.start();
   }
 }
