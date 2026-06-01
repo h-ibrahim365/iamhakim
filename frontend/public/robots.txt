@@ -1,0 +1,11 @@
+# https://iamhakim.com/robots.txt
+User-agent: *
+Allow: /
+
+# Bookings are private endpoints — no need to index them
+Disallow: /api/
+Disallow: /hubs/
+Disallow: /book/manage
+
+# Sitemap
+Sitemap: https://iamhakim.com/sitemap.xml
