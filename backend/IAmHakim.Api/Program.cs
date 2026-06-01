@@ -64,9 +64,11 @@ if (string.Equals(bookingMode, "live", StringComparison.OrdinalIgnoreCase))
 {
     bool googleEnabled = builder.Configuration.GetValue<bool>("Booking:Google:Enabled");
     bool graphEnabled = builder.Configuration.GetValue<bool>("Booking:Graph:Enabled");
+    bool icsEnabled = builder.Configuration.GetValue<bool>("Booking:Ics:Enabled");
     if (googleEnabled) builder.Services.AddSingleton<IAmHakim.Api.Calendar.ICalendarProvider, IAmHakim.Api.Calendar.GoogleCalendarProvider>();
     if (graphEnabled) builder.Services.AddSingleton<IAmHakim.Api.Calendar.ICalendarProvider, IAmHakim.Api.Calendar.GraphCalendarProvider>();
-    if (!googleEnabled && !graphEnabled)
+    if (icsEnabled) builder.Services.AddSingleton<IAmHakim.Api.Calendar.ICalendarProvider, IAmHakim.Api.Calendar.IcsCalendarProvider>();
+    if (!googleEnabled && !graphEnabled && !icsEnabled)
         builder.Services.AddSingleton<IAmHakim.Api.Calendar.ICalendarProvider, IAmHakim.Api.Calendar.MockCalendarProvider>();
 }
 else

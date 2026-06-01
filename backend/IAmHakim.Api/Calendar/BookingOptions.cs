@@ -41,7 +41,10 @@ public sealed class BookingOptions
     public BookingMeetingOptions Meeting { get; set; } = new();
 
     public GoogleOptions Google { get; set; } = new();
+
     public GraphOptions Graph { get; set; } = new();
+
+    public IcsOptions Ics { get; set; } = new();
 }
 
 public sealed class BookingAntiSpamOptions
@@ -92,6 +95,19 @@ public sealed class GoogleOptions
     public string ClientSecret { get; set; } = string.Empty;
 
     public string RefreshToken { get; set; } = string.Empty;
+}
+
+
+public sealed class IcsOptions
+{
+    public bool Enabled { get; set; }
+
+    public string[] Urls { get; set; } = [];
+
+    public int CacheMinutes { get; set; } = 15;
+
+    /// <summary>When true, even events marked TRANSPARENT / available block booking slots.</summary>
+    public bool BlockTransparentEvents { get; set; } = true;
 }
 
 public sealed class GraphOptions
