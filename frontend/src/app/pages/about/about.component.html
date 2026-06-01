@@ -1,0 +1,59 @@
+<section class="page about-page">
+  <header class="about-head rise">
+    <span class="eyebrow">{{ 'about.eyebrow' | t }}</span>
+    <h1>{{ 'about.title.1' | t }}<br>{{ 'about.title.2' | t }} <span class="accent">{{ 'about.title.accent' | t }}</span></h1>
+    <p class="lead">
+{{ 'about.lead' | t }}
+    </p>
+  </header>
+
+  <div class="about-grid">
+    <article class="card philo rise">
+      <h2>{{ 'about.work.title' | t }}</h2>
+      <p>
+{{ 'about.work.body' | t }}
+      </p>
+      <div class="quote mono">
+        <span>“</span>{{ 'about.quote' | t }}<span>”</span>
+        <small>{{ 'about.quote.attr' | t }}</small>
+      </div>
+    </article>
+
+    <article class="card skills rise" style="animation-delay:.08s">
+      <h2>{{ 'about.toolbox' | t }}</h2>
+      <div class="skill-groups">
+        @for (skill of skills; track skill.groupKey) {
+          <div class="skill-group">
+            <span class="skill-label mono">{{ skill.groupKey | t }}</span>
+            <div class="skill-items">
+              @for (item of skill.items; track item) {
+                <span>{{ item }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </article>
+  </div>
+
+  <section class="timeline">
+    <h2 class="tl-title rise">{{ 'about.timeline.title' | t }}</h2>
+    <div class="tl-track">
+      @for (m of milestones; track m.titleKey) {
+        <article class="tl-item card rise">
+          <span class="tl-year mono">{{ m.yearKey | t }}</span>
+          <h3>{{ m.titleKey | t }}</h3>
+          <p>{{ m.detailKey | t }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="cta-band card rise">
+    <div>
+      <h2>{{ 'about.cta.title' | t }}</h2>
+      <p>{{ 'about.cta.body' | t }}</p>
+    </div>
+    <a class="primary-button" routerLink="/book">{{ 'about.cta.button' | t }}</a>
+  </section>
+</section>

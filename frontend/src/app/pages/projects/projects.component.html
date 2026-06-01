@@ -1,0 +1,39 @@
+<section class="page projects-page">
+  <header class="proj-head rise">
+    <span class="eyebrow">{{ 'projects.eyebrow' | t }}</span>
+    <h1>{{ 'projects.title.1' | t }} <span class="accent">{{ 'projects.title.accent' | t }}</span></h1>
+    <p class="lead">{{ 'projects.lead' | t }}</p>
+  </header>
+
+  <div class="project-grid">
+    @for (project of projects; track project.titleKey) {
+      <article class="card project-card rise">
+        <div class="proj-top">
+          <span class="proj-index mono">{{ project.index }}</span>
+          <span class="tag mono">{{ project.tagKey | t }}</span>
+        </div>
+        <h2>{{ project.titleKey | t }}</h2>
+        <span class="proj-context mono">{{ project.contextKey | t }}</span>
+        <span class="proj-role mono">{{ project.roleKey | t }}</span>
+        <p>{{ project.descriptionKey | t }}</p>
+        <ul>
+          @for (point of project.pointKeys; track point) {
+            <li>{{ point | t }}</li>
+          }
+        </ul>
+        <div class="proj-bottom">
+          <div class="proj-stack mono">
+            @for (s of project.stack; track s) {
+              <span>{{ s }}</span>
+            }
+          </div>
+          <div class="proj-links mono">
+            @for (link of project.links; track link.labelKey) {
+              <a [href]="link.href">{{ link.labelKey | t }}</a>
+            }
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</section>

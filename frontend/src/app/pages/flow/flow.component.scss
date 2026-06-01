@@ -1,0 +1,118 @@
+.flow-page {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(1.4rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.intro {
+  position: sticky;
+  top: 7rem;
+}
+
+.intro p {
+  max-width: 520px;
+}
+
+.flow-board {
+  padding: 1.25rem;
+}
+
+.progress,
+.flow-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  background: rgba(2, 6, 23, 0.36);
+}
+
+.progress span,
+.flow-result span {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+}
+
+.progress strong,
+.flow-result strong {
+  font-family: "Cascadia Code", Consolas, monospace;
+}
+
+.steps {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.15rem;
+  background: rgba(15, 23, 42, 0.5);
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.step[data-status='running'] {
+  transform: translateX(8px);
+  border-color: rgba(56, 189, 248, 0.62);
+  background: rgba(14, 165, 233, 0.12);
+}
+
+.step[data-status='done'] {
+  border-color: rgba(52, 211, 153, 0.45);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.number {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.9rem;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 900;
+}
+
+.step[data-status='running'] .number {
+  background: var(--accent);
+  color: #00111c;
+}
+
+.step[data-status='done'] .number {
+  background: var(--success);
+  color: #001811;
+}
+
+.step h3 {
+  margin: 0 0 0.25rem;
+}
+
+.step p {
+  margin: 0;
+}
+
+@media (max-width: 920px) {
+  .flow-page {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+/* design-system alignment */
+.intro h1 { margin-bottom: 1.2rem; }
+.flow-result strong, .progress strong { font-family: var(--font-mono); color: var(--cyan); }
+.step[data-status='running'] .number { background: var(--cyan); color: #02201d; }
+.number { font-family: var(--font-display); }

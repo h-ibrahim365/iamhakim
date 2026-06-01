@@ -1,1 +1,292 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   iamhakim - design system
+   Concept: a personal platform that behaves like a live console.
+   Palette: deep ink + warm amber signal (earth) + cold cyan (system).
+   ============================================================ */
+
+:root {
+  /* surfaces */
+  --bg: #06070d;
+  --bg-soft: #0a0c16;
+  --panel: rgba(16, 19, 32, 0.72);
+  --panel-strong: rgba(13, 16, 28, 0.94);
+  --line: rgba(148, 163, 184, 0.14);
+  --line-strong: rgba(148, 163, 184, 0.26);
+
+  /* type */
+  --text: #eef2fb;
+  --muted: #93a0b8;
+  --faint: #5a6478;
+
+  /* signals */
+  --amber: #f0a92b;       /* warm - identity, earth, "live" */
+  --amber-soft: #f5c977;
+  --cyan: #46e3d0;        /* cold - system, realtime */
+  --violet: #8b7cf6;
+  --success: #3ddc97;
+  --warning: #f0a92b;
+  --danger: #f2607a;
+
+  /* legacy aliases (used by flow/status pages) */
+  --accent: var(--cyan);
+  --accent-2: var(--violet);
+
+  --grad-warm: linear-gradient(135deg, var(--amber), #f2607a);
+  --grad-cold: linear-gradient(135deg, var(--cyan), var(--violet));
+
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 0 1px rgba(240, 169, 43, 0.14), 0 24px 70px rgba(240, 169, 43, 0.10);
+
+  --radius: 1.25rem;
+  --radius-lg: 1.75rem;
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+
+  --max: 1180px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01", "cv01";
+  background: var(--bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* atmospheric layers: aurora glow + fine grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -8%, rgba(240, 169, 43, 0.10), transparent 70%),
+    radial-gradient(55rem 38rem at 92% 4%, rgba(70, 227, 208, 0.08), transparent 70%),
+    radial-gradient(48rem 40rem at 50% 118%, rgba(139, 124, 246, 0.07), transparent 70%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 90%);
+          mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 90%);
+}
+
+button, a, input { font: inherit; }
+button { cursor: pointer; border: none; background: none; color: inherit; }
+a { color: inherit; }
+
+/* Keep real content selectable, but prevent accidental blue highlights on
+   controls, navigation items and decorative badges. */
+button,
+.primary-button,
+.secondary-button,
+.brand,
+.nav a,
+.live-pill,
+.lang-switch button,
+.social,
+.foot-social a,
+.eyebrow,
+.tag,
+.proj-role,
+.proj-stack span,
+.skill-label,
+.skill-items span,
+.cal-weekdays,
+.cal-legend,
+.mode-switch button,
+.ctrl,
+.slot,
+.kind,
+.ghost,
+.ident-no,
+.ticker-track {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+::selection { background: rgba(240, 169, 43, 0.30); color: #fff; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.18); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.3); }
+
+h1, h2, h3, h4, p { margin-top: 0; }
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.7rem, 7vw, 6.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  padding-bottom: 0.14em;   /* prevent descenders / a final dot from clipping */
+}
+
+/* Any gradient "accent" word: keep it on its own inline-block box with a touch
+   of padding so background-clip:text never crops the final glyph (e.g. "path."). */
+h1 .accent,
+h2 .accent {
+  display: inline-block;
+  padding-right: 0.1em;
+  padding-bottom: 0.06em;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+p { color: var(--muted); line-height: 1.7; }
+
+/* shared atoms ------------------------------------------------ */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 14px 2px rgba(240, 169, 43, 0.7);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(18, 22, 36, 0.82), rgba(12, 15, 26, 0.55));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.page {
+  padding: clamp(2.5rem, 6vw, 6rem) 0 clamp(3rem, 6vw, 6rem);
+}
+
+.primary-button, .secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  padding: 0 1.3rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.22s cubic-bezier(.2,.8,.2,1), box-shadow 0.22s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.primary-button {
+  color: #1a1205;
+  background: var(--grad-warm);
+  box-shadow: 0 14px 38px rgba(240, 169, 43, 0.26);
+}
+
+.secondary-button {
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  background: rgba(18, 22, 36, 0.5);
+}
+
+.primary-button:hover { transform: translateY(-2px); box-shadow: 0 20px 50px rgba(240, 169, 43, 0.36); }
+.secondary-button:hover { transform: translateY(-2px); border-color: rgba(70, 227, 208, 0.45); }
+
+.mono { font-family: var(--font-mono); }
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+}
+.metric {
+  padding: 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(12, 15, 26, 0.55);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.metric:hover { border-color: var(--line-strong); transform: translateY(-3px); }
+.metric span {
+  display: block;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.metric strong {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.04em;
+}
+
+@media (max-width: 920px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .metric-grid { grid-template-columns: 1fr; } }
+
+/* keyframes --------------------------------------------------- */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes rise { from { opacity:0; transform: translateY(18px);} to {opacity:1; transform:none;} }
+
+.rise { animation: rise 0.7s cubic-bezier(.2,.8,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+
+/* Cloudflare Turnstile injects its iframe dynamically, so this selector stays global. */
+.turnstile-widget,
+.turnstile-widget > div,
+.turnstile-widget iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}

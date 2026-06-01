@@ -1,0 +1,59 @@
+<section class="page status-page">
+  <div class="intro-row rise">
+    <header class="intro-head">
+      <span class="eyebrow">{{ 'status.eyebrow' | t }}</span>
+      <h1>{{ 'status.title.1' | t }} <span class="accent">{{ 'status.title.accent' | t }}</span></h1>
+    </header>
+    <div class="intro-foot">
+      <p>{{ 'status.lead' | t }}</p>
+      <button class="secondary-button" type="button" (click)="refresh()" [disabled]="loading()">
+        {{ (loading() ? 'status.refreshing' : 'status.refresh') | t }}
+      </button>
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric rise" style="animation-delay:.06s">
+      <span>{{ 'status.api' | t }}</span>
+      <strong>{{ health()?.api ?? ('status.unknown' | t) }}</strong>
+    </div>
+    <div class="metric rise" style="animation-delay:.12s">
+      <span>{{ 'status.database' | t }}</span>
+      <strong>{{ health()?.database ?? ('status.unknown' | t) }}</strong>
+    </div>
+    <div class="metric rise" style="animation-delay:.18s">
+      <span>{{ 'status.realtime' | t }}</span>
+      <strong>{{ live.state() }}</strong>
+    </div>
+    <div class="metric rise" style="animation-delay:.24s">
+      <span>{{ 'status.latency' | t }}</span>
+      <strong>{{ health()?.latencyMs ?? 0 }}ms</strong>
+    </div>
+  </div>
+
+  <div class="status-grid">
+    <article class="card status-card rise" style="animation-delay:.32s">
+      <h2>{{ 'status.runtime' | t }}</h2>
+      <dl>
+        <div><dt>{{ 'status.uptime' | t }}</dt><dd>{{ formatUptime(health()?.uptimeSeconds) }}</dd></div>
+        <div><dt>{{ 'status.liveClients' | t }}</dt><dd>{{ live.liveClients() }}</dd></div>
+        <div><dt>{{ 'status.visits' | t }}</dt><dd>{{ live.stats()?.totalVisits ?? 0 }}</dd></div>
+        <div><dt>{{ 'status.astarRuns' | t }}</dt><dd>{{ live.stats()?.algoRuns ?? 0 }}</dd></div>
+      </dl>
+    </article>
+
+    <article class="card status-card rise" style="animation-delay:.4s">
+      <h2>{{ 'status.recentEvents' | t }}</h2>
+      <div class="events">
+        @for (event of live.timeline(); track event.id + event.createdAtUtc) {
+          <div class="event">
+            <span>{{ event.kind }}</span>
+            <p>{{ event.label }}</p>
+          </div>
+        } @empty {
+          <p>{{ 'status.noEvents' | t }}</p>
+        }
+      </div>
+    </article>
+  </div>
+</section>

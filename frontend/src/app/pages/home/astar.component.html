@@ -1,0 +1,98 @@
+<div class="astar">
+  <div class="astar-head">
+    <div class="mode-switch">
+      <button type="button" [class.active]="mode() === 'demo'" (click)="setMode('demo')">{{ 'astar.mode.demo' | t }}</button>
+      <button type="button" [class.active]="mode() === 'maze'" (click)="setMode('maze')">{{ 'astar.mode.maze' | t }}</button>
+    </div>
+    <span class="astar-status mono" [attr.data-status]="stats().status">{{ statusLabel() | t }}</span>
+  </div>
+
+  @if (mode() === 'maze') {
+    <div class="maze-hud">
+      <div class="hud-item">
+        <span class="mono">{{ 'astar.hud.walls' | t }}</span>
+        <strong [class.low]="wallsLeft() <= 5">{{ wallsLeft() }}</strong>
+      </div>
+      <div class="hud-item score">
+        <span class="mono">{{ 'astar.hud.score' | t }}</span>
+        <strong>{{ score() }}</strong>
+        @if (isNewBest()) { <em class="new-best mono">{{ 'astar.newbest' | t }}</em> }
+      </div>
+      <div class="hud-item">
+        <span class="mono">{{ 'astar.hud.best' | t }}</span>
+        <strong>{{ bestScore() }}</strong>
+      </div>
+    </div>
+  }
+
+  <div class="canvas-wrap">
+    <canvas
+      #canvas
+      [class.maze]="mode() === 'maze'"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp()"
+      (pointerleave)="onPointerUp()"
+      [attr.aria-label]="'a11y.astarGrid' | t"></canvas>
+  </div>
+
+  @if (mode() === 'maze' && playState() === 'done') {
+    <div class="maze-result" [class.win]="score() > 0">
+      @if (score() > 0) {
+        <strong>{{ scoreRank() | t }}</strong>
+        <span class="mono">{{ 'astar.result.win' | t:{ n: score() } }}</span>
+      } @else {
+        <strong>{{ 'astar.result.blocked' | t }}</strong>
+        <span class="mono">{{ 'astar.result.sealed' | t }}</span>
+      }
+    </div>
+  }
+
+  <div class="astar-foot">
+    <div class="astar-stats mono">
+      <span><i>{{ 'astar.stat.expanded' | t }}</i>{{ stats().expanded }}</span>
+      <span><i>{{ 'astar.stat.frontier' | t }}</i>{{ stats().frontier }}</span>
+      <span><i>{{ 'astar.stat.path' | t }}</i>{{ stats().pathLength || '-' }}</span>
+    </div>
+    <div class="astar-controls">
+      <button class="ctrl primary" type="button" (click)="toggle()">{{ buttonLabel() | t }}</button>
+      @if (mode() === 'demo') {
+        <button class="ctrl" type="button" (click)="newMap()">{{ 'astar.btn.map' | t }}</button>
+      }
+      <button class="ctrl" type="button" (click)="cycleSpeed()" [title]="'a11y.cycleSpeed' | t">×{{ speed() }}</button>
+    </div>
+  </div>
+
+  <p class="astar-hint mono">
+    @if (mode() === 'maze') {
+      {{ 'astar.hint.maze' | t }}
+    } @else {
+      {{ 'astar.hint.demo' | t }}
+    }
+  </p>
+
+  <div class="achievements">
+    <div class="ach-head mono">
+      <span>{{ 'astar.ach.title' | t }}</span>
+      <span class="ach-count">{{ unlockedCount() }}/{{ achievements().length }}</span>
+    </div>
+    <div class="ach-row">
+      @for (a of achievements(); track a.id) {
+        <div class="ach" [class.unlocked]="a.unlocked" [title]="(a.labelKey | t) + ' - ' + (a.hintKey | t)">
+          <span class="ach-icon">{{ a.icon }}</span>
+          <span class="ach-label mono">{{ a.labelKey | t }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (toast(); as t) {
+    <div class="ach-toast" role="status">
+      <span class="ach-toast-icon">{{ t.icon }}</span>
+      <div>
+        <strong class="mono">{{ 'astar.ach.unlocked' | t }}</strong>
+        <span>{{ t.labelKey | t }}</span>
+      </div>
+    </div>
+  }
+</div>

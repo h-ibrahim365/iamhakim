@@ -1,0 +1,128 @@
+<section class="page manage-page">
+  <div class="card manage-card rise">
+    @if (loading()) {
+      <div class="state mono">{{ 'book.manage.loading' | t }}</div>
+    } @else if (error()) {
+      <div class="state error">
+        <span class="mark">!</span>
+        <h1>{{ 'book.manage.error.title' | t }}</h1>
+        <p>{{ error() }}</p>
+        <a class="ghost mono" href="/book">{{ 'book.manage.back' | t }}</a>
+      </div>
+    } @else if (booking(); as b) {
+      <div class="manage-top">
+        <span class="eyebrow">{{ 'book.manage.eyebrow' | t }}</span>
+        <h1>{{ 'book.manage.title' | t }}</h1>
+        <p>{{ 'book.manage.lead' | t }}</p>
+      </div>
+
+      <div class="summary">
+        <div>
+          <span>{{ 'book.manage.date' | t }}</span>
+          <strong>{{ fullWhen(b.startUtc) }}</strong>
+        </div>
+        @if (b.requestedStartUtc) {
+          <div class="requested-row">
+            <span>{{ 'book.manage.requestedDate' | t }}</span>
+            <strong>{{ fullWhen(b.requestedStartUtc) }}</strong>
+          </div>
+        }
+        <div>
+          <span>{{ 'book.manage.type' | t }}</span>
+          <strong>{{ kindLabel(b.kind) }}</strong>
+        </div>
+        <div>
+          <span>{{ 'book.manage.status' | t }}</span>
+          <strong class="status">{{ statusLabel(b.status) }}</strong>
+        </div>
+        @if (b.meetingLocation) {
+          <div>
+            <span>{{ 'book.manage.location' | t }}</span>
+            <strong>{{ b.meetingLocation }}</strong>
+          </div>
+        }
+        <div>
+          <span>{{ 'book.manage.topic' | t }}</span>
+          <strong>{{ b.message || '-' }}</strong>
+        </div>
+      </div>
+
+      @if (b.status === 'reschedule_requested') {
+        <div class="notice info mono">{{ 'book.manage.reschedule.pendingHint' | t }}</div>
+      }
+      @if (actionMessage()) {
+        <div class="notice ok mono">{{ actionMessage() }}</div>
+      }
+      @if (actionError()) {
+        <div class="notice error mono">{{ actionError() }}</div>
+      }
+
+      @if (canCancel()) {
+        <div class="manage-actions">
+          <button class="secondary-button" type="button" [disabled]="actionBusy()" (click)="openReschedule()">
+            {{ 'book.manage.reschedule.open' | t }}
+          </button>
+          <button class="danger-button" type="button" [disabled]="actionBusy()" (click)="askCancel()">
+            {{ 'book.manage.cancel' | t }}
+          </button>
+        </div>
+
+        @if (rescheduleOpen()) {
+          <div class="reschedule-panel">
+            <strong>{{ 'book.manage.reschedule.title' | t }}</strong>
+            <p>{{ 'book.manage.reschedule.text' | t }}</p>
+
+            @if (availabilityLoading()) {
+              <div class="state mono compact">{{ 'book.loading' | t }}</div>
+            } @else {
+              <div class="reschedule-days">
+                @for (day of visibleDays(); track day.date) {
+                  <div class="reschedule-day">
+                    <span class="day-label mono">{{ dayLabel(day) }}</span>
+                    <div class="mini-slots">
+                      @for (slot of day.slots; track slot.id) {
+                        <button
+                          type="button"
+                          class="mini-slot"
+                          [class.selected]="selectedRescheduleSlot()?.id === slot.id"
+                          (click)="selectRescheduleSlot(slot)">
+                          {{ slotTime(slot) }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+            <div class="actions">
+              <button class="primary-button compact-button" type="button" [disabled]="!selectedRescheduleSlot() || actionBusy()" (click)="rescheduleBooking()">
+                {{ (actionBusy() ? 'book.manage.reschedule.busy' : 'book.manage.reschedule.confirm') | t }}
+              </button>
+              <button class="secondary-button compact-button" type="button" [disabled]="actionBusy()" (click)="closeReschedule()">
+                {{ 'book.manage.reschedule.keep' | t }}
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (confirmCancel()) {
+          <div class="confirm-cancel">
+            <strong>{{ 'book.manage.cancel.confirmTitle' | t }}</strong>
+            <p>{{ 'book.manage.cancel.confirmText' | t }}</p>
+            <div class="actions">
+              <button class="danger-button" type="button" [disabled]="actionBusy()" (click)="cancelBooking()">
+                {{ (actionBusy() ? 'book.manage.cancel.busy' : 'book.manage.cancel.confirm') | t }}
+              </button>
+              <button class="secondary-button" type="button" [disabled]="actionBusy()" (click)="keepBooking()">
+                {{ 'book.manage.cancel.keep' | t }}
+              </button>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="hint">{{ 'book.manage.noAction' | t }}</p>
+      }
+    }
+  </div>
+</section>

@@ -1,0 +1,233 @@
+<section class="page book-page">
+  <header class="book-head rise">
+    <span class="eyebrow">{{ 'book.eyebrow' | t }}</span>
+    <h1>{{ 'book.title.1' | t }} <span class="accent">{{ 'book.title.accent' | t }}</span></h1>
+    <p class="lead">
+{{ 'book.lead' | t }}
+    </p>
+  </header>
+
+  @if (result(); as r) {
+    <!-- REQUEST SENT ------------------------------------------------- -->
+    <div class="card confirm rise">
+      <div class="confirm-mark">✓</div>
+      <h2>{{ 'book.confirmed' | t }}</h2>
+      <p class="confirm-when">{{ fullWhen(r.booking.startUtc) }}</p>
+      <p class="confirm-sub mono">{{ kindLabel(r.booking.kind) }} · {{ timeZoneLabel() }}</p>
+      <p class="confirm-text">{{ 'book.pending.note' | t }}</p>
+
+      <button class="ghost mono" type="button" (click)="reset()">{{ 'book.another' | t }}</button>
+    </div>
+  } @else {
+    <div class="book-grid">
+      <!-- MONTH CALENDAR ------------------------------------------- -->
+      <div class="card cal-card rise">
+        <div class="cal-top">
+          <button class="cal-nav" type="button" (click)="prevMonth()" [disabled]="!canPrevMonth()" [attr.aria-label]="'book.prevMonth' | t">‹</button>
+          <strong class="cal-month">{{ monthLabel() }}</strong>
+          <button class="cal-nav" type="button" (click)="nextMonth()" [attr.aria-label]="'book.nextMonth' | t">›</button>
+        </div>
+
+        <div class="cal-weekdays mono">
+          @for (w of weekdayLabelKeys; track w) {
+            <span>{{ w | t }}</span>
+          }
+        </div>
+
+        <div class="cal-grid" [class.skeleton]="loading()">
+          @for (cell of cells(); track $index) {
+            <button
+              class="cal-cell"
+              type="button"
+              [class.empty]="!cell.inMonth"
+              [class.has]="cell.available > 0"
+              [class.partial]="cell.state === 'partial'"
+              [class.full-available]="cell.state === 'available'"
+              [class.today]="cell.isToday"
+              [class.selected]="cell.date && cell.date === selectedDate()"
+              [disabled]="!cell.inMonth || cell.available === 0"
+              (click)="selectCell(cell)">
+              @if (cell.inMonth) {
+                <span class="cc-day">{{ cell.day }}</span>
+                @if (cell.available > 0) {
+                  <span class="cc-dot" [class.partial-dot]="cell.state === 'partial'" [attr.data-count]="cell.available"></span>
+                }
+              }
+            </button>
+          }
+        </div>
+
+        <div class="cal-legend mono">
+          <span><i class="lg-dot"></i> {{ 'book.legend.available' | t }}</span>
+          <span><i class="lg-dot lg-dot-partial"></i> {{ 'book.legend.partial' | t }}</span>
+          <span><i class="lg-sel"></i> {{ 'book.legend.selected' | t }}</span>
+        </div>
+      </div>
+
+      <!-- DAY SLOTS + FORM ----------------------------------------- -->
+      <aside class="card form-card rise" style="animation-delay:.08s">
+        @if (loading()) {
+          <div class="no-day">
+            <span class="nd-icon">⏳</span>
+            <p class="mono">{{ 'book.loading' | t }}</p>
+          </div>
+        } @else if (loadError()) {
+          <div class="no-day">
+            <span class="nd-icon">⚠</span>
+            <p class="mono">{{ 'book.error' | t }}</p>
+          </div>
+        } @else if (selectedDay(); as day) {
+          <div class="day-head">
+            <h3>{{ longDate(day.date) }}</h3>
+            <span class="tz mono">{{ timeZone() }}</span>
+          </div>
+
+          <div class="slot-grid">
+            @for (slot of day.slots; track slot.id) {
+              <button
+                class="slot"
+                type="button"
+                [class.selected]="selectedSlot()?.id === slot.id"
+                [disabled]="!slot.available"
+                (click)="selectSlot(slot)">
+                {{ slotTime(slot.startUtc) }}
+              </button>
+            }
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="kinds">
+            @for (k of meetingKinds; track k.value) {
+              <button class="kind" type="button" [class.active]="kind() === k.value" (click)="setKind(k.value)">
+                <span class="kind-icon">{{ k.icon }}</span>
+                <span>{{ k.labelKey | t }}</span>
+              </button>
+            }
+          </div>
+
+          <label class="field">
+            <span class="mono">{{ 'book.field.name' | t }}</span>
+            <input type="text" [(ngModel)]="name" [placeholder]="'book.placeholder.name' | t" autocomplete="name" />
+          </label>
+          <label class="field">
+            <span class="mono">{{ 'book.field.email' | t }}</span>
+            <div class="email-row" [class.verified]="emailIsVerified()">
+              <input
+                type="email"
+                [(ngModel)]="email"
+                (ngModelChange)="onEmailChanged()"
+                [placeholder]="'book.placeholder.email' | t"
+                autocomplete="email" />
+              <button
+                class="email-action mono"
+                type="button"
+                [disabled]="!canRequestEmailVerification()"
+                (click)="requestEmailVerification()">
+                {{ emailVerificationActionLabel() }}
+              </button>
+            </div>
+          </label>
+
+          @if (emailVerificationHint()) {
+            <div class="email-hint mono">{{ emailVerificationHint() }}</div>
+          }
+
+          <div class="turnstile-panel" [class.hidden]="!turnstileEnabled()">
+            <div #turnstileContainer class="turnstile-widget"></div>
+            <div class="turnstile-state mono" [class.ready]="turnstileToken()">
+              {{ turnstileStatusLabel() }}
+            </div>
+            @if (turnstileError()) {
+              <div class="turnstile-error mono">{{ turnstileError() }}</div>
+            }
+          </div>
+
+          @if (emailVerificationId() && !emailIsVerified()) {
+            <div class="email-code-panel">
+              <label class="field email-code-field">
+                <span class="mono">{{ 'book.email.codeLabel' | t }}</span>
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="6"
+                  [(ngModel)]="emailCode"
+                  [placeholder]="'book.email.codePlaceholder' | t"
+                  autocomplete="one-time-code" />
+              </label>
+              <button
+                class="email-action verify mono"
+                type="button"
+                [disabled]="!canConfirmEmailVerification()"
+                (click)="confirmEmailVerification()">
+                {{ (emailVerificationBusy() ? 'book.email.verifying' : 'book.email.verifyCode') | t }}
+              </button>
+            </div>
+          }
+
+          @if (emailVerificationInfo()) {
+            <div class="email-status ok mono">{{ emailVerificationInfo() }}</div>
+          }
+          @if (emailVerificationError()) {
+            <div class="email-status error mono">{{ emailVerificationError() }}</div>
+          }
+          @if (kind() === 'InPerson') {
+            <div class="address-block">
+              <label class="field">
+                <span class="mono">{{ 'book.field.location' | t }}</span>
+                <input
+                  type="text"
+                  [ngModel]="meetingLocation"
+                  (ngModelChange)="onMeetingLocationChanged($event)"
+                  [placeholder]="'book.placeholder.location' | t"
+                  autocomplete="street-address" />
+              </label>
+
+              @if (addressSuggestions().length > 0) {
+                <div class="address-suggestions" role="listbox" [attr.aria-label]="'book.location.suggestions' | t">
+                  @for (suggestion of addressSuggestions(); track suggestion.label) {
+                    <button class="address-suggestion" type="button" role="option" (click)="chooseAddressSuggestion(suggestion)">
+                      {{ suggestion.label }}
+                    </button>
+                  }
+                </div>
+              }
+
+              @if (addressSearchHint(); as hint) {
+                <div class="email-hint mono">{{ hint }}</div>
+              }
+            </div>
+
+            @if (meetingLocation.trim().length > 0 && !meetingLocationIsValid()) {
+              <div class="email-status error mono">{{ 'book.location.tooShort' | t }}</div>
+            }
+          }
+
+          <label class="field">
+            <span class="mono">{{ 'book.field.message' | t }}</span>
+            <textarea [(ngModel)]="message" rows="3" [placeholder]="'book.placeholder.message' | t"></textarea>
+          </label>
+
+          @if (selectedSlot(); as s) {
+            <div class="picked mono">{{ 'book.selected' | t:{ when: fullWhen(s.startUtc) } }}</div>
+          } @else {
+            <div class="picked muted mono">{{ 'book.pick' | t }}</div>
+          }
+
+          @if (submitError()) {
+            <div class="form-error mono">{{ submitError() }}</div>
+          }
+
+          <button class="primary-button book-submit" type="button" [disabled]="!canSubmit()" (click)="submit()">
+            {{ (submitting() ? 'book.submitting' : 'book.submit') | t }}
+          </button>
+        } @else {
+          <div class="no-day">
+            <span class="nd-icon">🗓</span>
+            <p class="mono">{{ 'book.noday' | t }}</p>
+          </div>
+        }
+      </aside>
+    </div>
+  }
+</section>

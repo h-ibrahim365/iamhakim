@@ -1,0 +1,266 @@
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  background: rgba(6, 7, 13, 0.72);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.brand-mark {
+  width: 2.7rem;
+  height: 2.7rem;
+  display: grid;
+  place-items: center;
+  padding: 0.35rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(240, 169, 43, 0.35);
+  background: radial-gradient(circle at 30% 20%, rgba(240, 169, 43, 0.28), rgba(12, 15, 26, 0.95));
+  box-shadow: 0 0 34px rgba(240, 169, 43, 0.18), inset 0 0 18px rgba(240, 169, 43, 0.08);
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease;
+}
+.brand-mark svg { display: block; width: 100%; height: 100%; }
+
+/* Keep the playful logo tilt only on devices with a real hover state.
+   On touch screens, mobile browsers can keep :hover stuck after a tap,
+   which makes the mark stay rotated until the user taps somewhere else. */
+@media (hover: hover) and (pointer: fine) {
+  .brand:hover .brand-mark {
+    transform: rotate(-8deg) scale(1.05);
+    box-shadow: 0 0 48px rgba(240, 169, 43, 0.34), inset 0 0 18px rgba(240, 169, 43, 0.12);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .brand:hover .brand-mark,
+  .brand:active .brand-mark,
+  .brand:focus .brand-mark {
+    transform: none;
+    box-shadow: 0 0 34px rgba(240, 169, 43, 0.18), inset 0 0 18px rgba(240, 169, 43, 0.08);
+  }
+}
+
+.brand-text { min-width: 0; }
+.brand-text strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+.brand-text small {
+  display: block;
+  color: var(--faint);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 15, 26, 0.6);
+}
+
+.nav a {
+  position: relative;
+  flex: 0 0 auto;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  word-break: keep-all;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.nav a:hover { color: var(--text); }
+.nav a.active {
+  color: #1a1205;
+  background: var(--amber);
+  box-shadow: 0 6px 20px rgba(240, 169, 43, 0.28);
+}
+.nav a.nav-cta {
+  color: var(--amber-soft);
+  border: 1px solid rgba(240, 169, 43, 0.4);
+  margin-left: 0.2rem;
+}
+.nav a.nav-cta:hover { color: #1a1205; background: var(--amber); }
+.nav a.nav-cta.active { color: #1a1205; background: var(--amber); border-color: transparent; }
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: max-content;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.78rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 15, 26, 0.6);
+  transition: border-color 0.2s ease;
+}
+
+.live-pill:hover { border-color: var(--line-strong); }
+.live-pill strong { padding: 0.1rem 0.45rem; border-radius: 999px; background: rgba(255, 255, 255, 0.07); font-size: 0.75rem; }
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 0 5px rgba(242, 96, 122, 0.12);
+}
+
+.live-pill[data-state='connected'] .dot {
+  background: var(--success);
+  box-shadow: 0 0 0 5px rgba(61, 220, 151, 0.14), 0 0 18px rgba(61, 220, 151, 0.5);
+  animation: blink 2s ease-in-out infinite;
+}
+
+.live-pill[data-state='reconnecting'] .dot {
+  background: var(--warning);
+  box-shadow: 0 0 0 5px rgba(240, 169, 43, 0.14), 0 0 18px rgba(240, 169, 43, 0.4);
+}
+
+main {
+  width: min(var(--max), calc(100% - 2.5rem));
+  margin: 0 auto;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 2rem clamp(1rem, 4vw, 3rem);
+  color: var(--faint);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--line);
+}
+
+.foot-left { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+.foot-loc { color: var(--amber); opacity: 0.85; }
+.foot-social { display: flex; gap: 1.2rem; }
+.foot-social a {
+  color: var(--faint);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.foot-social a:hover { color: var(--amber); }
+
+@media (max-width: 1100px) {
+  .topbar { flex-wrap: wrap; }
+  .brand { order: 1; }
+  .live-pill { order: 2; margin-left: auto; }
+  .nav { order: 3; width: 100%; overflow-x: auto; justify-content: flex-start; }
+  .footer { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* topbar right cluster + language switch */
+.topbar-right { display: inline-flex; align-items: center; gap: 0.6rem; }
+.lang-switch {
+  display: inline-flex;
+  gap: 0.1rem;
+  padding: 0.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 15, 26, 0.6);
+}
+.lang-switch button {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.lang-switch button:hover { color: var(--text); }
+.lang-switch button.active { color: #1a1205; background: var(--amber); }
+
+@media (max-width: 1100px) {
+  .topbar-right { order: 2; margin-left: auto; }
+}
+
+/* Brand tagline collides with the lang-switch / live-pill before the topbar
+   reaches its mobile breakpoint, so we drop it earlier than the rest of the
+   mobile-compaction rules. */
+@media (max-width: 700px) {
+  .brand-text small { display: none; }
+}
+
+/* Tighten everything that lives in the topbar at phone widths so the
+   brand + lang switch + live pill don't crowd or wrap awkwardly. */
+@media (max-width: 560px) {
+  .topbar {
+    padding: 0.65rem 1rem;
+    gap: 0.55rem;
+  }
+  .brand { gap: 0.55rem; }
+  .brand-mark {
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0.28rem;
+    border-radius: 0.8rem;
+  }
+  .brand-text strong { font-size: 0.98rem; }
+
+  .lang-switch { padding: 0.15rem; gap: 0.05rem; }
+  .lang-switch button {
+    font-size: 0.62rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  .live-pill {
+    padding: 0.35rem 0.5rem;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+  }
+  .live-pill .pill-label { display: none; }
+  .live-pill strong {
+    padding: 0.05rem 0.4rem;
+    font-size: 0.68rem;
+  }
+
+  .nav { padding: 0.25rem; }
+  .nav a {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* Extra tight ceiling for very small phones (~360px iPhone SE etc.). */
+@media (max-width: 380px) {
+  .topbar-right { gap: 0.4rem; }
+  .brand-text strong { font-size: 0.92rem; }
+}

@@ -1,0 +1,44 @@
+.privacy-page { display: grid; gap: clamp(1.2rem, 3vw, 1.8rem); }
+
+.priv-head { margin-bottom: 0.6rem; }
+.priv-head h1 .accent {
+  background: var(--grad-cold);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.priv-head .lead { max-width: 720px; margin-top: 1.4rem; font-size: clamp(1rem, 1.3vw, 1.1rem); }
+.priv-head .updated { margin-top: 0.7rem; color: var(--faint); font-size: 0.72rem; letter-spacing: 0.08em; }
+
+.priv-card {
+  padding: clamp(1.2rem, 2.4vw, 1.7rem);
+  max-width: 820px;
+}
+.priv-card h2 {
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  margin-bottom: 0.7rem;
+}
+.priv-card p { font-size: 0.95rem; margin-bottom: 0.8rem; }
+.priv-card p:last-child { margin-bottom: 0; }
+
+.priv-card ul { display: grid; gap: 0.45rem; margin: 0.7rem 0 0.9rem; padding: 0; list-style: none; }
+.priv-card li { color: var(--muted); font-size: 0.9rem; padding-left: 1.3rem; position: relative; line-height: 1.55; }
+.priv-card li::before { content: "↳"; position: absolute; left: 0; color: var(--cyan); }
+.priv-card li strong { color: var(--text); font-weight: 600; margin-right: 0.35rem; }
+
+.priv-note {
+  margin-top: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 2px solid var(--cyan);
+  background: rgba(70, 227, 208, 0.06);
+  color: var(--muted);
+  font-size: 0.78rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.priv-contact { margin-top: 1rem; font-size: 0.92rem; }
+.priv-contact a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.priv-contact a:hover { border-color: var(--cyan); }

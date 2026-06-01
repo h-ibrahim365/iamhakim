@@ -1,0 +1,36 @@
+<section class="page flow-page">
+  <div class="intro rise">
+    <span class="eyebrow">{{ 'flow.eyebrow' | t }}</span>
+    <h1>{{ 'flow.title' | t }}</h1>
+    <p>
+      {{ 'flow.lead' | t }}
+    </p>
+    <button class="primary-button" type="button" (click)="simulate()" [disabled]="running()">
+      {{ (running() ? 'flow.button.running' : 'flow.button.simulate') | t }}
+    </button>
+  </div>
+
+  <div class="flow-board card">
+    <div class="progress">
+      <span>{{ 'flow.progress' | t }}</span>
+      <strong class="mono">{{ doneCount() }}/{{ steps().length }}</strong>
+    </div>
+
+    <div class="steps">
+      @for (step of steps(); track step.id; let index = $index) {
+        <article class="step" [attr.data-status]="step.status">
+          <div class="number">{{ index + 1 }}</div>
+          <div>
+            <h3>{{ step.titleKey | t }}</h3>
+            <p>{{ step.detailKey | t }}</p>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="flow-result">
+      <span>{{ 'flow.correlation' | t }}</span>
+      <strong class="mono">{{ correlationId() ?? ('flow.waiting' | t) }}</strong>
+    </div>
+  </div>
+</section>

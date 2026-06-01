@@ -1,0 +1,33 @@
+# /etc/caddy/Caddyfile
+#
+# Caddy automatically obtains and renews HTTPS certificates from Let's Encrypt.
+# Make sure iamhakim.com (and www) point to this server's IP before reloading.
+
+iamhakim.com, www.iamhakim.com {
+    encode zstd gzip
+
+    # API → ASP.NET Core
+    handle /api/* {
+        reverse_proxy 127.0.0.1:5172
+    }
+
+    # SignalR realtime hub (WebSockets pass through automatically)
+    handle /hubs/* {
+        reverse_proxy 127.0.0.1:5172
+    }
+
+    # Everything else → Angular SSR (Node)
+    handle {
+        reverse_proxy 127.0.0.1:4000
+    }
+
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+}
+
+# Redirect bare http and www handled automatically by Caddy.

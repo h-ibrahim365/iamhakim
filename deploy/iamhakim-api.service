@@ -1,0 +1,57 @@
+# /etc/systemd/system/iamhakim-api.service
+# ASP.NET Core API (port interne 5172, derrière Caddy)
+[Unit]
+Description=iamhakim API (ASP.NET Core)
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/iamhakim/api
+ExecStart=/usr/bin/dotnet /opt/iamhakim/api/IAmHakim.Api.dll
+Restart=always
+RestartSec=5
+User=iamhakim
+Group=iamhakim
+
+# Bind only to localhost; Caddy is the public entry point
+Environment=ASPNETCORE_URLS=http://127.0.0.1:5172
+Environment=ASPNETCORE_ENVIRONMENT=Production
+# DB connection string - keep the password out of the repo, set it here
+Environment=ConnectionStrings__Default=server=localhost;port=3306;database=iamhakim;user=iamhakim;password=CHANGE_ME_STRONG_PASSWORD;TreatTinyAsBoolean=false
+
+# Anti-abuse / Turnstile. Keep the salt and secret key out of Git.
+Environment=Security__ClientIdentity__IpHashSalt=CHANGE_ME_LONG_RANDOM_SECRET
+Environment=Security__Turnstile__Enabled=false
+# Environment=Security__Turnstile__SiteKey=0x4AAAAA_CHANGE_ME
+# Environment=Security__Turnstile__SecretKey=0x4AAAAA_CHANGE_ME_SECRET
+
+# Booking calendar (optional - fill when you wire Google/Graph)
+Environment=Booking__Mode=mock
+# Optional phone number shown in phone-call booking confirmations and calendar details.
+# Environment=Booking__Meeting__OwnerPhoneNumber=+32_CHANGE_ME
+# Example for live mode:
+# Environment=Booking__Mode=live
+# Environment=Booking__Google__Enabled=true
+# Environment=Booking__Google__IsPrimary=true
+# Environment=Booking__Google__CalendarId=primary
+# Environment=Booking__Google__OwnerEmail=your@gmail.com
+# Environment=Booking__Google__ClientId=CHANGE_ME
+# Environment=Booking__Google__ClientSecret=CHANGE_ME
+# Environment=Booking__Google__RefreshToken=CHANGE_ME
+
+# Transaction e-mail via Resend. Keep the API key out of Git.
+Environment=Mail__Enabled=false
+Environment=Mail__FromEmail=booking@iamhakim.com
+Environment=Mail__FromName=Hakim
+Environment=Mail__AdminEmail=CHANGE_ME_PERSONAL_EMAIL
+Environment=Mail__ReplyToEmail=contact@iamhakim.com
+# Environment=Mail__ResendApiKey=re_CHANGE_ME
+
+# basic hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
