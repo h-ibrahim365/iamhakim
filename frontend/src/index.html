@@ -2,21 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Hakim ID BRAHIM - .NET & Angular Full-Stack Developer</title>
+  <title>Hakim Id Brahim - Full-stack Developer</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Primary meta -->
-  <meta name="description" content="Hakim ID BRAHIM, .NET and Angular full-stack developer in Belgium, building access-management tools, backend APIs, booking systems, and graph-routing projects.">
-  <meta name="author" content="Hakim ID BRAHIM">
+  <meta name="description" content="Personal portfolio - .NET/Angular developer building access-management tools, backend APIs, and graph-routing projects. Charleroi → Brussels.">
+  <meta name="author" content="Hakim Id Brahim">
   <meta name="theme-color" content="#06070d">
 
-  <!-- Canonical -->
+  <!-- Robots: let Google show large image previews and longer snippets -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+  <!-- Bing Webmaster verification -->
+  <meta name="msvalidate.01" content="17D6F29A66649D7AE9BED744E355ED47" />
+
+  <!-- Canonical (overridden per route by SeoService) -->
   <link rel="canonical" href="https://iamhakim.com/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Hakim ID BRAHIM - .NET & Angular Full-Stack Developer">
-  <meta property="og:description" content="Personal portfolio of Hakim ID BRAHIM, focused on .NET, Angular, access-management tooling, backend APIs, booking systems, and graph-routing projects.">
+  <meta property="og:title" content="Hakim Id Brahim - Full-stack Developer">
+  <meta property="og:description" content="Personal portfolio - .NET/Angular developer building access-management tools, backend APIs, and graph-routing projects. Charleroi → Brussels.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iamhakim.com/">
   <meta property="og:site_name" content="iamhakim">
@@ -24,55 +30,58 @@
   <meta property="og:locale:alternate" content="fr_BE">
   <meta property="og:locale:alternate" content="nl_BE">
   <meta property="og:image" content="https://iamhakim.com/og-image.png">
+  <meta property="og:image:secure_url" content="https://iamhakim.com/og-image.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Hakim ID BRAHIM - .NET & Angular Full-Stack Developer">
+  <meta property="og:image:alt" content="Hakim Id Brahim - Full-stack Developer based in Charleroi, working in Brussels">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Hakim ID BRAHIM - .NET & Angular Full-Stack Developer">
-  <meta name="twitter:description" content="Personal portfolio of Hakim ID BRAHIM, focused on .NET, Angular, access-management tooling, backend APIs, booking systems, and graph-routing projects.">
+  <meta name="twitter:title" content="Hakim Id Brahim - Full-stack Developer">
+  <meta name="twitter:description" content="Personal portfolio - .NET/Angular developer building access-management tools, backend APIs, and graph-routing projects.">
   <meta name="twitter:image" content="https://iamhakim.com/og-image.png">
+  <meta name="twitter:image:alt" content="Hakim Id Brahim - Full-stack Developer based in Charleroi, working in Brussels">
 
   <!-- Icons -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- Preload the LCP font -->
+  <!-- Preload the LCP font (the bold display weight) -->
   <link rel="preload" as="font" type="font/woff2" href="/fonts/bricolage-grotesque-700.woff2" crossorigin>
 
-  <!-- Structured data: Person schema -->
+  <!-- Structured data: Person -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Hakim ID BRAHIM",
+    "@id": "https://iamhakim.com/#person",
+    "name": "Hakim Id Brahim",
+    "givenName": "Hakim",
+    "familyName": "Id Brahim",
     "url": "https://iamhakim.com",
-    "jobTitle": ".NET & Angular Full-Stack Developer",
-    "description": ".NET and Angular full-stack developer in Belgium, building access-management tools, backend APIs, booking systems, and graph-routing projects.",
-    "sameAs": [
-      "https://www.linkedin.com/in/hakim-id-brahim-172961226/",
-      "https://github.com/h-ibrahim365"
-    ],
+    "image": "https://iamhakim.com/og-image.png",
+    "jobTitle": "Full-stack Developer",
+    "description": ".NET/Angular developer building access-management tools, backend APIs, and graph-routing projects.",
     "knowsAbout": [
       ".NET",
       "ASP.NET Core",
-      "C#",
       "Angular",
       "TypeScript",
       "Identity and Access Management",
       "Active Directory",
       "Microsoft Entra ID",
-      "OAuth2",
-      "Google Calendar API",
       "Graph algorithms",
       "A* search",
-      "Backend APIs",
-      "Cloud deployment"
+      "Spring Boot",
+      "Java"
     ],
+    "knowsLanguage": ["fr", "en", "nl"],
+    "nationality": "BE",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Charleroi",
+      "addressRegion": "Wallonia",
       "addressCountry": "BE"
     },
     "workLocation": {
@@ -82,7 +91,25 @@
         "addressLocality": "Brussels",
         "addressCountry": "BE"
       }
-    }
+    },
+    "sameAs": [
+      "https://github.com/h-ibrahim365",
+      "https://www.linkedin.com/in/hakim-id-brahim-172961226/"
+    ]
+  }
+  </script>
+
+  <!-- Structured data: WebSite (helps Google understand the site) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://iamhakim.com/#website",
+    "url": "https://iamhakim.com/",
+    "name": "iamhakim",
+    "description": "Personal portfolio of Hakim Id Brahim - full-stack developer.",
+    "publisher": { "@id": "https://iamhakim.com/#person" },
+    "inLanguage": ["en", "fr", "nl"]
   }
   </script>
 </head>
