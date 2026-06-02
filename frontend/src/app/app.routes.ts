@@ -35,17 +35,17 @@ const seo = {
     en: {
       title: 'Projects - Hakim Id Brahim',
       description:
-        'Selected projects from Hakim Id Brahim: A* routing engine, ADAMO governed access-management system, RootShell Discord bot, and more.',
+        'Selected projects from Hakim Id Brahim: A* routing engine, internal access-management platform, RootShell Discord bot, and more.',
     },
     fr: {
       title: 'Projets - Hakim Id Brahim',
       description:
-        'Projets sélectionnés : moteur de routage A*, système de gestion des accès gouverné ADAMO, bot Discord RootShell, et plus encore.',
+        'Projets sélectionnés : moteur de routage A*, plateforme interne de gestion des accès, bot Discord RootShell, et plus encore.',
     },
     nl: {
       title: 'Projecten - Hakim Id Brahim',
       description:
-        'Geselecteerde projecten: A*-routeringsengine, ADAMO governed toegangsbeheersysteem, RootShell Discord-bot, en meer.',
+        'Geselecteerde projecten: A*-routeringsengine, intern toegangsbeheerplatform, RootShell Discord-bot, en meer.',
     },
   },
   about: {
@@ -165,9 +165,9 @@ const localizedRoutes: Routes = [
               position: 1,
               item: {
                 '@type': 'SoftwareApplication',
-                name: 'ADAMO - Internal access tool',
+                name: 'Internal access-management platform',
                 description:
-                  'Application Delegation Authorization Management Orchestrator. Governed access-management system built on Active Directory and Microsoft Entra ID, managing who can access what across Infrabel partner ecosystem.',
+                  'Governed access-management platform built around directory services and cloud identity, supporting controlled access workflows in a professional infrastructure environment.',
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Web',
                 author: { '@id': 'https://iamhakim.com/#person' },
