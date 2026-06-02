@@ -1,5 +1,5 @@
-import { Injectable, inject, PLATFORM_ID } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Injectable, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -49,7 +49,6 @@ export class SeoService {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
-  private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly i18n = inject(TranslationService);
 
@@ -92,9 +91,12 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:title', content: title });
     this.meta.updateTag({ name: 'twitter:description', content: description });
 
-    if (!isPlatformBrowser(this.platformId)) return;
+    // All DOCUMENT-based mutations below also work in SSR (Angular injects a
+    // server-side Document during prerender), so we do them unconditionally.
+    // This is critical: it's what makes hreflang / canonical / JSON-LD
+    // appear in the prerendered HTML for crawlers that don't run JavaScript.
 
-    // <html lang> (also set by TranslationService, but make sure)
+    // <html lang> (also set by TranslationService for browser localStorage flow)
     this.document.documentElement.lang = lang;
 
     // Canonical: points to the current language version
