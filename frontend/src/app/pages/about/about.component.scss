@@ -85,3 +85,43 @@
   .tl-track { grid-template-columns: 1fr; }
   .philo, .skills { padding: 1.2rem; }
 }
+
+/* Long-form prose sections (added for SEO content depth) */
+.about-page .long-form {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+
+    & > article:nth-child(3) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .card {
+    padding: 1.5rem 1.75rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    backdrop-filter: blur(6px);
+
+    h2 {
+      margin: 0 0 0.75rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.98rem;
+    }
+  }
+}

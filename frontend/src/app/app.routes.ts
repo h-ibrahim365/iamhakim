@@ -148,7 +148,64 @@ const seo = {
 
 const localizedRoutes: Routes = [
   { path: '', component: HomeComponent, data: { seo: seo.home, path: '' } },
-  { path: 'projects', component: ProjectsComponent, data: { seo: seo.projects, path: 'projects' } },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
+    data: {
+      seo: seo.projects,
+      path: 'projects',
+      extraJsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'Projects by Hakim Id Brahim',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              item: {
+                '@type': 'SoftwareApplication',
+                name: 'ADAMO - Internal access tool',
+                description:
+                  'Application Delegation Authorization Management Orchestrator. Governed access-management system built on Active Directory and Microsoft Entra ID, managing who can access what across Infrabel partner ecosystem.',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Web',
+                author: { '@id': 'https://iamhakim.com/#person' },
+              },
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              item: {
+                '@type': 'SoftwareApplication',
+                name: 'Clean A* router',
+                description:
+                  'Railway routing engine refactored around a clean A* implementation with reverse-Dijkstra heuristic. Java / Spring Boot. ×2.6 to ×7.1 speedup vs legacy on five benchmark scenarios.',
+                applicationCategory: 'DeveloperApplication',
+                operatingSystem: 'Linux',
+                programmingLanguage: 'Java',
+                author: { '@id': 'https://iamhakim.com/#person' },
+              },
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              item: {
+                '@type': 'SoftwareApplication',
+                name: 'iamhakim.com',
+                description:
+                  'Personal portfolio website. Angular 21 frontend, ASP.NET Core API, SignalR realtime hub, MySQL, Caddy reverse proxy, deployed on Hetzner Cloud behind Cloudflare.',
+                applicationCategory: 'WebApplication',
+                operatingSystem: 'Web',
+                url: 'https://iamhakim.com',
+                author: { '@id': 'https://iamhakim.com/#person' },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
   { path: 'about', component: AboutComponent, data: { seo: seo.about, path: 'about' } },
   { path: 'flow', component: FlowComponent, data: { seo: seo.flow, path: 'flow' } },
   { path: 'status', component: StatusComponent, data: { seo: seo.status, path: 'status' } },

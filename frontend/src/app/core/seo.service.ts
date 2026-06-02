@@ -10,6 +10,8 @@ import type { RouteSeoMap } from '../app.routes';
 interface RouteData {
   seo?: RouteSeoMap;
   path?: string;
+  /** Extra JSON-LD blocks injected on this route (e.g. ItemList of SoftwareApplications). */
+  extraJsonLd?: object[];
 }
 
 const ORIGIN = 'https://iamhakim.com';
@@ -108,6 +110,9 @@ export class SeoService {
 
     // Breadcrumbs JSON-LD: skip on home
     this.setBreadcrumbsLd(pagePath, lang, fullUrl, title);
+
+    // Extra per-route JSON-LD (SoftwareApplication etc.)
+    this.setExtraJsonLd(data.extraJsonLd);
   }
 
   // ============== DOM helpers ==============
@@ -166,5 +171,19 @@ export class SeoService {
     script.setAttribute('data-seo', 'breadcrumbs');
     script.textContent = JSON.stringify(ld);
     head.appendChild(script);
+  }
+
+  private setExtraJsonLd(blocks: object[] | undefined): void {
+    const head = this.document.head;
+    // Remove any previously injected extra blocks
+    head.querySelectorAll('script[data-seo="extra"]').forEach((el) => el.remove());
+    if (!blocks || blocks.length === 0) return;
+    for (const block of blocks) {
+      const script = this.document.createElement('script');
+      script.setAttribute('type', 'application/ld+json');
+      script.setAttribute('data-seo', 'extra');
+      script.textContent = JSON.stringify(block);
+      head.appendChild(script);
+    }
   }
 }

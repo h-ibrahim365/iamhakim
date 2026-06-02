@@ -138,9 +138,9 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'about.title.1': 'Engineer who thinks',
     'about.title.2': 'in',
     'about.title.accent': 'systems.',
-    'about.lead': 'Belgian developer, based in Charleroi and working in Brussels. I like thinking in flows rather than isolated screens: user action, backend boundary, persistence, feedback, and the constraints around deployment. I’m drawn to problems where access control, correctness, and maintainability matter.',
+    'about.lead': 'Belgian developer, born in Louvain-la-Neuve, raised in Charleroi, now living in Wallonia and commuting daily to Brussels. I joined Infrabel - Belgium\'s national railway infrastructure manager - in early 2024 as a full-stack .NET / Angular developer. I work mainly on internal tooling around identity and access management. Outside the day job I\'m pursuing a Master\'s in Computer Science at UMONS Charleroi, with research interests in graph algorithms and software architecture.',
     'about.work.title': 'How I work',
-    'about.work.body': 'I process things visually and build through structure. I prefer small, observable surfaces: health checks, counters, a live event stream, or an algorithm you can watch run. It is not about pretending the site is a large platform; it is about showing how the pieces fit together.',
+    'about.work.body': 'I process things visually and build through structure. I prefer small, observable surfaces over big black boxes: health checks, counters, a live event stream, or an algorithm you can watch run. This site itself is built that way - everything you see has a real backend behind it (Angular front-end, ASP.NET Core API, SignalR realtime hub, MySQL, deployed on a Hetzner VPS fronted by Caddy and Cloudflare). It\'s not pretending to be a large platform; it\'s a small, honest demonstration of how the pieces fit together.',
     'about.quote': 'build it clean first, optimise after.',
     'about.quote.attr': '- the through-line of my internship work',
     'about.toolbox': 'Toolbox',
@@ -420,7 +420,14 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'book.apiError.booking_already_processed': 'This request has already been processed.',
     'book.apiError.mail_send_failed': 'The email could not be sent. Please try again later.',
     'book.apiError.calendar_failed': 'The calendar could not be updated. Please try again later.',
-    'book.apiError.unknown': 'Something went wrong. Please try again later.'
+    'book.apiError.unknown': 'Something went wrong. Please try again later.',
+    'about.background.title': 'Background',
+    'about.background.body': 'Bachelor in IT (HELHa) graduated with distinction, followed by a bridging year also passed with distinction. Now in my second year of a Master\'s in Computer Science at UMONS Charleroi, in a work-study format - day-time work at Infrabel, evening classes at university. Core academic interests: graph algorithms, search heuristics, optimisation, and software architecture. M1 internship focused on rebuilding a railway routing engine around a clean A* implementation with a reverse-Dijkstra heuristic; M2 work is moving toward ML-assisted route prediction from historical network data.',
+    'about.building.title': 'What I\'m currently building',
+    'about.building.body': 'At Infrabel I work on ADAMO, the governed access-management system that answers \'who can access what, and who is allowed to grant that right?\' across our partner ecosystem. It is built on Active Directory and Microsoft Entra ID, with an ASP.NET Core API, an Angular feature-sliced front-end, and a set of scheduled runners that reconcile on-prem and cloud state. Outside work I maintain RootShell, a TypeScript Discord bot for the Digital Refuge server, and I run benchmarks on the A* routing engine that came out of my internship.',
+    'about.langs.title': 'Languages I work in',
+    'about.langs.body': 'French is my mother tongue. I work in English on a daily basis - technical documentation, code reviews, conference talks, and most of my reading.',
+
   },
 
   fr: {
@@ -550,9 +557,9 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'about.title.1': 'Un ingénieur qui pense',
     'about.title.2': 'en',
     'about.title.accent': 'systèmes.',
-    'about.lead': 'Développeur belge, basé à Charleroi et travaillant à Bruxelles. J’aime raisonner en flux plutôt qu’en écrans isolés : action utilisateur, frontière backend, persistance, retour d’état et contraintes de déploiement. Je m’intéresse surtout aux sujets où le contrôle d’accès, la justesse et la maintenabilité comptent.',
+    'about.lead': 'Développeur belge, né à Louvain-la-Neuve, élevé à Charleroi, je vis aujourd\'hui en Wallonie et fais le trajet quotidien vers Bruxelles. Depuis début 2024 je suis développeur full-stack .NET / Angular chez Infrabel - le gestionnaire de l\'infrastructure ferroviaire belge - sur des outils internes de gestion des identités et des accès. En parallèle je poursuis un Master en informatique à l\'UMONS Charleroi, avec une recherche orientée algorithmes de graphes et architecture logicielle.',
     'about.work.title': 'Ma façon de travailler',
-    'about.work.body': 'Je raisonne visuellement et je construis par la structure. Je préfère les petites surfaces observables : health checks, compteurs, flux d’événements live ou algorithme qu’on peut regarder tourner. L’idée n’est pas de faire croire que ce site est une grosse plateforme, mais de montrer proprement comment les pièces s’assemblent.',
+    'about.work.body': 'Je raisonne visuellement et je construis par la structure. Je préfère les petites surfaces observables aux grosses boîtes noires : health checks, compteurs, flux d\'événements live, ou un algorithme qu\'on peut regarder tourner. Ce site est construit dans cet esprit - tout ce que tu vois a un vrai backend derrière (front-end Angular, API ASP.NET Core, hub SignalR temps réel, MySQL, déployé sur un VPS Hetzner derrière Caddy et Cloudflare). Pas une grosse plateforme déguisée, juste une démonstration honnête de comment les pièces s\'assemblent.',
     'about.quote': 'd’abord propre, ensuite optimisé.',
     'about.quote.attr': '- le fil rouge de mon stage',
     'about.toolbox': 'Boîte à outils',
@@ -832,7 +839,14 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'book.apiError.booking_already_processed': 'Cette demande a déjà été traitée.',
     'book.apiError.mail_send_failed': 'L’e-mail n’a pas pu être envoyé. Réessaie plus tard.',
     'book.apiError.calendar_failed': 'Le calendrier n’a pas pu être mis à jour. Réessaie plus tard.',
-    'book.apiError.unknown': 'Une erreur est survenue. Réessaie plus tard.'
+    'book.apiError.unknown': 'Une erreur est survenue. Réessaie plus tard.',
+    'about.background.title': 'Parcours',
+    'about.background.body': 'Bachelier en informatique (HELHa) obtenu avec distinction, suivi d\'une année de passerelle également réussie avec distinction. Aujourd\'hui en deuxième année de Master en informatique à l\'UMONS Charleroi, en alternance - journée chez Infrabel, cours du soir à l\'université. Centres d\'intérêt académiques : algorithmes de graphes, heuristiques de recherche, optimisation et architecture logicielle. Stage M1 axé sur la refonte d\'un moteur de routage ferroviaire autour d\'une implémentation propre de A* avec heuristique Dijkstra inverse ; travail M2 vers une prédiction d\'itinéraires assistée par ML à partir de données historiques.',
+    'about.building.title': 'Ce sur quoi je travaille',
+    'about.building.body': 'Chez Infrabel je travaille sur ADAMO, le système de gestion d\'accès gouverné qui répond à « qui peut accéder à quoi, et qui est autorisé à donner ce droit ? » à travers notre écosystème de partenaires. Il est construit sur Active Directory et Microsoft Entra ID, avec une API ASP.NET Core, un front-end Angular en architecture par fonctionnalités, et un ensemble de runners planifiés qui réconcilient l\'état on-prem et cloud. À côté du travail je maintiens RootShell, un bot Discord en TypeScript pour le serveur Digital Refuge, et je lance des benchmarks sur le moteur A* issu de mon stage.',
+    'about.langs.title': 'Langues de travail',
+    'about.langs.body': 'Le français est ma langue maternelle. Je travaille en anglais au quotidien - documentation technique, revues de code, conférences et la majeure partie de mes lectures.',
+
   },
 
   nl: {
@@ -962,9 +976,9 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'about.title.1': 'Ingenieur die denkt',
     'about.title.2': 'in',
     'about.title.accent': 'systemen.',
-    'about.lead': 'Belgische ontwikkelaar, gevestigd in Charleroi en werkend in Brussel. Ik denk graag in flows in plaats van losse schermen: gebruikersactie, backend-grens, persistentie, feedback en deploymentbeperkingen. Ik word vooral aangetrokken door onderwerpen waar toegangscontrole, correctheid en onderhoudbaarheid belangrijk zijn.',
+    'about.lead': 'Belgische ontwikkelaar, geboren in Louvain-la-Neuve, opgegroeid in Charleroi, en nu woonachtig in Wallonië met een dagelijkse pendel naar Brussel. Sinds begin 2024 ben ik full-stack .NET / Angular-ontwikkelaar bij Infrabel - de Belgische spoorwegen-infrastructuurbeheerder - aan interne tools rond identiteits- en toegangsbeheer. Daarnaast volg ik een Master Informatica aan UMONS Charleroi, met onderzoeksinteresse in graafalgoritmes en softwarearchitectuur.',
     'about.work.title': 'Hoe ik werk',
-    'about.work.body': 'Ik denk visueel en bouw via structuur. Ik verkies kleine observeerbare oppervlakken: health checks, tellers, een live event-stream of een algoritme dat je ziet draaien. Het doel is niet te doen alsof deze site een groot platform is, maar proper te tonen hoe de stukken samenhangen.',
+    'about.work.body': 'Ik denk visueel en bouw via structuur. Ik verkies kleine, observeerbare oppervlakken boven grote black boxes: health checks, tellers, een live event stream, of een algoritme dat je kan zien lopen. Deze site is in die geest gebouwd - alles wat je ziet heeft een echte backend (Angular frontend, ASP.NET Core API, SignalR realtime hub, MySQL, gehost op een Hetzner VPS achter Caddy en Cloudflare). Geen vermomd groot platform, gewoon een eerlijke demonstratie van hoe de stukken in elkaar passen.',
     'about.quote': 'eerst schoon, daarna optimaliseren.',
     'about.quote.attr': '- de rode draad van mijn stage',
     'about.toolbox': 'Gereedschap',
@@ -1244,6 +1258,13 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'book.apiError.booking_already_processed': 'Deze aanvraag is al behandeld.',
     'book.apiError.mail_send_failed': 'De e-mail kon niet worden verzonden. Probeer later opnieuw.',
     'book.apiError.calendar_failed': 'De kalender kon niet worden bijgewerkt. Probeer later opnieuw.',
-    'book.apiError.unknown': 'Er ging iets mis. Probeer later opnieuw.'
+    'book.apiError.unknown': 'Er ging iets mis. Probeer later opnieuw.',
+    'about.background.title': 'Achtergrond',
+    'about.background.body': 'Bachelor in IT (HELHa) afgerond met onderscheiding, gevolgd door een schakeljaar dat eveneens met onderscheiding werd behaald. Momenteel in mijn tweede jaar Master Informatica aan UMONS Charleroi, in werk-studie-formaat - overdag werken bij Infrabel, avondlessen aan de universiteit. Academische interesses: graafalgoritmes, zoekheuristieken, optimalisatie en softwarearchitectuur. M1-stage rond de herwerking van een spoorroutering rond een schone A*-implementatie met omgekeerde-Dijkstra-heuristiek; M2-werk evolueert naar ML-ondersteunde routevoorspelling op basis van historische netwerkdata.',
+    'about.building.title': 'Waar ik mee bezig ben',
+    'about.building.body': 'Bij Infrabel werk ik aan ADAMO, het governed toegangsbeheersysteem dat de vraag beantwoordt \'wie heeft toegang waartoe, en wie mag dat recht verlenen?\' binnen ons partnerecosysteem. Het is gebouwd op Active Directory en Microsoft Entra ID, met een ASP.NET Core API, een Angular frontend met feature-slice architectuur, en geplande runners die de on-prem en cloud-state synchroniseren. Naast het werk onderhoud ik RootShell, een TypeScript Discord-bot voor de Digital Refuge-server, en draai ik benchmarks op de A*-engine uit mijn stage.',
+    'about.langs.title': 'Werkbare talen',
+    'about.langs.body': 'Frans is mijn moedertaal. Ik werk dagelijks in het Engels - technische documentatie, code reviews, conferenties en het grootste deel van mijn lectuur.',
+    
   }
 };
