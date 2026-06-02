@@ -5,10 +5,11 @@ import { LiveConnectionService } from '../../core/live-connection.service';
 import { AstarComponent } from './astar.component';
 import { LiveCounterComponent } from './live-counter.component';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { LocalizedLinkPipe } from '../../i18n/localized-link.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, AstarComponent, LiveCounterComponent, TranslatePipe],
+  imports: [RouterLink, AstarComponent, LiveCounterComponent, TranslatePipe, LocalizedLinkPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

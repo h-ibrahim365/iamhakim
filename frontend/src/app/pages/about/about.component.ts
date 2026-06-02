@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { LocalizedLinkPipe } from '../../i18n/localized-link.pipe';
 
 interface Skill { groupKey: string; items: string[]; }
 interface Milestone { yearKey: string; titleKey: string; detailKey: string; }
 
 @Component({
   selector: 'app-about',
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink, TranslatePipe, LocalizedLinkPipe],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })

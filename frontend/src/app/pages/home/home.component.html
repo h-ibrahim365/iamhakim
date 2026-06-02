@@ -5,8 +5,8 @@
     <p class="lead">{{ 'home.lead' | t }}</p>
 
     <div class="hero-actions">
-      <a class="primary-button" routerLink="/projects">{{ 'home.cta.work' | t }}</a>
-      <a class="secondary-button" routerLink="/book">{{ 'home.cta.book' | t }}</a>
+      <a class="primary-button" [routerLink]="'/projects' | loc">{{ 'home.cta.work' | t }}</a>
+      <a class="secondary-button" [routerLink]="'/book' | loc">{{ 'home.cta.book' | t }}</a>
     </div>
 
     <div class="social-row" [attr.aria-label]="'a11y.findMe' | t">

@@ -5,11 +5,11 @@ import { LiveConnectionService } from './live-connection.service';
 /**
  * Records exactly one visit per JavaScript runtime, regardless of which route
  * the user landed on. Called from the App component's constructor so it fires
- * at app boot — whether the user opens `/`, `/projects`, `/book`, or anything
+ * at app boot - whether the user opens `/`, `/projects`, `/book`, or anything
  * else.
  *
  * Browser-only (no-op during SSR). No cookies, no localStorage, no
- * sessionStorage — the in-memory `started` flag survives within a tab and is
+ * sessionStorage - the in-memory `started` flag survives within a tab and is
  * wiped on hard reload / tab close, which is the trade-off for not needing a
  * consent banner under ePrivacy.
  */

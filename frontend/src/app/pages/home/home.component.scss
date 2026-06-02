@@ -104,7 +104,7 @@
   animation: blink 2s ease-in-out infinite;
 }
 
-/* site-wide pulse strip — visits / clicks / live, sits outside the astar panel
+/* site-wide pulse strip - visits / clicks / live, sits outside the astar panel
    because these numbers describe the whole site, not the algorithm. */
 .site-pulse {
   margin: clamp(2rem, 5vw, 3.5rem) 0 clamp(1.6rem, 3.5vw, 2.4rem);

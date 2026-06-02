@@ -1,0 +1,16 @@
+/* TEAM */
+  Developer: Hakim Id Brahim
+  Contact: via /book
+  Location: Charleroi / Brussels, Belgium
+  GitHub: h-ibrahim365
+  LinkedIn: hakim-id-brahim-172961226
+
+/* THANKS */
+  Anthropic Claude - pair-programming on the SEO refactor
+  Mario Ranftl - google-webfonts-helper
+
+/* SITE */
+  Stack: Angular 21 · ASP.NET Core · SignalR · MySQL · Caddy · Cloudflare
+  Hosting: Hetzner Cloud
+  Fonts: Bricolage Grotesque · Geist · JetBrains Mono (self-hosted)
+  Last update: 2026-06-02

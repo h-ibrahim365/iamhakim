@@ -2,10 +2,12 @@
 User-agent: *
 Allow: /
 
-# Bookings are private endpoints — no need to index them
+# Bookings management is private (per-language)
 Disallow: /api/
 Disallow: /hubs/
-Disallow: /book/manage
+Disallow: /en/book/manage
+Disallow: /fr/book/manage
+Disallow: /nl/book/manage
 
 # Sitemap
 Sitemap: https://iamhakim.com/sitemap.xml

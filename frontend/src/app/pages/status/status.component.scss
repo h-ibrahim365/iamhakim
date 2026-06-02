@@ -1,4 +1,4 @@
-/* The title always gets the full content width — never compressed by the
+/* The title always gets the full content width - never compressed by the
    refresh button. The paragraph and button share the row underneath. */
 .intro-row {
   display: flex;
@@ -30,7 +30,7 @@
 }
 
 /* On narrow phones, stack the button under the paragraph and let it span
-   the full width — easier tap target. */
+   the full width - easier tap target. */
 @media (max-width: 520px) {
   .intro-foot { align-items: stretch; }
   .intro-foot > button { width: 100%; }

@@ -10,7 +10,7 @@ import { LiveConnectionService } from './live-connection.service';
  * - Listens to pointerdown on the document with capture phase.
  * - Only counts clicks on interactive targets (button, a, [role=button], input).
  * - Throttled to one POST per second to keep noise out of the counter.
- * - Updates the shared stats signal optimistically — SignalR will reconcile.
+ * - Updates the shared stats signal optimistically - SignalR will reconcile.
  */
 @Injectable({ providedIn: 'root' })
 export class ClickTrackerService {

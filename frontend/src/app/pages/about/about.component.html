@@ -54,6 +54,6 @@
       <h2>{{ 'about.cta.title' | t }}</h2>
       <p>{{ 'about.cta.body' | t }}</p>
     </div>
-    <a class="primary-button" routerLink="/book">{{ 'about.cta.button' | t }}</a>
+    <a class="primary-button" [routerLink]="'/book' | loc">{{ 'about.cta.button' | t }}</a>
   </section>
 </section>
