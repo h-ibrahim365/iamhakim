@@ -7,9 +7,7 @@ iamhakim.com {
 	}
 
     # Root / → /en (default language, server-side redirect)
-    # The JS client re-redirects to fr or nl afterwards if the user has a saved preference.
-    # 302 (not 301) so we keep flexibility to change the strategy later.
-    @root path /
+    @root path_regexp ^/$
     handle @root {
         redir /en 302
     }
