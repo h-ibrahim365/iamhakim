@@ -7,10 +7,7 @@ iamhakim.com {
 	}
 
     # Root / → /en (default language, server-side redirect)
-    @root path_regexp ^/$
-    handle @root {
-        redir /en 302
-    }
+	redir / /en 302
 
 	# .well-known/ (ACME, security.txt, assetlinks.json, etc.) — sert les fichiers existants
 	handle /.well-known/* {
