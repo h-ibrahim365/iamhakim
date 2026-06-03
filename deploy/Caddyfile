@@ -1,73 +1,107 @@
 iamhakim.com {
-    encode zstd gzip
+	encode zstd gzip
 
-    # Deploy webhook
-    handle /hooks/iamhakim-deploy {
-        reverse_proxy 127.0.0.1:9001
+	# Deploy webhook
+	handle /hooks/iamhakim-deploy {
+		reverse_proxy 127.0.0.1:9001
+	}
+
+    # Root / → /en (default language, server-side redirect)
+    # The JS client re-redirects to fr or nl afterwards if the user has a saved preference.
+    # 302 (not 301) so we keep flexibility to change the strategy later.
+    @root path /
+    handle @root {
+        redir /en 302
     }
 
-    # robots.txt must never fall back to Angular index.html
-    handle /robots.txt {
-        root * /opt/iamhakim/web
-        header Cache-Control "public, max-age=300, must-revalidate"
-        file_server
-    }
+	# .well-known/ (ACME, security.txt, assetlinks.json, etc.) — sert les fichiers existants
+	handle /.well-known/* {
+		root * /opt/iamhakim/web
+		file_server
+	}
 
-    # sitemap.xml must never fall back to Angular index.html
-    handle /sitemap.xml {
-        root * /opt/iamhakim/web
-        header Cache-Control "public, max-age=300, must-revalidate"
-        file_server
-    }
+	# robots.txt must never fall back to Angular index.html
+	handle /robots.txt {
+		root * /opt/iamhakim/web
+		header Cache-Control "public, max-age=300, must-revalidate"
+		file_server
+	}
 
-    # API → ASP.NET Core
-    handle /api/* {
-        reverse_proxy 127.0.0.1:5172
-    }
+	# sitemap.xml must never fall back to Angular index.html
+	handle /sitemap.xml {
+		root * /opt/iamhakim/web
+		header Cache-Control "public, max-age=300, must-revalidate"
+		file_server
+	}
 
-    # SignalR realtime hub (WebSockets pass through automatically)
-    handle /hubs/* {
-        reverse_proxy 127.0.0.1:5172
-    }
+	# API → ASP.NET Core
+	handle /api/* {
+		reverse_proxy 127.0.0.1:5172
+	}
 
-    # Hashed Angular assets (main-XXXXXXXX.js, styles-XXXXXXXX.css, etc.) — cache 1 an, immutable
-    @hashed_assets {
-        path_regexp \.[A-Z0-9]{6,}\.(js|css|woff2?)$
-    }
-    header @hashed_assets Cache-Control "public, max-age=31536000, immutable"
+	# SignalR realtime hub (WebSockets pass through automatically)
+	handle /hubs/* {
+		reverse_proxy 127.0.0.1:5172
+	}
 
-    # Self-hosted fonts (pas de hash mais nom stable)
-    @fonts {
-        path /fonts/*.woff2
-    }
-    header @fonts Cache-Control "public, max-age=31536000, immutable"
+	# Hashed Angular assets (main-XXXXXXXX.js, styles-XXXXXXXX.css, etc.) — cache 1 an, immutable
+	@hashed_assets {
+		path_regexp \.[A-Z0-9]{6,}\.(js|css|woff2?)$
+	}
+	header @hashed_assets Cache-Control "public, max-age=31536000, immutable"
 
-    # Autres statiques (favicons, og-image.png, manifest, humans.txt) — cache modéré
-    @static {
-        path *.svg *.ico *.png *.jpg *.jpeg *.webp *.avif *.txt *.xml *.webmanifest
-    }
-    header @static Cache-Control "public, max-age=3600, must-revalidate"
+	# Self-hosted fonts (pas de hash mais nom stable)
+	@fonts {
+		path /fonts/*.woff2
+	}
+	header @fonts Cache-Control "public, max-age=31536000, immutable"
 
-    # Prerendered pages + SPA fallback:
-    #   /en/projects  → tries /en/projects (file) → /en/projects/index.html (prerendered) ✓
-    #   /unknown-id   → all fail → /index.html (SPA fallback)
-    handle {
-        root * /opt/iamhakim/web
-        try_files {path} {path}/index.html /index.html
-        file_server
-    }
+	# Autres statiques (favicons, og-image.png, etc.) — cache modéré
+	@static {
+		path *.svg *.ico *.png *.jpg *.jpeg *.webp *.avif *.txt *.xml
+	}
+	header @static Cache-Control "public, max-age=3600, must-revalidate"
 
-    # Security headers (global)
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        X-Content-Type-Options "nosniff"
-        Referrer-Policy "strict-origin-when-cross-origin"
-        Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
-        Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-elem 'self' https://challenges.cloudflare.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://iamhakim.com wss://iamhakim.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; child-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
-        -Server
-    }
+	# Bloque les dotfiles (.env, .git, .aws, .ssh, .npmrc…)
+	# Le handle /.well-known/* plus haut intercepte déjà ces chemins légitimes
+	@dotfiles path_regexp (^|/)\.
+	handle @dotfiles {
+		respond 404
+	}
+
+	# Bloque les probes classiques (WordPress, PHP, phpMyAdmin, cgi-bin, vendor leaks…)
+	@probes {
+		path *.php *.php* *.aspx *.asp *.jsp *.cgi /wp-* /xmlrpc.php /phpmyadmin* /phpMyAdmin* /cgi-bin/* /vendor/* /storage/*
+	}
+	handle @probes {
+		respond 404
+	}
+
+	# SPA: file_server avec fallback /index.html UNIQUEMENT pour les routes Angular
+	# (paths sans extension dont le fichier physique n'existe pas)
+	handle {
+		root * /opt/iamhakim/web
+
+		@spa {
+			not path_regexp \.[a-zA-Z0-9]+$
+			not file
+		}
+		rewrite @spa /index.html
+
+		file_server
+	}
+
+	# Security headers (global)
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+		Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-elem 'self' https://challenges.cloudflare.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://iamhakim.com wss://iamhakim.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; child-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+		-Server
+	}
 }
 
 www.iamhakim.com {
-    redir https://iamhakim.com{uri} permanent
+	redir https://iamhakim.com{uri} permanent
 }

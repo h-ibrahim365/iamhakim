@@ -1,41 +1,53 @@
-/**
- * Generate sitemap.xml with multilingual hreflang alternates.
- *
- * Runs as a `prebuild` step in package.json. Writes to public/sitemap.xml so
- * the Angular build picks it up and serves it at /sitemap.xml.
- *
- * Source of truth for routes: the SITE_PAGES array below. Keep in sync with
- * app.routes.ts when you add/remove a page.
- *
- * `lastmod` strategy:
- *   - Each page's lastmod is the current date when the script runs (UTC).
- *   - This is good enough for a small portfolio. Don't over-engineer the
- *     git-log scan unless you have content that genuinely changes per route.
- */
-
 import { writeFile } from 'node:fs/promises';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_PATH = resolve(__dirname, '..', 'public', 'sitemap.xml');
+const REPO_ROOT = resolve(__dirname, '..');
+const OUT_PATH = resolve(REPO_ROOT, 'public', 'sitemap.xml');
 
 const ORIGIN = 'https://iamhakim.com';
 const LANGS = ['en', 'fr', 'nl'];
 const DEFAULT_LANG = 'en';
 
-/** path (without lang prefix), changefreq, priority */
-const SITE_PAGES = [
-  { path: '',         changefreq: 'weekly',  priority: '1.0' },
-  { path: 'projects', changefreq: 'weekly',  priority: '0.9' },
-  { path: 'about',    changefreq: 'monthly', priority: '0.8' },
-  { path: 'flow',     changefreq: 'monthly', priority: '0.7' },
-  { path: 'book',     changefreq: 'monthly', priority: '0.6' },
-  { path: 'status',   changefreq: 'weekly',  priority: '0.5' },
-  { path: 'privacy',  changefreq: 'yearly',  priority: '0.3' },
+// Fichiers cross-cutting : si l'un d'eux change, ALL pages bump
+const SHARED_PATHS = [
+  'src/index.html',
+  'src/app/app.routes.ts',
+  'src/app/core/seo.service.ts',
+  'src/app/i18n/translations.ts',
 ];
 
-const today = new Date().toISOString().slice(0, 10);
+const SITE_PAGES = [
+  { path: '',         dir: 'src/app/pages/home',     changefreq: 'weekly',  priority: '1.0' },
+  { path: 'projects', dir: 'src/app/pages/projects', changefreq: 'weekly',  priority: '0.9' },
+  { path: 'about',    dir: 'src/app/pages/about',    changefreq: 'monthly', priority: '0.8' },
+  { path: 'flow',     dir: 'src/app/pages/flow',     changefreq: 'monthly', priority: '0.7' },
+  { path: 'book',     dir: 'src/app/pages/book',     changefreq: 'monthly', priority: '0.6' },
+  { path: 'status',   dir: 'src/app/pages/status',   changefreq: 'weekly',  priority: '0.5' },
+  { path: 'privacy',  dir: 'src/app/pages/privacy',  changefreq: 'yearly',  priority: '0.3' },
+];
+
+/** Dernière date de commit qui a touché un ou plusieurs paths, format YYYY-MM-DD. */
+function gitLastMod(paths) {
+  try {
+    const out = execSync(
+      `git log -1 --format=%cs -- ${paths.join(' ')}`,
+      { cwd: REPO_ROOT, encoding: 'utf8' },
+    ).trim();
+    return out || new Date().toISOString().slice(0, 10);
+  } catch {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+const sharedLastMod = gitLastMod(SHARED_PATHS);
+
+function lastModFor(page) {
+  const pageDate = gitLastMod([page.dir]);
+  return pageDate > sharedLastMod ? pageDate : sharedLastMod;
+}
 
 function urlFor(lang, path) {
   return `${ORIGIN}/${lang}${path ? '/' + path : ''}`;
@@ -49,10 +61,10 @@ function buildAlternates(path) {
   return alts.join('\n');
 }
 
-function buildEntry(lang, page) {
+function buildEntry(lang, page, lastmod) {
   return `  <url>
     <loc>${urlFor(lang, page.path)}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
 ${buildAlternates(page.path)}
@@ -61,8 +73,9 @@ ${buildAlternates(page.path)}
 
 const entries = [];
 for (const page of SITE_PAGES) {
+  const lastmod = lastModFor(page);
   for (const lang of LANGS) {
-    entries.push(buildEntry(lang, page));
+    entries.push(buildEntry(lang, page, lastmod));
   }
 }
 
@@ -76,4 +89,4 @@ ${entries.join('\n\n')}
 `;
 
 await writeFile(OUT_PATH, xml, 'utf8');
-console.log(`✔ sitemap.xml written: ${SITE_PAGES.length * LANGS.length} URLs, lastmod=${today}`);
+console.log(`✔ sitemap.xml written: ${SITE_PAGES.length * LANGS.length} URLs (per-page lastmod via git)`);
