@@ -342,9 +342,9 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
 
   private color(state: string): string {
     switch (state) {
-      case 'wall': return '#2a2140';
-      case 'closed': return 'rgba(70, 227, 208, 0.16)';
-      case 'open': return 'rgba(240, 169, 43, 0.30)';
+      case 'wall':   return '#3a2f5c';
+      case 'closed': return 'rgba(70, 227, 208, 0.38)';
+      case 'open':   return 'rgba(240, 169, 43, 0.55)';
       case 'start': return '#3ddc97';
       case 'goal': return '#f2607a';
       default: return 'transparent';
