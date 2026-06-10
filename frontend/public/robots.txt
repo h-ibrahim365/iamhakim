@@ -2,9 +2,14 @@
 User-agent: *
 Allow: /
 
-# Bookings management is private (per-language)
+# Cloudflare-managed endpoints
+Disallow: /cdn-cgi/
+
+# Private / technical endpoints
 Disallow: /api/
 Disallow: /hubs/
+
+# Bookings management is private (per-language)
 Disallow: /en/book/manage
 Disallow: /fr/book/manage
 Disallow: /nl/book/manage
