@@ -231,6 +231,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.findMe': 'Find me elsewhere',
     'a11y.astarGrid': 'A* pathfinding grid',
     'a11y.cycleSpeed': 'Cycle speed',
+    'a11y.themeToLight': 'Switch to light theme',
+    'a11y.themeToDark': 'Switch to dark theme',
 
     'home.ticker.infra': 'two years of production code',
     'home.ticker.identity': 'identity & access',
@@ -650,6 +652,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.findMe': 'Me retrouver ailleurs',
     'a11y.astarGrid': 'Grille de pathfinding A*',
     'a11y.cycleSpeed': 'Changer la vitesse',
+    'a11y.themeToLight': 'Passer au thème clair',
+    'a11y.themeToDark': 'Passer au thème sombre',
 
     'home.ticker.infra': 'deux ans de code en prod',
     'home.ticker.identity': 'identité & accès',
@@ -1069,6 +1073,8 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.findMe': 'Vind me elders',
     'a11y.astarGrid': 'A*-pathfindingraster',
     'a11y.cycleSpeed': 'Snelheid wijzigen',
+    'a11y.themeToLight': 'Overschakelen naar licht thema',
+    'a11y.themeToDark': 'Overschakelen naar donker thema',
 
     'home.ticker.infra': 'twee jaar productiecode',
     'home.ticker.identity': 'identiteit & toegang',

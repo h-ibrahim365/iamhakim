@@ -27,8 +27,8 @@
 .priv-note {
   margin-top: 0.7rem;
   padding: 0.7rem 0.9rem;
-  border-left: 2px solid var(--cyan);
-  background: rgba(70, 227, 208, 0.06);
+  border-left: 2px solid var(--accent);
+  background: var(--accent-tint);
   color: var(--muted);
   font-size: 0.78rem;
   border-radius: 0 0.5rem 0.5rem 0;

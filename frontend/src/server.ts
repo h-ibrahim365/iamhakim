@@ -13,6 +13,30 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
+ * Legacy un-prefixed URLs and the bare root '/' are pure redirects to the
+ * localized route (see app.routes.ts' `redirectTo` rules). Angular's own
+ * `redirectTo` doesn't translate into a real HTTP 3xx during SSR — in both
+ * RenderMode.Client and RenderMode.Server it just renders the destination
+ * page's content inline at a 200, which crawlers see as a thin/duplicate
+ * page under the wrong URL. Handling these here, before Angular ever sees
+ * the request, gives a genuine single-hop 301 with the right Location header.
+ */
+const LEGACY_REDIRECTS: Record<string, string> = {
+  '/': '/en',
+  '/projects': '/en/projects',
+  '/about': '/en/about',
+  '/flow': '/en/flow',
+  '/status': '/en/status',
+  '/book': '/en/book',
+  '/book/manage': '/en/book/manage',
+  '/privacy': '/en/privacy',
+};
+
+app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
+  res.redirect(301, LEGACY_REDIRECTS[req.path]);
+});
+
+/**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
  *

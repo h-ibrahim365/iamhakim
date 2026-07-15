@@ -26,8 +26,8 @@
   gap: 1rem;
   padding: 1rem;
   border: 1px solid var(--line);
-  border-radius: 1.1rem;
-  background: rgba(2, 6, 23, 0.36);
+  border-radius: 0.7rem;
+  background: var(--sunken);
 }
 
 .progress span,
@@ -56,20 +56,20 @@
   gap: 1rem;
   padding: 1rem;
   border: 1px solid var(--line);
-  border-radius: 1.15rem;
-  background: rgba(15, 23, 42, 0.5);
+  border-radius: 0.7rem;
+  background: var(--sunken);
   transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
 .step[data-status='running'] {
   transform: translateX(8px);
-  border-color: rgba(56, 189, 248, 0.62);
-  background: rgba(14, 165, 233, 0.12);
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
 }
 
 .step[data-status='done'] {
-  border-color: rgba(52, 211, 153, 0.45);
-  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--success-line);
+  background: var(--success-tint);
 }
 
 .number {
@@ -77,20 +77,23 @@
   height: 2.4rem;
   display: grid;
   place-items: center;
-  border-radius: 0.9rem;
+  border-radius: 0.6rem;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--panel);
+  border: 1px solid var(--line);
   font-weight: 900;
 }
 
 .step[data-status='running'] .number {
   background: var(--accent);
-  color: #00111c;
+  border-color: var(--accent);
+  color: var(--on-accent);
 }
 
 .step[data-status='done'] .number {
   background: var(--success);
-  color: #001811;
+  border-color: var(--success);
+  color: var(--on-success);
 }
 
 .step h3 {
@@ -113,6 +116,6 @@
 
 /* design-system alignment */
 .intro h1 { margin-bottom: 1.2rem; }
-.flow-result strong, .progress strong { font-family: var(--font-mono); color: var(--cyan); }
-.step[data-status='running'] .number { background: var(--cyan); color: #02201d; }
+.flow-result strong, .progress strong { font-family: var(--font-mono); color: var(--accent-deep); }
+.step[data-status='running'] .number { background: var(--accent); color: var(--on-accent); }
 .number { font-family: var(--font-display); }

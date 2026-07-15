@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <defs>
+    <linearGradient id="blueGrad" x1="173.580" y1="72.000" x2="363.908" y2="262.328" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E6BFF"/>
+      <stop offset="100%" stop-color="#0A4DFF"/>
+    </linearGradient>
+    <linearGradient id="mainGrad" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#1C1C1C"/>
+    </linearGradient>
+    <mask id="hMask" maskUnits="userSpaceOnUse" x="387.431" y="307.237" width="462.989" height="644.763">
+      <rect x="387.431" y="551.028" width="462.989" height="153.973" rx="32.078" fill="white"/>
+      <rect x="665.439" y="307.237" width="184.982" height="644.763" rx="32.078" fill="white"/>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" fill="#FFFFFF"/>
+  <rect x="173.580" y="72.000" width="190.328" height="190.328" rx="32.078" fill="url(#blueGrad)"/>
+  <rect x="175.718" y="307.237" width="184.982" height="644.763" rx="32.078" fill="url(#mainGrad)"/>
+  <rect x="387.431" y="307.237" width="462.989" height="644.763" fill="url(#mainGrad)" mask="url(#hMask)"/>
+</svg>

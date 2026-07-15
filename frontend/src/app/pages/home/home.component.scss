@@ -34,13 +34,13 @@
   text-decoration: none;
   padding: 0.5rem 0.85rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(12, 15, 26, 0.5);
+  border-radius: 0.5rem;
+  background: var(--panel);
   transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .social svg { opacity: 0.85; transition: opacity 0.2s ease; }
-.social:hover { color: var(--text); border-color: var(--amber); transform: translateY(-2px); }
-.social:hover svg { opacity: 1; color: var(--amber); }
+.social:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+.social:hover svg { opacity: 1; color: var(--accent); }
 
 /* hero panel holds the A* visualiser ------------------------------- */
 .hero-panel {
@@ -54,8 +54,7 @@
   inset: -40% -30% auto auto;
   width: 20rem; height: 20rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(70, 227, 208, 0.12), transparent 70%);
-  filter: blur(18px);
+  background: radial-gradient(circle, var(--accent-tint), transparent 70%);
   pointer-events: none;
 }
 
@@ -71,8 +70,8 @@
 .counter {
   padding: 0.7rem 0.8rem;
   border: 1px solid var(--line);
-  border-radius: 0.8rem;
-  background: rgba(4, 6, 14, 0.4);
+  border-radius: 0.6rem;
+  background: var(--sunken);
 }
 .counter app-live-counter {
   font-size: 1.5rem;
@@ -91,16 +90,15 @@
   line-height: 1.3;
 }
 .counter.feature {
-  border-color: rgba(240, 169, 43, 0.3);
-  background: rgba(240, 169, 43, 0.06);
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
 }
-.counter.feature app-live-counter { color: var(--amber-soft); }
-.counter.feature span { color: var(--amber-soft); opacity: 0.8; }
+.counter.feature app-live-counter { color: var(--accent-deep); }
+.counter.feature span { color: var(--accent-deep); opacity: 0.85; }
 .live-tick {
   width: 0.4rem; height: 0.4rem;
   border-radius: 50%;
   background: var(--success);
-  box-shadow: 0 0 8px 1px rgba(61, 220, 151, 0.7);
   animation: blink 2s ease-in-out infinite;
 }
 
@@ -111,8 +109,8 @@
   padding: clamp(1.1rem, 2vw, 1.4rem) clamp(1.2rem, 2.4vw, 1.6rem);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(18, 22, 36, 0.66), rgba(10, 13, 24, 0.5));
-  backdrop-filter: blur(8px);
+  background: var(--panel);
+  box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
@@ -121,8 +119,7 @@
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
-  background: var(--grad-cold);
-  opacity: 0.7;
+  background: var(--accent);
 }
 .pulse-head {
   display: flex;
@@ -145,8 +142,8 @@
 .pulse-item {
   padding: 0.85rem 1rem;
   border: 1px solid var(--line);
-  border-radius: 0.85rem;
-  background: rgba(4, 6, 14, 0.45);
+  border-radius: 0.6rem;
+  background: var(--sunken);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .pulse-item:hover { border-color: var(--line-strong); transform: translateY(-2px); }

@@ -4,6 +4,7 @@ import { LiveConnectionService } from './core/live-connection.service';
 import { ClickTrackerService } from './core/click-tracker.service';
 import { VisitTrackerService } from './core/visit-tracker.service';
 import { SeoService } from './core/seo.service';
+import { ThemeService } from './core/theme.service';
 import { TranslationService } from './i18n/translation.service';
 import { TranslatePipe } from './i18n/translate.pipe';
 import { LocalizedLinkPipe } from './i18n/localized-link.pipe';
@@ -18,6 +19,7 @@ import { Lang, LANGUAGES } from './i18n/translations';
 export class App {
   protected readonly live = inject(LiveConnectionService);
   protected readonly i18n = inject(TranslationService);
+  protected readonly theme = inject(ThemeService);
   private readonly clickTracker = inject(ClickTrackerService);
   private readonly visitTracker = inject(VisitTrackerService);
   private readonly seo = inject(SeoService);

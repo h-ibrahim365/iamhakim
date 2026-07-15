@@ -164,12 +164,17 @@ const localizedRoutes: Routes = [
               '@type': 'ListItem',
               position: 1,
               item: {
-                '@type': 'SoftwareApplication',
+                // CreativeWork, not SoftwareApplication: these are portfolio
+                // pieces, not rated/purchasable app-store listings, so the
+                // stricter SoftwareApplication type (which Google's rich
+                // results require aggregateRating/offers for) doesn't fit —
+                // and fabricating ratings/pricing to satisfy it would be
+                // dishonest markup.
+                '@type': 'CreativeWork',
                 name: 'Internal access-management platform',
                 description:
                   'Governed access-management platform built around directory services and cloud identity, supporting controlled access workflows in a professional infrastructure environment.',
-                applicationCategory: 'BusinessApplication',
-                operatingSystem: 'Web',
+                keywords: 'Business application, Web',
                 author: { '@id': 'https://iamhakim.com/#person' },
               },
             },
@@ -177,13 +182,11 @@ const localizedRoutes: Routes = [
               '@type': 'ListItem',
               position: 2,
               item: {
-                '@type': 'SoftwareApplication',
+                '@type': 'CreativeWork',
                 name: 'Clean A* router',
                 description:
                   'Railway routing engine refactored around a clean A* implementation with reverse-Dijkstra heuristic. Java / Spring Boot. ×2.6 to ×7.1 speedup vs legacy on five benchmark scenarios.',
-                applicationCategory: 'DeveloperApplication',
-                operatingSystem: 'Linux',
-                programmingLanguage: 'Java',
+                keywords: 'Java, Spring Boot, Linux',
                 author: { '@id': 'https://iamhakim.com/#person' },
               },
             },
@@ -191,12 +194,11 @@ const localizedRoutes: Routes = [
               '@type': 'ListItem',
               position: 3,
               item: {
-                '@type': 'SoftwareApplication',
+                '@type': 'CreativeWork',
                 name: 'iamhakim.com',
                 description:
                   'Personal portfolio website. Angular 21 frontend, ASP.NET Core API, SignalR realtime hub, MySQL, Caddy reverse proxy, deployed on Hetzner Cloud behind Cloudflare.',
-                applicationCategory: 'WebApplication',
-                operatingSystem: 'Web',
+                keywords: 'Angular, ASP.NET Core, Web',
                 url: 'https://iamhakim.com',
                 author: { '@id': 'https://iamhakim.com/#person' },
               },

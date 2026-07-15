@@ -1,10 +1,11 @@
 import {
   AfterViewInit, Component, ElementRef, NgZone, OnDestroy, PLATFORM_ID,
-  computed, inject, output, signal, viewChild
+  computed, effect, inject, output, signal, viewChild
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AstarGrid, AstarStats } from '../../shared/astar';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { ThemeService } from '../../core/theme.service';
 
 type Mode = 'demo' | 'maze';
 
@@ -19,7 +20,15 @@ interface Achievement { id: string; icon: string; labelKey: string; hintKey: str
 export class AstarComponent implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly zone = inject(NgZone);
+  private readonly themeService = inject(ThemeService);
   private readonly canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
+
+  /** Redraws the grid whenever the light/dark theme flips — the canvas paints
+   * with plain colors, so it can't react to CSS custom properties on its own. */
+  private readonly redrawOnThemeChange = effect(() => {
+    this.themeService.theme();
+    this.draw(this.grid?.status === 'found');
+  });
 
   readonly runFinished = output<{ outcome: 'found' | 'no-path'; expanded: number; mode: Mode; score: number }>();
 
@@ -340,26 +349,46 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
     } catch { /* ignore */ }
   }
 
-  private color(state: string): string {
-    switch (state) {
-      case 'wall':   return '#3a2f5c';
-      case 'closed': return 'rgba(70, 227, 208, 0.38)';
-      case 'open':   return 'rgba(240, 169, 43, 0.55)';
-      case 'start': return '#3ddc97';
-      case 'goal': return '#f2607a';
-      default: return 'transparent';
+  /** Reads all --maze-* custom properties once per draw so the canvas follows
+   * the active theme (light/dark palettes are defined once, in styles.scss)
+   * without paying for a getComputedStyle() call per grid cell. */
+  private mazePalette(): Record<string, string> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return { wall: 'transparent', closed: 'transparent', open: 'transparent', start: 'transparent', goal: 'transparent', path: 'transparent', pathGlow: 'transparent' };
     }
+    const styles = getComputedStyle(this.canvasRef().nativeElement);
+    const read = (name: string) => styles.getPropertyValue(name).trim();
+    return {
+      wall: read('--maze-wall'),
+      closed: read('--maze-closed'),
+      open: read('--maze-open'),
+      start: read('--maze-start'),
+      goal: read('--maze-goal'),
+      path: read('--maze-path'),
+      pathGlow: read('--maze-path-glow')
+    };
   }
 
   private draw(withPath = false): void {
     const ctx = this.ctx;
     if (!ctx) return;
     const c = this.cell;
+    const palette = this.mazePalette();
+    const colorFor = (state: string): string => {
+      switch (state) {
+        case 'wall': return palette['wall'];
+        case 'closed': return palette['closed'];
+        case 'open': return palette['open'];
+        case 'start': return palette['start'];
+        case 'goal': return palette['goal'];
+        default: return 'transparent';
+      }
+    };
     ctx.clearRect(0, 0, c * this.cols, c * this.rows);
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
         const st = this.grid.cellState(x, y);
-        const fill = this.color(st);
+        const fill = colorFor(st);
         if (fill === 'transparent') continue;
         const px = x * c, py = y * c;
         const inset = Math.max(1, c * 0.08);
@@ -373,10 +402,10 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
     }
     if (withPath && this.grid.status === 'found') {
       const path = this.grid.path();
-      ctx.strokeStyle = '#f5c977';
+      ctx.strokeStyle = palette['path'];
       ctx.lineWidth = Math.max(2, c * 0.18);
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-      ctx.shadowColor = 'rgba(245, 201, 119, 0.8)'; ctx.shadowBlur = 12;
+      ctx.shadowColor = palette['pathGlow']; ctx.shadowBlur = 8;
       ctx.beginPath();
       path.forEach((p, i) => {
         const px = p.x * c + c / 2, py = p.y * c + c / 2;

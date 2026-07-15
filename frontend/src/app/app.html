@@ -2,20 +2,8 @@
   <header class="topbar">
     <a class="brand" [routerLink]="'/' | loc" [attr.aria-label]="'a11y.home' | t">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="hakim-mark-warm" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f0a92b"/>
-              <stop offset="100%" stop-color="#f2607a"/>
-            </linearGradient>
-          </defs>
-          <rect x="5" y="8" width="10" height="48" rx="3" fill="#46e3d0"/>
-          <g fill="url(#hakim-mark-warm)">
-            <rect x="23" y="8" width="10" height="48" rx="3"/>
-            <rect x="49" y="8" width="10" height="48" rx="3"/>
-            <rect x="33" y="28" width="16" height="8"/>
-          </g>
-        </svg>
+        <img class="mark-light" src="/iamhakim-logo-light-bg.svg" width="64" height="64" alt="">
+        <img class="mark-dark" src="/iamhakim-logo-dark-bg.svg" width="64" height="64" alt="">
       </span>
       <span class="brand-text">
         <strong>I am Hakim</strong>
@@ -41,6 +29,23 @@
             (click)="setLang(l.code)">{{ l.label }}</button>
         }
       </div>
+
+      <button
+        type="button"
+        class="theme-toggle"
+        [attr.aria-label]="(theme.theme() === 'dark' ? 'a11y.themeToLight' : 'a11y.themeToDark') | t"
+        (click)="theme.toggle()">
+        @if (theme.theme() === 'dark') {
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>
+          </svg>
+        }
+      </button>
 
       <a class="live-pill mono" [routerLink]="'/status' | loc" [attr.data-state]="live.state()">
         <span class="dot"></span>

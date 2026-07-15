@@ -70,14 +70,14 @@
 .proj-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; }
 .proj-index { color: var(--faint); font-size: 0.8rem; }
 .tag {
-  color: var(--amber);
+  color: var(--accent-deep);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.08em;
-  border: 1px solid rgba(240, 169, 43, 0.28);
-  border-radius: 999px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0.4rem;
   padding: 0.3rem 0.65rem;
-  background: rgba(240, 169, 43, 0.07);
+  background: var(--accent-tint);
 }
 
 .project-card h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.3rem; }
@@ -87,10 +87,10 @@
   width: fit-content;
   margin-bottom: 0.95rem;
   padding: 0.32rem 0.58rem;
-  border: 1px solid rgba(70, 227, 208, 0.22);
-  border-radius: 0.55rem;
-  color: var(--faint);
-  background: rgba(70, 227, 208, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  color: var(--muted);
+  background: var(--sunken);
   font-size: 0.68rem;
   letter-spacing: 0.03em;
 }
@@ -104,11 +104,11 @@ li::before { content: "↳"; position: absolute; left: 0; color: var(--cyan); }
 .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .proj-stack span {
   font-size: 0.68rem;
-  color: var(--faint);
+  color: var(--muted);
   border: 1px solid var(--line);
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
   padding: 0.25rem 0.55rem;
-  background: rgba(4, 6, 14, 0.4);
+  background: var(--sunken);
 }
 .proj-links { display: flex; gap: 0.7rem; }
 .proj-links a {

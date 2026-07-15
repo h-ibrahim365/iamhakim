@@ -1,55 +1,177 @@
 @use './fonts/font-faces';
 /* ============================================================
-   iamhakim - design system
-   Concept: a personal platform that behaves like a live console.
-   Palette: deep ink + warm amber signal (earth) + cold cyan (system).
+   iamhakim - design system  v2
+   Concept: a precise editorial console. Cool paper, near-black ink,
+   one electric-blue signal, hairline rules, a strict grid.
+   No glassmorphism, no glow, no gradients — flat and confident.
+   Palette: cool white + ink + electric blue (#2440FF).
    ============================================================ */
 
 :root {
-  /* surfaces */
-  --bg: #06070d;
-  --bg-soft: #0a0c16;
-  --panel: rgba(16, 19, 32, 0.72);
-  --panel-strong: rgba(13, 16, 28, 0.94);
-  --line: rgba(148, 163, 184, 0.14);
-  --line-strong: rgba(148, 163, 184, 0.26);
+  /* surfaces — cool white paper (deliberately NOT warm cream) */
+  --bg: #f1f2f5;
+  --bg-soft: #ffffff;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --sunken: #f6f7f9;          /* inset surface: cards-on-cards, inputs */
+  --line: #e3e5ea;            /* hairline */
+  --line-strong: #cbced6;
 
-  /* type */
-  --text: #eef2fb;
-  --muted: #93a0b8;
-  --faint: #6b7689;
+  /* type — cool grays on paper */
+  --text: #0d0e12;
+  --muted: #565a63;
+  --faint: #8b8f99;
 
-  /* signals */
-  --amber: #f0a92b;       /* warm - identity, earth, "live" */
-  --amber-soft: #f5c977;
-  --cyan: #46e3d0;        /* cold - system, realtime */
-  --violet: #8b7cf6;
-  --success: #3ddc97;
-  --warning: #f0a92b;
-  --danger: #f2607a;
+  /* signal — a single electric blue does all the accent work */
+  --accent: #2440ff;
+  --accent-deep: #1730d6;     /* accent text / hover on light */
+  --accent-tint: rgba(36, 64, 255, 0.08);
+  --accent-tint-strong: rgba(36, 64, 255, 0.14);
+  --accent-line: rgba(36, 64, 255, 0.30);
+  --on-accent: #ffffff;       /* text sitting on the accent fill */
+  --topbar-glass: rgba(255, 255, 255, 0.82); /* translucent surface under backdrop-filter blur */
 
-  /* legacy aliases (used by flow/status pages) */
-  --accent: var(--cyan);
-  --accent-2: var(--violet);
+  /* legacy signal aliases — the whole codebase references --amber / --cyan.
+     They now all resolve to the one electric accent, keeping a restrained,
+     editorial single-accent look. */
+  --amber: var(--accent);
+  --amber-soft: var(--accent-deep);
+  --cyan: var(--accent);
+  --violet: var(--accent-deep);
+  --accent-2: var(--accent-deep);
 
-  --grad-warm: linear-gradient(135deg, var(--amber), #f2607a);
-  --grad-cold: linear-gradient(135deg, var(--cyan), var(--violet));
+  /* status */
+  --success: #12a150;
+  --warning: #d9822b;
+  --danger: #e5484d;
 
-  --shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
-  --shadow-glow: 0 0 0 1px rgba(240, 169, 43, 0.14), 0 24px 70px rgba(240, 169, 43, 0.10);
+  /* status tints/lines — every badge, notice and pill draws from these tokens
+     instead of literal rgba() so dark mode can re-tune them for contrast. */
+  --success-tint: rgba(18, 161, 80, 0.09);
+  --success-line: rgba(18, 161, 80, 0.28);
+  --warning-tint: rgba(217, 130, 43, 0.10);
+  --warning-line: rgba(217, 130, 43, 0.30);
+  --danger-tint: rgba(229, 72, 77, 0.08);
+  --danger-line: rgba(229, 72, 77, 0.28);
+  --on-success: #ffffff;      /* text/icon sitting on a --success fill */
+  --on-danger: #ffffff;       /* text/icon sitting on a --danger fill */
+  --skeleton-a: rgba(13, 14, 18, 0.03);
+  --skeleton-b: rgba(13, 14, 18, 0.08);
 
-  --radius: 1.25rem;
-  --radius-lg: 1.75rem;
+  /* gradients are retired — kept as solid tokens so background-clip:text
+     accent words render flat. Both point at the one accent: a "cold" ink
+     variant here was the same color as the rest of the heading (invisible
+     in both themes), so warm/cold are now unified. */
+  --grad-warm: var(--accent);
+  --grad-cold: var(--accent);
+
+  /* solid ink fill — used by the primary button. Inverts per theme (dark
+     ink block on light, near-white block on dark) so it stays a deliberate
+     high-contrast block instead of just reusing --text as a background,
+     which silently turns white-on-white once --text flips in dark mode. */
+  --ink-fill: #0d0e12;
+  --on-ink-fill: #ffffff;
+
+  --shadow: 0 1px 2px rgba(13, 14, 18, 0.04), 0 10px 30px rgba(13, 14, 18, 0.06);
+  --shadow-glow: 0 0 0 1px var(--line);
+  --grid-line: rgba(13, 14, 18, 0.028);
+  --scrollbar-thumb: rgba(13, 14, 18, 0.16);
+  --scrollbar-thumb-hover: rgba(13, 14, 18, 0.28);
+
+  /* A* visualiser palette — read at draw-time from JS via getComputedStyle,
+     since <canvas> can't resolve var() itself. Kept as tokens so the canvas
+     re-themes with everything else instead of needing a hardcoded JS palette. */
+  --maze-wall: #1a1c22;
+  --maze-closed: rgba(36, 64, 255, 0.16);
+  --maze-open: rgba(217, 130, 43, 0.42);
+  --maze-start: #12a150;
+  --maze-goal: #e5484d;
+  --maze-path: #2440ff;
+  --maze-path-glow: rgba(36, 64, 255, 0.35);
+
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
 
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
 
   --max: 1180px;
+  color-scheme: light;
+}
+
+/* ============================================================
+   dark theme — same editorial/flat language, ink surfaces.
+   Toggled via [data-theme] on <html>, set by ThemeService before
+   Angular boots (see the inline script in index.html) to avoid FOUC.
+   Every component reads the tokens above, so this single override
+   block re-themes the entire site. ============================== */
+:root[data-theme='dark'] {
+  --bg: #0b0c0f;
+  --bg-soft: #101114;
+  --panel: #17181c;
+  --panel-strong: #1c1d22;
+  --sunken: #111216;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.18);
+
+  --text: #f2f3f5;
+  --muted: #a6abb5;
+  --faint: #6c7078;
+
+  --accent: #5b7cff;
+  --accent-deep: #aab8ff;
+  --accent-tint: rgba(91, 124, 255, 0.16);
+  --accent-tint-strong: rgba(91, 124, 255, 0.24);
+  --accent-line: rgba(91, 124, 255, 0.38);
+  --on-accent: #ffffff;
+  --topbar-glass: rgba(23, 24, 28, 0.78);
+
+  /* inverted from light: a near-white ink block with dark text, so the
+     primary button stays a deliberate high-contrast solid instead of
+     matching --text (which is itself near-white here). */
+  --ink-fill: #f2f3f5;
+  --on-ink-fill: #0d0e12;
+
+  --success: #34cd85;
+  --warning: #e2a13f;
+  --danger: #ff6b70;
+
+  --success-tint: rgba(52, 205, 133, 0.14);
+  --success-line: rgba(52, 205, 133, 0.36);
+  --warning-tint: rgba(226, 161, 63, 0.14);
+  --warning-line: rgba(226, 161, 63, 0.36);
+  --danger-tint: rgba(255, 107, 112, 0.13);
+  --danger-line: rgba(255, 107, 112, 0.34);
+  --on-success: #062013;
+  --on-danger: #2a0405;
+  --skeleton-a: rgba(255, 255, 255, 0.04);
+  --skeleton-b: rgba(255, 255, 255, 0.11);
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 44px rgba(0, 0, 0, 0.42);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.14);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.24);
+
+  --maze-wall: #34374a;
+  --maze-closed: rgba(91, 124, 255, 0.26);
+  --maze-open: rgba(226, 161, 63, 0.5);
+  --maze-start: #34cd85;
+  --maze-goal: #ff6b70;
+  --maze-path: #5b7cff;
+  --maze-path-glow: rgba(91, 124, 255, 0.45);
+
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+
+/* Theme flip transition: brief and universal so a toggle never pops. The
+   prefers-reduced-motion rule further down already targets *,*::before,*::after
+   with !important, so it fully disables this too. */
+*, *::before, *::after {
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
 
 html {
   min-height: 100%;
@@ -69,32 +191,21 @@ body {
   overflow-x: hidden;
 }
 
-/* atmospheric layers: aurora glow + fine grid */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    radial-gradient(60rem 40rem at 12% -8%, rgba(240, 169, 43, 0.10), transparent 70%),
-    radial-gradient(55rem 38rem at 92% 4%, rgba(70, 227, 208, 0.08), transparent 70%),
-    radial-gradient(48rem 40rem at 50% 118%, rgba(139, 124, 246, 0.07), transparent 70%);
-}
-
+/* atmospheric layer: a faint engineering blueprint grid — no glow, no gradients.
+   It reads as graph paper, reinforcing the precise/editorial tone. */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 1;
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
-  background-size: 54px 54px;
-  -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 90%);
-          mask-image: radial-gradient(circle at 50% 30%, #000 0%, transparent 90%);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 60%);
+          mask-image: linear-gradient(180deg, #000 0%, transparent 60%);
 }
 
 button, a, input { font: inherit; }
@@ -131,11 +242,11 @@ button,
   -webkit-user-select: none;
 }
 
-::selection { background: rgba(240, 169, 43, 0.30); color: #fff; }
+::selection { background: var(--accent); color: #fff; }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.18); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.3); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 h1, h2, h3, h4, p { margin-top: 0; }
 
@@ -192,17 +303,15 @@ p { color: var(--muted); line-height: 1.7; }
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 14px 2px rgba(240, 169, 43, 0.7);
+  background: var(--accent);
   animation: blink 2.4s ease-in-out infinite;
 }
 
 .card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(18, 22, 36, 0.82), rgba(12, 15, 26, 0.55));
+  background: var(--panel);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(8px);
 }
 
 .page {
@@ -215,27 +324,28 @@ p { color: var(--muted); line-height: 1.7; }
   justify-content: center;
   gap: 0.55rem;
   min-height: 3rem;
-  padding: 0 1.3rem;
-  border-radius: 999px;
+  padding: 0 1.35rem;
+  border-radius: 0.55rem;
   text-decoration: none;
   font-weight: 600;
-  transition: transform 0.22s cubic-bezier(.2,.8,.2,1), box-shadow 0.22s ease, border-color 0.2s ease, background 0.2s ease;
+  transition: transform 0.18s cubic-bezier(.2,.8,.2,1), box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
+/* primary = solid ink, the editorial default. secondary = hairline outline. */
 .primary-button {
-  color: #1a1205;
-  background: var(--grad-warm);
-  box-shadow: 0 14px 38px rgba(240, 169, 43, 0.26);
+  color: var(--on-ink-fill);
+  background: var(--ink-fill);
+  border: 1px solid var(--ink-fill);
 }
 
 .secondary-button {
   border: 1px solid var(--line-strong);
   color: var(--text);
-  background: rgba(18, 22, 36, 0.5);
+  background: var(--panel);
 }
 
-.primary-button:hover { transform: translateY(-2px); box-shadow: 0 20px 50px rgba(240, 169, 43, 0.36); }
-.secondary-button:hover { transform: translateY(-2px); border-color: rgba(70, 227, 208, 0.45); }
+.primary-button:hover { transform: translateY(-2px); background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.secondary-button:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
 
 .mono { font-family: var(--font-mono); }
 
@@ -248,7 +358,7 @@ p { color: var(--muted); line-height: 1.7; }
   padding: 1.1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(12, 15, 26, 0.55);
+  background: var(--sunken);
   transition: border-color 0.25s ease, transform 0.25s ease;
 }
 .metric:hover { border-color: var(--line-strong); transform: translateY(-3px); }
