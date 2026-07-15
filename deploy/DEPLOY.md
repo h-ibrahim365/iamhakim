@@ -64,32 +64,34 @@ dotnet tool install --global dotnet-ef --version 9.*   # si pas déjà fait
 ~/.dotnet/tools/dotnet-ef database update --project .
 #  (sinon l'app applique les migrations elle-même au démarrage ; ne masque pas une vraie erreur de migration)
 
-# --- WEB (Angular SSR) ---
+# --- WEB (Angular, prerendered static) ---
+# Every public page is prerendered at build time (RenderMode.Prerender) —
+# Caddy serves the output directly via file_server, no Node process involved.
+# Only the browser bundle matters here, not the SSR server build.
 cd ../../frontend
 npm ci
 npm run build
 sudo mkdir -p /opt/iamhakim/web
-sudo rm -rf /opt/iamhakim/web/dist
-sudo cp -r dist /opt/iamhakim/web/
+sudo rm -rf /opt/iamhakim/web/*
+sudo cp -r dist/frontend/browser/. /opt/iamhakim/web/
 sudo chown -R iamhakim:iamhakim /opt/iamhakim
 ```
 
 > Note : l'app applique automatiquement les migrations EF au démarrage
 > (`MigrateAsync`), donc l'étape `database update` est optionnelle.
 
-## 4. systemd - API + Web
+## 4. systemd - API
 
-Les deux services sont en `Type=simple`. L’API écoute seulement sur `127.0.0.1:5172`, donc elle n’est pas exposée directement à Internet.
+L’API est en `Type=simple` et écoute seulement sur `127.0.0.1:5172`, donc elle n’est pas exposée directement à Internet. Le frontend n’a pas de service systemd : c’est du statique servi par Caddy.
 
 ```bash
 sudo cp deploy/iamhakim-api.service /etc/systemd/system/
-sudo cp deploy/iamhakim-web.service /etc/systemd/system/
 # ÉDITE iamhakim-api.service : mets le vrai mot de passe MySQL
 sudo nano /etc/systemd/system/iamhakim-api.service
 
 sudo systemctl daemon-reload
-sudo systemctl enable --now iamhakim-api iamhakim-web
-sudo systemctl status iamhakim-api iamhakim-web   # doivent être "active (running)"
+sudo systemctl enable --now iamhakim-api
+sudo systemctl status iamhakim-api   # doit être "active (running)"
 ```
 
 ## 5. Caddy - reverse proxy + HTTPS auto
@@ -115,42 +117,43 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
 ```
-Les ports 5172 (API) et 4000 (SSR) restent **internes** (bind 127.0.0.1) - pas ouverts.
+Le port 5172 (API) reste **interne** (bind 127.0.0.1) - pas ouvert. Le frontend n'a pas de port à lui : Caddy le sert directement depuis le disque.
 
 ---
 
 ## Mettre à jour plus tard
 
+En pratique, les mises à jour passent par le script de déploiement automatisé (déclenché par webhook sur push). Pour une mise à jour manuelle :
+
 ```bash
 cd /tmp/iamhakim && git pull
 cd backend/IAmHakim.Api && dotnet publish -c Release -o /opt/iamhakim/api
-cd ../../frontend && npm ci && npm run build && sudo rm -rf /opt/iamhakim/web/dist && sudo cp -r dist /opt/iamhakim/web/
+cd ../../frontend && npm ci && npm run build \
+  && sudo rm -rf /opt/iamhakim/web/* \
+  && sudo cp -r dist/frontend/browser/. /opt/iamhakim/web/
 sudo chown -R iamhakim:iamhakim /opt/iamhakim
-sudo systemctl restart iamhakim-api iamhakim-web
+sudo systemctl restart iamhakim-api
 ```
 
 ## Logs / debug
 ```bash
 journalctl -u iamhakim-api -f
-journalctl -u iamhakim-web -f
 journalctl -u caddy -f
 ```
 
 ## Vérifications avant ouverture publique
 
 ```bash
-curl -I http://127.0.0.1:4000
 curl http://127.0.0.1:5172/api/health
 sudo journalctl -u iamhakim-api -n 80 --no-pager
-sudo journalctl -u iamhakim-web -n 80 --no-pager
+ls /opt/iamhakim/web/en/index.html   # une page prérendue existe bien
 ```
 
-Ne reload Caddy avec le domaine qu’après avoir confirmé que ces deux services répondent en local.
+Ne reload Caddy avec le domaine qu’après avoir confirmé que l'API répond en local et que le dossier web contient bien les pages prérendues.
 
 ## RAM (CX23, 4 Go) - cohabitation
 - MySQL (partagé bot + site) ~300-400 Mo
 - API .NET ~150-250 Mo
-- SSR Node ~100-200 Mo
 - bot RootShell ~100-200 Mo
 - Caddy + OS ~400 Mo
 Total confortable. Surveille avec `htop`. Si besoin un jour : swapfile de 2 Go.

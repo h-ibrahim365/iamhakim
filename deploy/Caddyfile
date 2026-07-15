@@ -6,8 +6,16 @@ iamhakim.com {
 		reverse_proxy 127.0.0.1:9001
 	}
 
-    # Root / → /en (default language, server-side redirect)
-	redir / /en 302
+	# Root / and legacy un-prefixed URLs → localized route (permanent).
+	# Each redir matches only the exact bare path, never /en/* itself.
+	redir / /en 301
+	redir /projects /en/projects 301
+	redir /about /en/about 301
+	redir /flow /en/flow 301
+	redir /status /en/status 301
+	redir /book /en/book 301
+	redir /book/manage /en/book/manage 301
+	redir /privacy /en/privacy 301
 
 	# .well-known/ (ACME, security.txt, assetlinks.json, etc.) — sert les fichiers existants
 	handle /.well-known/* {
@@ -72,16 +80,15 @@ iamhakim.com {
 		respond 404
 	}
 
-	# SPA: file_server avec fallback /index.html UNIQUEMENT pour les routes Angular
-	# (paths sans extension dont le fichier physique n'existe pas)
+	# Serve prerendered pages (/en, /en/projects, etc.) and static assets.
+	# Fall back to the CSR shell for client-only routes (notably book/manage).
 	handle {
 		root * /opt/iamhakim/web
 
-		@spa {
-			not path_regexp \.[a-zA-Z0-9]+$
-			not file
-		}
-		rewrite @spa /index.html
+		# 1. exact file (hashed assets, fonts, favicons) → file_server
+		# 2. {path}/index.html (prerendered route) → file_server
+		# 3. /index.csr.html (client-render shell for RenderMode.Client routes)
+		try_files {path} {path}/index.html /index.csr.html
 
 		file_server
 	}
@@ -92,11 +99,13 @@ iamhakim.com {
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
-		Content-Security-Policy "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; script-src-elem 'self' https://challenges.cloudflare.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://iamhakim.com wss://iamhakim.com https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; child-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
 		-Server
 	}
+
+	import /etc/caddy/iamhakim-csp.caddy
 }
 
 www.iamhakim.com {
 	redir https://iamhakim.com{uri} permanent
 }
+import /etc/caddy/sites/*.caddy
