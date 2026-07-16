@@ -29,7 +29,13 @@
           </div>
           <div class="proj-links mono">
             @for (link of project.links; track link.labelKey) {
-              <a [href]="link.href">{{ link.labelKey | t }}</a>
+              @if (link.href.startsWith('http')) {
+                <a [href]="link.href" target="_blank" rel="noopener noreferrer">{{ link.labelKey | t }}</a>
+              } @else if (link.href === '#') {
+                <a [href]="link.href">{{ link.labelKey | t }}</a>
+              } @else {
+                <a [routerLink]="link.href | loc">{{ link.labelKey | t }}</a>
+              }
             }
           </div>
         </div>

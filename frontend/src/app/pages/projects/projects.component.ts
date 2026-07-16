@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { LocalizedLinkPipe } from '../../i18n/localized-link.pipe';
 
 interface ProjectLink { labelKey: string; href: string; }
 interface ProjectCard {
@@ -16,7 +18,7 @@ interface ProjectCard {
 
 @Component({
   selector: 'app-projects',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, RouterLink, LocalizedLinkPipe],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'
 })
@@ -53,7 +55,7 @@ export class ProjectsComponent {
       descriptionKey: 'projects.03.description',
       pointKeys: ['projects.03.point.1', 'projects.03.point.2', 'projects.03.point.3', 'projects.03.point.4'],
       stack: ['Angular 21', 'ASP.NET Core', 'SignalR', 'MySQL'],
-      links: [{ labelKey: 'projects.03.link.github', href: 'https://github.com/' }, { labelKey: 'projects.03.link.status', href: '/status' }]
+      links: [{ labelKey: 'projects.03.link.github', href: 'https://github.com/h-ibrahim365/iamhakim' }, { labelKey: 'projects.03.link.status', href: '/status' }]
     }
   ];
 }
