@@ -106,7 +106,7 @@ sudo cp deploy/Caddyfile /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 ```
 
-Avant de reload : **pointe le DNS** de `iamhakim.com` (et `www`) vers `REDACTED_VPS_IP`
+Avant de reload : **pointe le DNS** de `iamhakim.com` (et `www`) vers l'IP publique de ton VPS
 (enregistrements A). Caddy obtiendra le certificat tout seul au premier accès.
 
 ## 6. Firewall
