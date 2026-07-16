@@ -92,7 +92,7 @@
   --radius: 0.75rem;
   --radius-lg: 1rem;
 
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, Cambria, "Times New Roman", serif;
   --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
 
@@ -254,8 +254,8 @@ h1 {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(2.7rem, 7vw, 6.2rem);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
   padding-bottom: 0.14em;   /* prevent descenders / a final dot from clipping */
 }
 
@@ -272,14 +272,14 @@ h2 {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.8rem, 4vw, 2.9rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  line-height: 1.05;
+  letter-spacing: -0.008em;
 }
 
 h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.006em;
 }
 
 p { color: var(--muted); line-height: 1.7; }

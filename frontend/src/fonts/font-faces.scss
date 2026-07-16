@@ -2,34 +2,29 @@
 // Import this at the top of styles.scss with:
 //   @use './fonts/font-faces';
 
-// ============ Bricolage Grotesque (display: titles, hero, big numbers) ============
+// ============ Fraunces (display: titles, hero, big numbers) ============
+// A serif with real character instead of another AI-startup grotesque -
+// pairs with the sans body font for an editorial sans+serif contrast.
 @font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/bricolage-grotesque-400.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'Fraunces';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque-600.woff2') format('woff2');
+  src: url('/fonts/fraunces-600.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'Fraunces';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque-700.woff2') format('woff2');
+  src: url('/fonts/fraunces-700.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'Fraunces';
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque-800.woff2') format('woff2');
+  src: url('/fonts/fraunces-800.woff2') format('woff2');
 }
 
 // ============ Geist (body) ============

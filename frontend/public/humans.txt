@@ -12,5 +12,5 @@
 /* SITE */
   Stack: Angular 21 · ASP.NET Core · SignalR · MySQL · Caddy · Cloudflare
   Hosting: Hetzner Cloud
-  Fonts: Bricolage Grotesque · Geist · JetBrains Mono (self-hosted)
-  Last update: 2026-06-02
+  Fonts: Fraunces · Geist · JetBrains Mono (self-hosted)
+  Last update: 2026-07-16

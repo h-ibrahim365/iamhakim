@@ -6,14 +6,13 @@ Self-host your Google Fonts here as `.woff2` files.
 
 From https://gwfh.mranftl.com/fonts (Google Webfonts Helper):
 
-### Bricolage Grotesque (display)
+### Fraunces (display)
 Pick: latin charset, woff2 only
-Weights needed: 400, 600, 700, 800
+Weights needed: 600, 700, 800
 Rename so files end up like:
-- bricolage-grotesque-400.woff2
-- bricolage-grotesque-600.woff2
-- bricolage-grotesque-700.woff2
-- bricolage-grotesque-800.woff2
+- fraunces-600.woff2
+- fraunces-700.woff2
+- fraunces-800.woff2
 
 ### Geist (body)
 Weights needed: 400, 500, 600
