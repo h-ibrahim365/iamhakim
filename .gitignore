@@ -24,8 +24,7 @@ TestResults/
 backend/IAmHakim.Api/App_Data/
 
 # IDE
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea/
 
 # OS

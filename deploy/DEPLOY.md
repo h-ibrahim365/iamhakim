@@ -1,14 +1,14 @@
-# Déploiement iamhakim - VPS Ubuntu 24.04 (Hetzner CX23)
+# Deployment - iamhakim - Ubuntu 24.04 VPS (Hetzner CX23)
 
-Ton serveur a déjà : **Node 22**, **MySQL 8**, git, build-essential.
-À installer : **.NET 10 SDK/runtime** et **Caddy**.
+Your server already has: **Node 22**, **MySQL 8**, git, build-essential.
+Still to install: **.NET 10 SDK/runtime** and **Caddy**.
 
-> Important : le projet cible `net10.0`, mais EF Core reste en 9.x parce que `Pomelo.EntityFrameworkCore.MySql 9.x` n’est pas compatible avec EF Core 10.x. Ne remonte pas `Microsoft.EntityFrameworkCore.Design` en 10.x tant que Pomelo 10 stable n’est pas utilisé.
-Bot RootShell : inchangé, il continue de tourner à côté.
+> Important: the project targets `net10.0`, but EF Core stays on 9.x because `Pomelo.EntityFrameworkCore.MySql 9.x` isn't compatible with EF Core 10.x. Don't bump `Microsoft.EntityFrameworkCore.Design` to 10.x until Pomelo 10 stable is out.
+RootShell bot: unchanged, keeps running alongside.
 
 ---
 
-## 0. Utilisateur de service dédié (isolation)
+## 0. Dedicated service user (isolation)
 
 ```bash
 sudo useradd --system --create-home --shell /usr/sbin/nologin iamhakim
@@ -16,23 +16,23 @@ sudo mkdir -p /opt/iamhakim/api /opt/iamhakim/web
 sudo chown -R iamhakim:iamhakim /opt/iamhakim
 ```
 
-## 1. Base MySQL dédiée
+## 1. Dedicated MySQL database
 
-RootShell garde sa base. On crée une base + un user séparés pour iamhakim :
+RootShell keeps its own database. Create a separate database + user for iamhakim:
 
 ```bash
 sudo mysql
 ```
 ```sql
 CREATE DATABASE iamhakim CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'iamhakim'@'localhost' IDENTIFIED BY 'UN_MOT_DE_PASSE_FORT';
+CREATE USER 'iamhakim'@'localhost' IDENTIFIED BY 'A_STRONG_PASSWORD';
 GRANT ALL PRIVILEGES ON iamhakim.* TO 'iamhakim'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-Reporte ce mot de passe dans `iamhakim-api.service` (variable `ConnectionStrings__Default`).
+Carry this password over into `iamhakim-api.service` (the `ConnectionStrings__Default` variable).
 
-## 2. Installer .NET 10
+## 2. Install .NET 10
 
 ```bash
 # Microsoft feed (Ubuntu 24.04)
@@ -40,29 +40,29 @@ wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.
 sudo dpkg -i /tmp/ms.deb
 sudo apt update
 sudo apt install -y dotnet-sdk-10.0
-dotnet --version   # vérifie
+dotnet --version   # verify
 ```
 
-## 3. Récupérer le code et builder
+## 3. Fetch the code and build
 
 ```bash
-cd /tmp && git clone <ton-repo> iamhakim   # ou scp ton zip
+cd /tmp && git clone <your-repo> iamhakim   # or scp your zip
 cd iamhakim
 
 # --- API ---
 cd backend/IAmHakim.Api
 dotnet publish -c Release -o /opt/iamhakim/api
-# applique les migrations (crée les tables dans la base iamhakim)
-# (export temporaire de la connexion pour la commande EF)
-export ConnectionStrings__Default="server=localhost;port=3306;database=iamhakim;user=iamhakim;password=UN_MOT_DE_PASSE_FORT;TreatTinyAsBoolean=false"
-export Security__ClientIdentity__IpHashSalt="GENERE_UN_LONG_SECRET_ALEATOIRE"
+# applies migrations (creates the tables in the iamhakim database)
+# (temporary connection string export for the EF command)
+export ConnectionStrings__Default="server=localhost;port=3306;database=iamhakim;user=iamhakim;password=A_STRONG_PASSWORD;TreatTinyAsBoolean=false"
+export Security__ClientIdentity__IpHashSalt="GENERATE_A_LONG_RANDOM_SECRET"
 # Active Turnstile only after creating a widget in Cloudflare.
 # export Security__Turnstile__Enabled=true
 # export Security__Turnstile__SiteKey="0x4AAAAA_PUBLIC_SITE_KEY"
 # export Security__Turnstile__SecretKey="0x4AAAAA_PRIVATE_SECRET_KEY"
-dotnet tool install --global dotnet-ef --version 9.*   # si pas déjà fait
+dotnet tool install --global dotnet-ef --version 9.*   # if not already installed
 ~/.dotnet/tools/dotnet-ef database update --project .
-#  (sinon l'app applique les migrations elle-même au démarrage ; ne masque pas une vraie erreur de migration)
+#  (otherwise the app applies migrations itself on startup; doesn't hide a real migration error)
 
 # --- WEB (Angular, prerendered static) ---
 # Every public page is prerendered at build time (RenderMode.Prerender) —
@@ -77,24 +77,24 @@ sudo cp -r dist/frontend/browser/. /opt/iamhakim/web/
 sudo chown -R iamhakim:iamhakim /opt/iamhakim
 ```
 
-> Note : l'app applique automatiquement les migrations EF au démarrage
-> (`MigrateAsync`), donc l'étape `database update` est optionnelle.
+> Note: the app automatically applies EF migrations on startup
+> (`MigrateAsync`), so the `database update` step is optional.
 
 ## 4. systemd - API
 
-L’API est en `Type=simple` et écoute seulement sur `127.0.0.1:5172`, donc elle n’est pas exposée directement à Internet. Le frontend n’a pas de service systemd : c’est du statique servi par Caddy.
+The API runs as `Type=simple` and only listens on `127.0.0.1:5172`, so it's not directly exposed to the internet. The frontend has no systemd service: it's static content served by Caddy.
 
 ```bash
 sudo cp deploy/iamhakim-api.service /etc/systemd/system/
-# ÉDITE iamhakim-api.service : mets le vrai mot de passe MySQL
+# EDIT iamhakim-api.service: set the real MySQL password
 sudo nano /etc/systemd/system/iamhakim-api.service
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now iamhakim-api
-sudo systemctl status iamhakim-api   # doit être "active (running)"
+sudo systemctl status iamhakim-api   # should be "active (running)"
 ```
 
-## 5. Caddy - reverse proxy + HTTPS auto
+## 5. Caddy - reverse proxy + automatic HTTPS
 
 ```bash
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
@@ -106,8 +106,8 @@ sudo cp deploy/Caddyfile /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 ```
 
-Avant de reload : **pointe le DNS** de `iamhakim.com` (et `www`) vers l'IP publique de ton VPS
-(enregistrements A). Caddy obtiendra le certificat tout seul au premier accès.
+Before reloading: **point the DNS** for `iamhakim.com` (and `www`) at your VPS's public IP
+(A records). Caddy will obtain the certificate automatically on first access.
 
 ## 6. Firewall
 
@@ -117,13 +117,13 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
 ```
-Le port 5172 (API) reste **interne** (bind 127.0.0.1) - pas ouvert. Le frontend n'a pas de port à lui : Caddy le sert directement depuis le disque.
+Port 5172 (API) stays **internal** (bound to 127.0.0.1) — not open. The frontend has no port of its own: Caddy serves it directly from disk.
 
 ---
 
-## Mettre à jour plus tard
+## Updating later
 
-En pratique, les mises à jour passent par le script de déploiement automatisé (déclenché par webhook sur push). Pour une mise à jour manuelle :
+In practice, updates go through the automated deploy script (webhook-triggered on push). For a manual update:
 
 ```bash
 cd /tmp/iamhakim && git pull
@@ -141,19 +141,19 @@ journalctl -u iamhakim-api -f
 journalctl -u caddy -f
 ```
 
-## Vérifications avant ouverture publique
+## Checks before going public
 
 ```bash
 curl http://127.0.0.1:5172/api/health
 sudo journalctl -u iamhakim-api -n 80 --no-pager
-ls /opt/iamhakim/web/en/index.html   # une page prérendue existe bien
+ls /opt/iamhakim/web/en/index.html   # confirms a prerendered page exists
 ```
 
-Ne reload Caddy avec le domaine qu’après avoir confirmé que l'API répond en local et que le dossier web contient bien les pages prérendues.
+Only reload Caddy with the real domain after confirming the API responds locally and the web folder actually contains the prerendered pages.
 
-## RAM (CX23, 4 Go) - cohabitation
-- MySQL (partagé bot + site) ~300-400 Mo
-- API .NET ~150-250 Mo
-- bot RootShell ~100-200 Mo
-- Caddy + OS ~400 Mo
-Total confortable. Surveille avec `htop`. Si besoin un jour : swapfile de 2 Go.
+## RAM (CX23, 4 GB) - cohabitation
+- MySQL (shared between bot + site) ~300-400 MB
+- .NET API ~150-250 MB
+- RootShell bot ~100-200 MB
+- Caddy + OS ~400 MB
+Comfortable total. Watch it with `htop`. If ever needed: a 2 GB swapfile.
