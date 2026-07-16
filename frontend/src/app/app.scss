@@ -39,11 +39,11 @@
 .brand-mark img { display: block; grid-area: 1 / 1; width: 100%; height: 100%; }
 
 /* The light/dark logo files are self-contained badges (own background baked
-   in), so only one is ever shown — swapped by the app's theme attribute,
+   in), so only one is ever shown - swapped by the app's theme attribute,
    not by OS media query, so it tracks the in-page toggle.
    :host-context() (not `:root[data-theme]`) because Angular's component
    style encapsulation prefixes plain selectors with a scoping attribute that
-   <html> never carries — a bare `:root[data-theme='dark']` selector here
+   <html> never carries - a bare `:root[data-theme='dark']` selector here
    compiles to something that can never match. :host-context() is what
    Angular provides specifically for "an ancestor has this attribute". */
 .brand-mark .mark-dark { display: none; }

@@ -20,7 +20,7 @@ iamhakim/
 ├── frontend/
 ├── deploy/          # Caddyfile, systemd unit, VPS bootstrap/update docs
 ├── docs/            # architecture.md
-├── infra/           # unused — see deploy/
+├── infra/           # unused - see deploy/
 ├── README.md
 └── SETUP.md         # DB setup, booking workflow, production secrets
 ```

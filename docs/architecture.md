@@ -30,27 +30,27 @@ static content or gets proxied to the API.
 - **Production**: both live under `iamhakim.com`. Caddy path-routes:
   `/api/*` and `/hubs/*` go to the API via `reverse_proxy`; everything else
   is served as static files (or falls back to the client-render shell for
-  the few routes that aren't prerendered — see below).
-- **REST**: `ApiService` (Angular) wraps every `/api/*` endpoint —
+  the few routes that aren't prerendered - see below).
+- **REST**: `ApiService` (Angular) wraps every `/api/*` endpoint -
   stats, health, booking flow, address search, algo-run tracking.
 - **Realtime**: `LiveConnectionService` opens a SignalR WebSocket to
   `/hubs/live`. The API pushes `statsUpdated` and `timelineEvent` messages
   to all connected clients whenever a visit, click, A* run, or booking
-  happens — this is what drives the live counters and the `/status` page.
+  happens - this is what drives the live counters and the `/status` page.
 
 ## Frontend rendering
 
-Every public page (`:lang/*` — home, projects, about, flow, status, book,
+Every public page (`:lang/*` - home, projects, about, flow, status, book,
 privacy) is **prerendered at build time** (`RenderMode.Prerender` in
 `app.routes.server.ts`), once per language (en/fr/nl). Caddy serves these
-static files directly — there's no Node process rendering pages
+static files directly - there's no Node process rendering pages
 per-request in production. `book/manage` is the one route that's
 client-only (`RenderMode.Client`): it's a private, token-based page that's
 disallowed in `robots.txt` and has no reason to be prerendered.
 
 Legacy un-prefixed URLs (`/status`, `/projects`, etc., from before the
 `en/fr/nl` locale prefix existed) and the bare root `/` are handled by
-Caddy itself (`redir ... 301` in the Caddyfile) — not by Angular. This
+Caddy itself (`redir ... 301` in the Caddyfile) - not by Angular. This
 matters: Angular's own `redirectTo` rules for these same paths
 (`app.routes.ts`) exist as a fallback but never actually fire in
 production, because Caddy intercepts and redirects before the request
@@ -58,7 +58,7 @@ ever reaches the static file layer.
 
 ## Backend
 
-ASP.NET Core minimal API (`backend/IAmHakim.Api`, no controllers — routes
+ASP.NET Core minimal API (`backend/IAmHakim.Api`, no controllers - routes
 are mapped directly in `Program.cs`). Key pieces:
 
 - **MySQL** via EF Core (`AppDbContext`), migrations applied automatically
@@ -67,11 +67,11 @@ are mapped directly in `Program.cs`). Key pieces:
 - **SignalR hub** (`/hubs/live`) for realtime push.
 - **Booking flow**: email-verification → pending request → admin
   accept/reject (a small server-rendered HTML admin UI, `AdminPage(...)`
-  in `Program.cs` — not part of the Angular app) → calendar event created
+  in `Program.cs` - not part of the Angular app) → calendar event created
   on acceptance (Google Calendar / Microsoft Graph / ICS / mock provider,
   selected via `Booking:Mode` + provider `Enabled` flags).
 - **Anti-abuse**: Cloudflare Turnstile on the booking form, salted-IP-hash
-  rate limiting (raw IPs are never stored — see `ClientIdentityService`).
+  rate limiting (raw IPs are never stored - see `ClientIdentityService`).
 - **Address search**: proxies Belgian address autocomplete through
   OpenStreetMap Nominatim (no API key needed).
 - **Retention**: a background hosted service (`BookingRetentionService`)
@@ -87,4 +87,4 @@ Angular `browser` build into `/opt/iamhakim/web`, regenerates and
 validates the CSP, then reloads Caddy. See `deploy/DEPLOY.md` for the
 full manual bootstrap and update commands.
 
-`infra/` is not used — deployment files live in `deploy/`, not there.
+`infra/` is not used - deployment files live in `deploy/`, not there.

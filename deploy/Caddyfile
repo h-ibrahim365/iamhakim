@@ -17,7 +17,7 @@ iamhakim.com {
 	redir /book/manage /en/book/manage 301
 	redir /privacy /en/privacy 301
 
-	# .well-known/ (ACME, security.txt, assetlinks.json, etc.) — sert les fichiers existants
+	# .well-known/ (ACME, security.txt, assetlinks.json, etc.) - sert les fichiers existants
 	handle /.well-known/* {
 		root * /opt/iamhakim/web
 		file_server
@@ -47,7 +47,7 @@ iamhakim.com {
 		reverse_proxy 127.0.0.1:5172
 	}
 
-	# Hashed Angular assets (main-XXXXXXXX.js, styles-XXXXXXXX.css, etc.) — cache 1 an, immutable
+	# Hashed Angular assets (main-XXXXXXXX.js, styles-XXXXXXXX.css, etc.) - cache 1 an, immutable
 	@hashed_assets {
 		path_regexp \.[A-Z0-9]{6,}\.(js|css|woff2?)$
 	}
@@ -59,7 +59,7 @@ iamhakim.com {
 	}
 	header @fonts Cache-Control "public, max-age=31536000, immutable"
 
-	# Autres statiques (favicons, og-image.png, etc.) — cache modéré
+	# Autres statiques (favicons, og-image.png, etc.) - cache modéré
 	@static {
 		path *.svg *.ico *.png *.jpg *.jpeg *.webp *.avif *.txt *.xml
 	}

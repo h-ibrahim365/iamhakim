@@ -19,7 +19,7 @@ public sealed class BookingRetentionOptions
 /// <summary>
 /// Daily sweep that deletes booking rows past the retention horizon promised in
 /// the privacy policy. Also removes stale e-mail verification rows so short-lived
-/// anti-abuse IP hashes do not live longer than needed. Logs only counts — no PII
+/// anti-abuse IP hashes do not live longer than needed. Logs only counts - no PII
 /// ever reaches the log stream.
 /// </summary>
 public sealed class BookingRetentionService(

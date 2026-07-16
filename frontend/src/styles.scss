@@ -3,12 +3,12 @@
    iamhakim - design system  v2
    Concept: a precise editorial console. Cool paper, near-black ink,
    one electric-blue signal, hairline rules, a strict grid.
-   No glassmorphism, no glow, no gradients — flat and confident.
+   No glassmorphism, no glow, no gradients - flat and confident.
    Palette: cool white + ink + electric blue (#2440FF).
    ============================================================ */
 
 :root {
-  /* surfaces — cool white paper (deliberately NOT warm cream) */
+  /* surfaces - cool white paper (deliberately NOT warm cream) */
   --bg: #f1f2f5;
   --bg-soft: #ffffff;
   --panel: #ffffff;
@@ -17,12 +17,12 @@
   --line: #e3e5ea;            /* hairline */
   --line-strong: #cbced6;
 
-  /* type — cool grays on paper */
+  /* type - cool grays on paper */
   --text: #0d0e12;
   --muted: #565a63;
   --faint: #8b8f99;
 
-  /* signal — a single electric blue does all the accent work */
+  /* signal - a single electric blue does all the accent work */
   --accent: #2440ff;
   --accent-deep: #1730d6;     /* accent text / hover on light */
   --accent-tint: rgba(36, 64, 255, 0.08);
@@ -31,7 +31,7 @@
   --on-accent: #ffffff;       /* text sitting on the accent fill */
   --topbar-glass: rgba(255, 255, 255, 0.82); /* translucent surface under backdrop-filter blur */
 
-  /* legacy signal aliases — the whole codebase references --amber / --cyan.
+  /* legacy signal aliases - the whole codebase references --amber / --cyan.
      They now all resolve to the one electric accent, keeping a restrained,
      editorial single-accent look. */
   --amber: var(--accent);
@@ -45,7 +45,7 @@
   --warning: #d9822b;
   --danger: #e5484d;
 
-  /* status tints/lines — every badge, notice and pill draws from these tokens
+  /* status tints/lines - every badge, notice and pill draws from these tokens
      instead of literal rgba() so dark mode can re-tune them for contrast. */
   --success-tint: rgba(18, 161, 80, 0.09);
   --success-line: rgba(18, 161, 80, 0.28);
@@ -58,14 +58,14 @@
   --skeleton-a: rgba(13, 14, 18, 0.03);
   --skeleton-b: rgba(13, 14, 18, 0.08);
 
-  /* gradients are retired — kept as solid tokens so background-clip:text
+  /* gradients are retired - kept as solid tokens so background-clip:text
      accent words render flat. Both point at the one accent: a "cold" ink
      variant here was the same color as the rest of the heading (invisible
      in both themes), so warm/cold are now unified. */
   --grad-warm: var(--accent);
   --grad-cold: var(--accent);
 
-  /* solid ink fill — used by the primary button. Inverts per theme (dark
+  /* solid ink fill - used by the primary button. Inverts per theme (dark
      ink block on light, near-white block on dark) so it stays a deliberate
      high-contrast block instead of just reusing --text as a background,
      which silently turns white-on-white once --text flips in dark mode. */
@@ -78,7 +78,7 @@
   --scrollbar-thumb: rgba(13, 14, 18, 0.16);
   --scrollbar-thumb-hover: rgba(13, 14, 18, 0.28);
 
-  /* A* visualiser palette — read at draw-time from JS via getComputedStyle,
+  /* A* visualiser palette - read at draw-time from JS via getComputedStyle,
      since <canvas> can't resolve var() itself. Kept as tokens so the canvas
      re-themes with everything else instead of needing a hardcoded JS palette. */
   --maze-wall: #1a1c22;
@@ -101,7 +101,7 @@
 }
 
 /* ============================================================
-   dark theme — same editorial/flat language, ink surfaces.
+   dark theme - same editorial/flat language, ink surfaces.
    Toggled via [data-theme] on <html>, set by ThemeService before
    Angular boots (see the inline script in index.html) to avoid FOUC.
    Every component reads the tokens above, so this single override
@@ -191,7 +191,7 @@ body {
   overflow-x: hidden;
 }
 
-/* atmospheric layer: a faint engineering blueprint grid — no glow, no gradients.
+/* atmospheric layer: a faint engineering blueprint grid - no glow, no gradients.
    It reads as graph paper, reinforcing the precise/editorial tone. */
 body::after {
   content: "";

@@ -84,7 +84,7 @@ public sealed class SiteStatsService(IDbContextFactory<AppDbContext> dbContextFa
     /// <summary>
     /// Records a generic click anywhere on the site. Throttled client-side so this
     /// captures meaningful interactions rather than every micro-event.
-    /// Does NOT emit a per-event timeline entry — it would drown the feed.
+    /// Does NOT emit a per-event timeline entry - it would drown the feed.
     /// </summary>
     public async Task<StatsResponse> RegisterClickAsync(CancellationToken cancellationToken)
     {

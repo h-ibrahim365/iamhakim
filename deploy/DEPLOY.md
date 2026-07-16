@@ -65,7 +65,7 @@ dotnet tool install --global dotnet-ef --version 9.*   # if not already installe
 #  (otherwise the app applies migrations itself on startup; doesn't hide a real migration error)
 
 # --- WEB (Angular, prerendered static) ---
-# Every public page is prerendered at build time (RenderMode.Prerender) —
+# Every public page is prerendered at build time (RenderMode.Prerender) -
 # Caddy serves the output directly via file_server, no Node process involved.
 # Only the browser bundle matters here, not the SSR server build.
 cd ../../frontend
@@ -117,7 +117,7 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
 ```
-Port 5172 (API) stays **internal** (bound to 127.0.0.1) — not open. The frontend has no port of its own: Caddy serves it directly from disk.
+Port 5172 (API) stays **internal** (bound to 127.0.0.1) - not open. The frontend has no port of its own: Caddy serves it directly from disk.
 
 ---
 

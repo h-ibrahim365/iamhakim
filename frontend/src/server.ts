@@ -15,7 +15,7 @@ const angularApp = new AngularNodeAppEngine();
 /**
  * Legacy un-prefixed URLs and the bare root '/' are pure redirects to the
  * localized route (see app.routes.ts' `redirectTo` rules). Angular's own
- * `redirectTo` doesn't translate into a real HTTP 3xx during SSR — in both
+ * `redirectTo` doesn't translate into a real HTTP 3xx during SSR - in both
  * RenderMode.Client and RenderMode.Server it just renders the destination
  * page's content inline at a 200, which crawlers see as a thin/duplicate
  * page under the wrong URL. Handling these here, before Angular ever sees

@@ -167,7 +167,7 @@ const localizedRoutes: Routes = [
                 // CreativeWork, not SoftwareApplication: these are portfolio
                 // pieces, not rated/purchasable app-store listings, so the
                 // stricter SoftwareApplication type (which Google's rich
-                // results require aggregateRating/offers for) doesn't fit —
+                // results require aggregateRating/offers for) doesn't fit -
                 // and fabricating ratings/pricing to satisfy it would be
                 // dishonest markup.
                 '@type': 'CreativeWork',

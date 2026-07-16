@@ -23,7 +23,7 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
   private readonly themeService = inject(ThemeService);
   private readonly canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  /** Redraws the grid whenever the light/dark theme flips — the canvas paints
+  /** Redraws the grid whenever the light/dark theme flips - the canvas paints
    * with plain colors, so it can't react to CSS custom properties on its own. */
   private readonly redrawOnThemeChange = effect(() => {
     this.themeService.theme();
