@@ -76,7 +76,7 @@
 .counter app-live-counter {
   font-size: 1.5rem;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.008em;
   color: var(--text);
 }
 .counter span {
@@ -150,7 +150,7 @@
 .pulse-item app-live-counter {
   font-size: clamp(1.6rem, 2.6vw, 2rem);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.008em;
   color: var(--text);
 }
 .pulse-item span {

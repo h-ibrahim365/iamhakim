@@ -253,7 +253,7 @@ h1, h2, h3, h4, p { margin-top: 0; }
 h1 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.7rem, 7vw, 6.2rem);
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
   line-height: 1.04;
   letter-spacing: -0.01em;
   padding-bottom: 0.14em;   /* prevent descenders / a final dot from clipping */
@@ -271,7 +271,7 @@ h2 .accent {
 h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.8rem, 4vw, 2.9rem);
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
   line-height: 1.05;
   letter-spacing: -0.008em;
 }
@@ -375,8 +375,8 @@ p { color: var(--muted); line-height: 1.7; }
   margin-top: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
-  letter-spacing: -0.04em;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  letter-spacing: -0.008em;
 }
 
 @media (max-width: 920px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } }
