@@ -130,6 +130,9 @@ iamhakim.com {
 }
 
 www.iamhakim.com {
-	redir https://iamhakim.com{uri} permanent
+	# Collapse the root path straight to /en in one hop instead of
+	# www -> apex -> /en (2 hops). Everything else keeps the generic form.
+	redir / https://iamhakim.com/en 301
+	redir /* https://iamhakim.com{uri} permanent
 }
 import /etc/caddy/sites/*.caddy
