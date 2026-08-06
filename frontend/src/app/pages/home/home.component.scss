@@ -180,7 +180,7 @@
 .ident-card { padding: 1.4rem; transition: transform 0.3s cubic-bezier(.2,.8,.2,1), border-color 0.3s ease; }
 .ident-card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
 .ident-no { display: block; color: var(--amber); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.7rem; }
-.ident-card h3 { font-size: 1.2rem; margin-bottom: 0.55rem; }
+.ident-card h2 { font-size: 1.2rem; margin-bottom: 0.55rem; }
 .ident-card p { font-size: 0.92rem; }
 
 /* ticker ----------------------------------------------------------- */

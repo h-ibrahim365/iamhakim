@@ -20,7 +20,7 @@
   /* type - cool grays on paper */
   --text: #0d0e12;
   --muted: #565a63;
-  --faint: #8b8f99;
+  --faint: #5f6672;      /* WCAG AA (4.5:1+) against --bg/--panel/--sunken */
 
   /* signal - a single electric blue does all the accent work */
   --accent: #2440ff;
@@ -117,7 +117,7 @@
 
   --text: #f2f3f5;
   --muted: #a6abb5;
-  --faint: #6c7078;
+  --faint: #8f95a1;      /* WCAG AA (4.5:1+) against dark --bg/--panel/--sunken */
 
   --accent: #5b7cff;
   --accent-deep: #aab8ff;

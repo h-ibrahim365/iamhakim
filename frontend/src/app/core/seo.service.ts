@@ -17,15 +17,15 @@ interface RouteData {
 const ORIGIN = 'https://iamhakim.com';
 const DEFAULT_SEO = {
   en: {
-    title: 'Hakim Id Brahim - Full-stack Developer',
+    title: 'Hakim Id Brahim - Full-stack Developer, Charleroi & Brussels',
     description: 'Personal portfolio - .NET/Angular developer.',
   },
   fr: {
-    title: 'Hakim Id Brahim - Développeur full-stack',
+    title: 'Hakim Id Brahim - Développeur full-stack à Bruxelles',
     description: 'Portfolio personnel - développeur .NET/Angular.',
   },
   nl: {
-    title: 'Hakim Id Brahim - Full-stack Developer',
+    title: 'Hakim Id Brahim - Full-stack Developer, toegangssystemen',
     description: 'Persoonlijk portfolio - .NET/Angular-ontwikkelaar.',
   },
 } satisfies RouteSeoMap;

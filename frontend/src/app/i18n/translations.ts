@@ -233,6 +233,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.cycleSpeed': 'Cycle speed',
     'a11y.themeToLight': 'Switch to light theme',
     'a11y.themeToDark': 'Switch to dark theme',
+    'a11y.skipToContent': 'Skip to content',
 
     'home.ticker.infra': 'two years of production code',
     'home.ticker.identity': 'identity & access',
@@ -654,6 +655,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.cycleSpeed': 'Changer la vitesse',
     'a11y.themeToLight': 'Passer au thème clair',
     'a11y.themeToDark': 'Passer au thème sombre',
+    'a11y.skipToContent': 'Aller au contenu',
 
     'home.ticker.infra': 'deux ans de code en prod',
     'home.ticker.identity': 'identité & accès',
@@ -1075,6 +1077,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'a11y.cycleSpeed': 'Snelheid wijzigen',
     'a11y.themeToLight': 'Overschakelen naar licht thema',
     'a11y.themeToDark': 'Overschakelen naar donker thema',
+    'a11y.skipToContent': 'Naar inhoud springen',
 
     'home.ticker.infra': 'twee jaar productiecode',
     'home.ticker.identity': 'identiteit & toegang',

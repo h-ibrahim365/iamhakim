@@ -134,7 +134,7 @@
 .form-card { padding: 1.4rem; position: sticky; top: 5.5rem; }
 
 .day-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-.day-head h3 { font-size: 1.1rem; }
+.day-head h2 { font-size: 1.1rem; }
 .day-head .tz { color: var(--cyan); font-size: 0.72rem; }
 
 .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.4rem, 1fr)); gap: 0.5rem; }

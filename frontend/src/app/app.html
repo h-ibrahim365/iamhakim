@@ -1,3 +1,4 @@
+<a class="skip-link" href="#main-content">{{ 'a11y.skipToContent' | t }}</a>
 <div class="shell">
   <header class="topbar">
     <a class="brand" [routerLink]="'/' | loc" [attr.aria-label]="'a11y.home' | t">
@@ -55,7 +56,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <router-outlet />
   </main>
 

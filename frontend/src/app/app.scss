@@ -4,6 +4,25 @@
   flex-direction: column;
 }
 
+/* Hidden until keyboard-focused, then jumps to the top-left corner - lets
+   keyboard/screen-reader users skip the topbar and land straight on <main>. */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
 .topbar {
   position: sticky;
   top: 0;
