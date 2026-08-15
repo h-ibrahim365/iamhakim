@@ -374,3 +374,41 @@
   background: var(--accent-tint);
   color: var(--text);
 }
+
+/* Route-console theme ------------------------------------------------ */
+.book-head h1 .accent { color: var(--accent); background: none; }
+.cal-card,
+.form-card { border-top: 2px solid var(--line-strong); box-shadow: none; }
+.cal-nav,
+.cal-cell,
+.slot,
+.kind,
+.field input,
+.field textarea,
+.picked,
+.manage-box,
+.email-action,
+.turnstile-panel,
+.email-code-panel,
+.email-status,
+.address-suggestions,
+.address-suggestion { border-radius: 2px; box-shadow: none; }
+.cal-nav:not(:disabled):hover,
+.cal-cell.has:hover,
+.slot:not(:disabled):hover,
+.kind:hover,
+.email-action:not(:disabled):hover { transform: none; }
+.cal-weekdays { font-family: var(--font-body); letter-spacing: 0.05em; }
+.cal-cell { background: transparent; }
+.cal-cell.has { background: var(--panel); }
+.cal-cell.selected { background: var(--accent); border-color: var(--accent); }
+.slot { font-family: var(--font-mono); }
+.kind { background: transparent; }
+.kind.active { border-color: var(--accent); background: transparent; color: var(--accent-deep); box-shadow: inset 3px 0 0 var(--accent); }
+.field span { font-family: var(--font-body); font-weight: 650; letter-spacing: 0.02em; }
+.field input:focus,
+.field textarea:focus { box-shadow: none; border-color: var(--accent); }
+.picked { border-left: 3px solid var(--accent); background: transparent; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.manage-box { border-color: var(--line); border-left: 3px solid var(--accent); background: transparent; }
+.turnstile-panel { background: transparent; }
+.address-suggestions { box-shadow: none; }

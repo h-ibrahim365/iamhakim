@@ -354,7 +354,7 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
    * without paying for a getComputedStyle() call per grid cell. */
   private mazePalette(): Record<string, string> {
     if (!isPlatformBrowser(this.platformId)) {
-      return { wall: 'transparent', closed: 'transparent', open: 'transparent', start: 'transparent', goal: 'transparent', path: 'transparent', pathGlow: 'transparent' };
+      return { wall: 'transparent', closed: 'transparent', open: 'transparent', start: 'transparent', goal: 'transparent', path: 'transparent' };
     }
     const styles = getComputedStyle(this.canvasRef().nativeElement);
     const read = (name: string) => styles.getPropertyValue(name).trim();
@@ -364,8 +364,7 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
       open: read('--maze-open'),
       start: read('--maze-start'),
       goal: read('--maze-goal'),
-      path: read('--maze-path'),
-      pathGlow: read('--maze-path-glow')
+      path: read('--maze-path')
     };
   }
 
@@ -393,11 +392,8 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
         const px = x * c, py = y * c;
         const inset = Math.max(1, c * 0.08);
         ctx.fillStyle = fill;
-        this.roundRect(ctx, px + inset, py + inset, c - (inset * 2), c - (inset * 2), Math.max(2, c * 0.22));
+        this.roundRect(ctx, px + inset, py + inset, c - (inset * 2), c - (inset * 2), Math.max(1, c * 0.08));
         ctx.fill();
-        if (st === 'start' || st === 'goal') {
-          ctx.shadowColor = fill; ctx.shadowBlur = 14; ctx.fill(); ctx.shadowBlur = 0;
-        }
       }
     }
     if (withPath && this.grid.status === 'found') {
@@ -405,14 +401,12 @@ export class AstarComponent implements AfterViewInit, OnDestroy {
       ctx.strokeStyle = palette['path'];
       ctx.lineWidth = Math.max(2, c * 0.18);
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-      ctx.shadowColor = palette['pathGlow']; ctx.shadowBlur = 8;
       ctx.beginPath();
       path.forEach((p, i) => {
         const px = p.x * c + c / 2, py = p.y * c + c / 2;
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       });
       ctx.stroke();
-      ctx.shadowBlur = 0;
     }
   }
 

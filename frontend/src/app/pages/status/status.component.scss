@@ -1,118 +1,45 @@
-/* The title always gets the full content width - never compressed by the
-   refresh button. The paragraph and button share the row underneath. */
-.intro-row {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  margin-bottom: 2rem;
-}
-
+.intro-row { display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2rem; }
 .intro-head { min-width: 0; }
 .intro-head h1 { margin: 0; }
+.intro-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem 2rem; flex-wrap: wrap; }
+.intro-foot p { flex: 1 1 320px; min-width: 0; max-width: 650px; margin: 0; }
+.intro-foot > button { flex-shrink: 0; }
 
-.intro-foot {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.5rem 2rem;
-  flex-wrap: wrap;
-}
-
-.intro-foot p {
-  flex: 1 1 320px;
-  min-width: 0;
-  max-width: 650px;
-  margin: 0;
-}
-
-.intro-foot > button {
-  flex-shrink: 0;
-}
-
-/* On narrow phones, stack the button under the paragraph and let it span
-   the full width - easier tap target. */
-@media (max-width: 520px) {
-  .intro-foot { align-items: stretch; }
-  .intro-foot > button { width: 100%; }
-}
-
-.status-grid {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.status-card {
-  padding: 1.25rem;
-}
-
-dl {
-  display: grid;
-  gap: 0.75rem;
-  margin: 0;
-}
-
+.status-grid { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 1rem; margin-top: 1rem; }
+.status-card { padding: 1.2rem; border-top: 2px solid var(--line-strong); }
+.status-card h2 { font-size: 1.3rem; margin-bottom: 0.9rem; }
+dl { display: grid; gap: 0; margin: 0; }
 dl div,
 .event {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.85rem;
-  border: 1px solid var(--line);
-  border-radius: 0.6rem;
-  background: var(--sunken);
+  padding: 0.8rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
 }
-
+dl div:last-child,
+.event:last-child { border-bottom: 0; }
 dt,
 .event span {
-  color: var(--muted);
+  color: var(--faint);
   text-transform: uppercase;
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
+dd { margin: 0; font-family: var(--font-mono); font-weight: 600; }
+.events { display: grid; gap: 0; }
+.event p { margin: 0; text-align: right; font-size: 0.9rem; }
+.status-page h1 .accent { color: var(--accent); background: none; }
 
-dd {
-  margin: 0;
-  font-weight: 900;
-}
-
-.events {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.event p {
-  margin: 0;
-  text-align: right;
-}
-
-@media (max-width: 850px) {
-  .status-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* On very narrow phones, let the dl rows and event rows wrap their value
-   below the label so long words never collide. */
+@media (max-width: 850px) { .status-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .intro-foot { align-items: stretch; } .intro-foot > button { width: 100%; } }
 @media (max-width: 480px) {
-  dl div,
-  .event {
-    flex-wrap: wrap;
-    gap: 0.4rem 1rem;
-  }
-  .event p {
-    text-align: left;
-    width: 100%;
-  }
+  dl div, .event { flex-wrap: wrap; gap: 0.35rem 1rem; }
+  .event p { text-align: left; width: 100%; }
 }
-
-/* design-system alignment */
-.status-page h1 .accent {
-  background: var(--grad-cold);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-dd { font-family: var(--font-display); font-weight: 700; }
-.event span, dt { font-family: var(--font-mono); font-size: 0.7rem; }
-.status-card h2 { font-size: 1.4rem; margin-bottom: 0.9rem; }

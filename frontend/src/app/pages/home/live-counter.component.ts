@@ -18,15 +18,15 @@ import { isPlatformBrowser } from '@angular/common';
   styles: [`
     .lc {
       display: inline-block;
-      font-family: var(--font-display);
-      font-weight: 800;
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-variant-numeric: tabular-nums;
-      transition: transform 0.25s ease, color 0.25s ease;
+      transition: color 0.18s ease;
     }
     .lc.pulse { animation: lc-pulse 0.5s ease; }
     @keyframes lc-pulse {
       0% { transform: scale(1); }
-      40% { transform: scale(1.22); color: var(--amber); }
+      40% { transform: scale(1); color: var(--accent); }
       100% { transform: scale(1); }
     }
   `]

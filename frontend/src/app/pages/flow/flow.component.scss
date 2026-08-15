@@ -1,122 +1,89 @@
 .flow-page {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: clamp(1.4rem, 4vw, 3rem);
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: clamp(2rem, 5vw, 4rem);
   align-items: start;
 }
+.intro { position: sticky; top: 6.5rem; }
+.intro h1 { margin-bottom: 1.1rem; }
+.intro p { max-width: 520px; }
 
-.intro {
-  position: sticky;
-  top: 7rem;
-}
-
-.intro p {
-  max-width: 520px;
-}
-
-.flow-board {
-  padding: 1.25rem;
-}
-
+.flow-board { padding: 0; border-color: var(--line-strong); overflow: hidden; }
 .progress,
 .flow-result {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 0.7rem;
+  padding: 0.85rem 1rem;
+  border: 0;
+  border-radius: 0;
   background: var(--sunken);
 }
-
+.progress { border-bottom: 1px solid var(--line); }
+.flow-result { border-top: 1px solid var(--line); }
 .progress span,
 .flow-result span {
   color: var(--muted);
   text-transform: uppercase;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-body);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
 }
-
 .progress strong,
-.flow-result strong {
-  font-family: "Cascadia Code", Consolas, monospace;
-}
+.flow-result strong { font-family: var(--font-mono); color: var(--accent-deep); font-weight: 600; }
 
 .steps {
   position: relative;
   display: grid;
-  gap: 0.85rem;
-  margin: 1rem 0;
+  gap: 0;
+  margin: 0;
+  padding: 0.7rem 0;
 }
-
+.steps::before {
+  content: "";
+  position: absolute;
+  top: 1.9rem;
+  bottom: 1.9rem;
+  left: 2.18rem;
+  width: 1px;
+  background: var(--line-strong);
+}
 .step {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 0.7rem;
-  background: var(--sunken);
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  padding: 0.8rem 1rem;
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  transition: border-color 0.14s ease, background 0.14s ease;
 }
-
-.step[data-status='running'] {
-  transform: translateX(8px);
-  border-color: var(--accent-line);
-  background: var(--accent-tint);
-}
-
-.step[data-status='done'] {
-  border-color: var(--success-line);
-  background: var(--success-tint);
-}
-
+.step[data-status='running'] { transform: none; border-left-color: var(--accent); background: var(--accent-tint); }
+.step[data-status='done'] { border-left-color: var(--success); background: transparent; }
 .number {
-  width: 2.4rem;
-  height: 2.4rem;
+  position: relative;
+  z-index: 1;
+  width: 2.05rem;
+  height: 2.05rem;
   display: grid;
   place-items: center;
-  border-radius: 0.6rem;
+  border-radius: 50%;
   color: var(--text);
   background: var(--panel);
-  border: 1px solid var(--line);
-  font-weight: 900;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
 }
-
-.step[data-status='running'] .number {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
-}
-
-.step[data-status='done'] .number {
-  background: var(--success);
-  border-color: var(--success);
-  color: var(--on-success);
-}
-
-.step h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.05rem;
-}
-
-.step p {
-  margin: 0;
-}
+.step[data-status='running'] .number { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.step[data-status='done'] .number { background: var(--success); border-color: var(--success); color: var(--on-success); }
+.step h2 { margin: 0 0 0.2rem; font-size: 1rem; letter-spacing: -0.015em; }
+.step p { margin: 0; font-size: 0.9rem; }
 
 @media (max-width: 920px) {
-  .flow-page {
-    grid-template-columns: 1fr;
-  }
-
-  .intro {
-    position: static;
-  }
+  .flow-page { grid-template-columns: 1fr; }
+  .intro { position: static; }
 }
-
-/* design-system alignment */
-.intro h1 { margin-bottom: 1.2rem; }
-.flow-result strong, .progress strong { font-family: var(--font-mono); color: var(--accent-deep); }
-.step[data-status='running'] .number { background: var(--accent); color: var(--on-accent); }
-.number { font-family: var(--font-display); }

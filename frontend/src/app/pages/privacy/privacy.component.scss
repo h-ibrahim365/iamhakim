@@ -42,3 +42,9 @@
   transition: border-color 0.2s ease;
 }
 .priv-contact a:hover { border-color: var(--cyan); }
+
+/* Route-console theme ------------------------------------------------ */
+.priv-head h1 .accent { color: var(--accent); background: none; }
+.priv-card { border-top: 1px solid var(--line-strong); border-left: 0; border-right: 0; border-bottom: 0; border-radius: 0; background: transparent; }
+.priv-note { border-radius: 0; background: transparent; border-left-width: 3px; }
+.priv-card li::before { content: "—"; }

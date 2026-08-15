@@ -239,3 +239,22 @@
 .state.compact {
   padding: 1rem;
 }
+
+/* Route-console theme ------------------------------------------------ */
+.manage-card,
+.summary,
+.notice,
+.danger-button,
+.secondary-button,
+.confirm-cancel,
+.reschedule-panel,
+.reschedule-day,
+.mini-slot { border-radius: 2px; box-shadow: none; }
+.manage-card { border-top: 2px solid var(--line-strong); }
+.summary { background: transparent; }
+.summary > div { border-radius: 0; }
+.danger-button:not(:disabled):hover,
+.secondary-button:not(:disabled):hover { transform: none; }
+.notice { border-left-width: 3px; background: transparent; }
+.reschedule-panel { background: transparent; border-left: 3px solid var(--accent); }
+.mini-slot.selected { box-shadow: inset 3px 0 0 var(--accent); }
