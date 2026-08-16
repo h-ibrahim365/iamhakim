@@ -14,6 +14,7 @@
   font-size: clamp(1rem, 1.3vw, 1.1rem);
 }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.freelance-note { margin-top: 0.9rem; color: var(--faint); font-size: 0.72rem; letter-spacing: 0.01em; }
 
 .social-row {
   display: flex;
@@ -49,6 +50,7 @@
   border-color: var(--line-strong);
 }
 .hero-panel::before { content: none; }
+.astar-disclaimer { margin: 0.75rem 0 0; color: var(--faint); font-size: 0.68rem; line-height: 1.5; }
 
 .counters {
   position: relative;
@@ -163,35 +165,87 @@
 .ident-card h2 { font-size: 1.15rem; margin-bottom: 0.55rem; letter-spacing: -0.02em; }
 .ident-card p { font-size: 0.91rem; }
 
-/* Static capability rail: no marquee/motion and no duplicated loop. */
+.services-preview {
+  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.6rem, 3vw, 2.4rem);
+  border-top: 1px solid var(--line-strong);
+}
+.services-preview h2 { font-size: clamp(1.45rem, 3vw, 2.1rem); margin: 0.6rem 0 1.4rem; }
+.services-preview h2 .accent { color: var(--accent); background: none; }
+
+.services-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.3rem; }
+.service-preview-card { padding: 1.15rem; border-top: 2px solid var(--line-strong); transition: border-color 0.14s ease; }
+.service-preview-card:hover { transform: none; border-color: var(--accent); }
+.service-preview-card h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
+.service-preview-card p { font-size: 0.86rem; margin: 0; }
+
+.services-preview-link {
+  display: inline-block;
+  color: var(--accent-deep);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.services-preview-link:hover { border-color: var(--accent); }
+
+/* Capability rail: slow continuous ticker. The markup repeats the item set
+   once so a translateX(-50%) loop is seamless - see the no-preference block
+   below. Reduced motion falls back to the plain static list (one set only). */
 .ticker {
   margin: 0 0 clamp(2rem, 5vw, 4rem);
-  padding: 0.85rem 0;
+  padding: 1.05rem 0;
   border-top: 1px solid var(--line-strong);
   border-bottom: 1px solid var(--line-strong);
-  overflow: visible;
-  -webkit-mask-image: none;
-  mask-image: none;
+  overflow: hidden;
 }
 .ticker-track {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.45rem 0.8rem;
-  white-space: normal;
+  gap: 0.6rem 1.1rem;
   color: var(--faint);
   font-family: var(--font-body);
-  font-size: 0.74rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.5;
   letter-spacing: 0;
-  animation: none;
 }
 .ticker-track span:nth-child(odd) { color: var(--muted); }
-.ticker-track span:nth-child(n+11) { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+  /* One full item set = 11 items × (text + separator) = 22 spans. */
+  .ticker-track span:nth-child(n+23) { display: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ticker-track {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    width: max-content;
+    /* Scaled from the previous 42s/5-item pace to keep the same reading
+       speed now that the rail carries about twice as many items. */
+    animation: ticker-scroll 90s linear infinite;
+  }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+}
+
+@media (max-width: 560px) {
+  .ticker-track { font-size: 0.8rem; gap: 0.5rem 0.85rem; }
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; }
   .ident { grid-template-columns: 1fr; gap: 1.5rem; }
+  .services-preview-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .counters { grid-template-columns: 1fr 1fr; }

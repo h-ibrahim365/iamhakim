@@ -1,0 +1,402 @@
+<ng-template #node let-step>
+  @if (step) {
+    <article class="arch-node" [attr.data-status]="step.status">
+      <div class="arch-node-number mono">{{ step.index }}</div>
+      <div>
+        <h3>{{ step.titleKey | t }}</h3>
+        <p>{{ step.descKey | t }}</p>
+        <p class="arch-node-example mono">{{ step.exampleKey | t:{ entity: entityText(), verb: verbText(), verbAction: verbActionText(), verbCapitalized: verbCapitalizedText(), verbNoun: verbNounText() } }}</p>
+      </div>
+    </article>
+  }
+</ng-template>
+
+<ng-template #staticNode let-titleKey let-descKey="descKey">
+  <article class="arch-node static" data-status="idle">
+    <div class="arch-node-number mono">·</div>
+    <div>
+      <h3>{{ titleKey | t }}</h3>
+      <p>{{ descKey | t }}</p>
+    </div>
+  </article>
+</ng-template>
+
+<span class="eyebrow">{{ 'flow.arch.eyebrow' | t }}</span>
+<h2 class="arch-title">{{ 'flow.arch.title.1' | t }}<br>{{ 'flow.arch.title.2' | t }} <span class="accent">{{ 'flow.arch.title.accent' | t }}</span></h2>
+<p class="arch-intro">{{ 'flow.arch.intro' | t }}</p>
+<p class="arch-not-ranking">{{ 'flow.arch.notRanking' | t }}</p>
+
+<div class="arch-scenario-picker">
+  <span class="arch-scenario-label mono">{{ 'flow.arch.scenario.label' | t }}</span>
+  <div class="arch-scenario-tabs" role="tablist" [attr.aria-label]="'flow.arch.scenario.label' | t">
+    @for (s of scenarios; track s.id) {
+      <button type="button" role="tab" [attr.aria-selected]="selectedScenario() === s.id" [class.active]="selectedScenario() === s.id" (click)="selectScenario(s.id)">
+        {{ s.tabKey | t }}
+      </button>
+    }
+  </div>
+</div>
+<p class="arch-scenario mono">{{ 'flow.arch.scenario' | t:{ action: actionText() } }}</p>
+
+<div class="arch-tabs" role="tablist" [attr.aria-label]="'flow.arch.eyebrow' | t">
+  @for (a of architectures; track a.id) {
+    <button
+      type="button"
+      role="tab"
+      [id]="'arch-tab-' + a.id"
+      [attr.aria-selected]="selectedArch() === a.id"
+      [attr.aria-controls]="'arch-panel-' + a.id"
+      [attr.tabindex]="selectedArch() === a.id ? 0 : -1"
+      [class.active]="selectedArch() === a.id"
+      (click)="selectArch(a.id)"
+      (keydown.arrowRight)="selectArch(architectures[(architectures.indexOf(a) + 1) % architectures.length].id)"
+      (keydown.arrowLeft)="selectArch(architectures[(architectures.indexOf(a) - 1 + architectures.length) % architectures.length].id)">
+      {{ a.tabKey | t }}
+    </button>
+  }
+</div>
+
+<div class="arch-panel" role="tabpanel" [id]="'arch-panel-' + selectedArch()" [attr.aria-labelledby]="'arch-tab-' + selectedArch()">
+  @if (currentFlow().id === 'cqrs') {
+    <div class="cqrs-switch">
+      <button type="button" [class.active]="cqrsMode() === 'command'" (click)="selectCqrsMode('command')">{{ 'flow.arch.cqrs.command' | t }}</button>
+      <button type="button" [class.active]="cqrsMode() === 'query'" (click)="selectCqrsMode('query')">{{ 'flow.arch.cqrs.query' | t }}</button>
+    </div>
+    <p class="cqrs-hint">
+      <strong>{{ 'flow.arch.cqrs.command' | t }}</strong> {{ 'flow.arch.cqrs.command.hint' | t }}
+      <span class="dot">·</span>
+      <strong>{{ 'flow.arch.cqrs.query' | t }}</strong> {{ 'flow.arch.cqrs.query.hint' | t }}
+    </p>
+  }
+
+  <!-- Controls sit above the canvas on purpose: clicking Run must not require
+       scrolling down past the whole diagram, then back up to watch step 1. -->
+  <div class="arch-controls">
+    <button type="button" class="primary-button" (click)="run()" [disabled]="running()">
+      {{ (running() ? 'flow.arch.running' : (hasRun() ? 'flow.arch.runAgain' : 'flow.arch.run')) | t }}
+    </button>
+    <div class="arch-progress mono">{{ doneCount() }}/{{ totalSteps() }}</div>
+    <div class="arch-speed">
+      <span class="mono">{{ 'flow.arch.speed' | t }}</span>
+      <button type="button" [class.active]="speed() === 1" (click)="setSpeed(1)">1×</button>
+      <button type="button" [class.active]="speed() === 2" (click)="setSpeed(2)">2×</button>
+    </div>
+  </div>
+
+  <!-- ============ unified architecture + runtime diagram, one bespoke spatial layout per architecture ============ -->
+  <div class="arch-canvas" [attr.data-arch]="selectedArch()">
+    @switch (selectedArch()) {
+      @case ('layered') {
+        <div class="layout-layered">
+          <div class="layer" [attr.data-active]="stepsById().get('ui')?.status === 'running' || stepsById().get('controller')?.status === 'running'">
+            <span class="layer-label mono">{{ 'flow.arch.layered.band.presentation' | t }}</span>
+            <div class="layer-nodes">
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('ui') }" />
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('controller') }" />
+            </div>
+          </div>
+          <div class="step-connector" [attr.data-status]="stepsById().get('controller')?.status"></div>
+          <div class="layer" [attr.data-active]="stepsById().get('service')?.status === 'running'">
+            <span class="layer-label mono">{{ 'flow.arch.layered.band.business' | t }}</span>
+            <div class="layer-nodes"><ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('service') }" /></div>
+          </div>
+          <div class="step-connector" [attr.data-status]="stepsById().get('service')?.status"></div>
+          <div class="layer" [attr.data-active]="stepsById().get('repository')?.status === 'running'">
+            <span class="layer-label mono">{{ 'flow.arch.layered.band.dataAccess' | t }}</span>
+            <div class="layer-nodes"><ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('repository') }" /></div>
+          </div>
+          <div class="step-connector" [attr.data-status]="stepsById().get('repository')?.status"></div>
+          <div class="layer" [attr.data-active]="stepsById().get('database')?.status === 'running'">
+            <span class="layer-label mono">{{ 'flow.arch.layered.band.infrastructure' | t }}</span>
+            <div class="layer-nodes"><ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('database') }" /></div>
+          </div>
+        </div>
+      }
+
+      @case ('onion') {
+        <div class="layout-onion">
+          <!-- Each ring is a plain block nested inside the previous one, centered
+               on itself, so the browser box model produces the concentric shrink
+               toward the Domain core - no positioning tricks needed. Repository
+               abstraction is a child of ring-2 (Application), not a box outside
+               it: the abstraction belongs to the core, only its implementation
+               lives outside. -->
+          <div class="onion-ring ring-1">
+            <span class="ring-label mono">{{ 'flow.arch.onion.step1.title' | t }}</span>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('presentation') }" />
+            <div class="step-connector" [attr.data-status]="stepsById().get('presentation')?.status"></div>
+            <div class="onion-ring ring-2">
+              <span class="ring-label mono">{{ 'flow.arch.onion.step2.title' | t }}</span>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('application') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('application')?.status"></div>
+              <div class="onion-ring ring-3" [attr.data-engaged]="coreEngaged()">
+                <span class="ring-label mono">{{ 'flow.arch.onion.step3.title' | t }}</span>
+                <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('domain') }" />
+              </div>
+              <div class="step-connector" [attr.data-status]="stepsById().get('domain')?.status"></div>
+              <div class="onion-boundary">
+                <span class="ring-label mono">{{ 'flow.arch.onion.step4.title' | t }}</span>
+                <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('repo-abstraction') }" />
+              </div>
+            </div>
+          </div>
+
+          <!-- From here on we're outside the onion: Infrastructure implements the
+               abstraction defined above, so the connector deliberately crosses
+               out of ring-1's boundary to reach it. -->
+          <div class="step-connector" [attr.data-status]="stepsById().get('repo-abstraction')?.status"></div>
+
+          <div class="onion-outside">
+            <span class="ring-label mono">{{ 'flow.arch.onion.step5.title' | t }}</span>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('infrastructure') }" />
+            <div class="step-connector" [attr.data-status]="stepsById().get('infrastructure')?.status"></div>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('database') }" />
+          </div>
+        </div>
+
+        <!-- Two independent connector systems, deliberately not merged: this
+             box is the static, neutral, never-animated dependency direction;
+             the accent connectors above are the animated runtime path, which
+             is free to leave the core toward infrastructure even though
+             dependencies only ever point inward. -->
+        <div class="arch-deps">
+          <span class="arch-deps-label mono">{{ 'flow.arch.onion.deps.label' | t }}</span>
+          <div class="arch-deps-row mono">
+            <span>{{ 'flow.arch.onion.deps.infra' | t }}</span>
+            <span class="arrow">→</span>
+            <span>{{ 'flow.arch.onion.deps.app' | t }}</span>
+            <span class="arrow">→</span>
+            <span class="core">{{ 'flow.arch.onion.deps.domain' | t }}</span>
+          </div>
+          <div class="arch-deps-row mono">
+            <span>{{ 'flow.arch.onion.step1.title' | t }}</span>
+            <span class="arrow">→</span>
+            <span>{{ 'flow.arch.onion.deps.app' | t }}</span>
+            <span class="arrow">→</span>
+            <span class="core">{{ 'flow.arch.onion.deps.domain' | t }}</span>
+          </div>
+        </div>
+      }
+
+      @case ('hexagonal') {
+        <div class="layout-hex">
+          <div class="hex-inbound">
+            <span class="hex-zone-label mono">{{ 'flow.arch.hexagonal.zone.inbound' | t }}</span>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('inbound-adapter') }" />
+            <div class="step-connector" [attr.data-status]="stepsById().get('inbound-adapter')?.status"></div>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('inbound-port') }" />
+          </div>
+
+          <div class="step-connector" [attr.data-status]="stepsById().get('inbound-port')?.status"></div>
+
+          <div class="hex-core" [attr.data-engaged]="coreEngaged()">
+            <span class="hex-zone-label mono">{{ 'flow.arch.hexagonal.coreLabel' | t }}</span>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('use-case') }" />
+            <div class="step-connector" [attr.data-status]="stepsById().get('use-case')?.status"></div>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('domain') }" />
+          </div>
+
+          <div class="step-connector" [attr.data-status]="stepsById().get('domain')?.status"></div>
+
+          <div class="hex-outbound">
+            <span class="hex-zone-label mono">{{ 'flow.arch.hexagonal.zone.outbound' | t }}</span>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('outbound-port') }" />
+
+            <!-- The fan-out bar is structural (always neutral: it shows that
+                 three adapters exist, not that the request visited all three).
+                 Only the stem down to it, and the selected branch's own drop,
+                 pick up the runtime accent. -->
+            <div class="hex-fanout">
+              <div class="hex-fanout-stem" [attr.data-status]="stepsById().get('outbound-port')?.status"></div>
+              <div class="hex-fanout-bar"></div>
+            </div>
+            <div class="hex-branches">
+              <div class="hex-branch active-branch" [attr.data-status]="stepsById().get('outbound-port')?.status">
+                <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('outbound-adapter') }" />
+                <div class="step-connector" [attr.data-status]="stepsById().get('outbound-adapter')?.status"></div>
+                <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('infrastructure') }" />
+              </div>
+              <div class="hex-branch">
+                <ng-container *ngTemplateOutlet="staticNode; context: { $implicit: 'flow.arch.hexagonal.branch.directory.adapter', descKey: 'flow.arch.hexagonal.branch.directory.desc' }" />
+                <ng-container *ngTemplateOutlet="staticNode; context: { $implicit: 'flow.arch.hexagonal.branch.directory.system', descKey: 'flow.arch.hexagonal.branch.directory.systemDesc' }" />
+              </div>
+              <div class="hex-branch">
+                <ng-container *ngTemplateOutlet="staticNode; context: { $implicit: 'flow.arch.hexagonal.branch.api.adapter', descKey: 'flow.arch.hexagonal.branch.api.desc' }" />
+                <ng-container *ngTemplateOutlet="staticNode; context: { $implicit: 'flow.arch.hexagonal.branch.api.system', descKey: 'flow.arch.hexagonal.branch.api.systemDesc' }" />
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @case ('cqrs') {
+        <div class="layout-cqrs">
+          <div class="cqrs-entry">
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('request') }" />
+            <div class="step-connector" [attr.data-status]="stepsById().get('request')?.status"></div>
+            <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('dispatcher') }" />
+          </div>
+
+          <!-- Same structural-bar / runtime-stem split as Hexagonal's fan-out:
+               both branches always exist (the bar is static), only the
+               selected one's own drop and steps pick up the accent. -->
+          <div class="hex-fanout cqrs-fanout">
+            <div class="hex-fanout-stem" [attr.data-status]="stepsById().get('dispatcher')?.status"></div>
+            <div class="hex-fanout-bar"></div>
+          </div>
+
+          <div class="cqrs-slices">
+            <div class="cqrs-slice" [class.inactive]="cqrsMode() !== 'command'" [attr.data-status]="stepsById().get('dispatcher')?.status">
+              <span class="slice-label mono">{{ 'flow.arch.cqrs.command' | t }}: {{ actionText() }}</span>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('command') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('command')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('cmd-handler') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('cmd-handler')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('domain-port') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('domain-port')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('cmd-adapter') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('cmd-adapter')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('cmd-infrastructure') }" />
+            </div>
+            <div class="cqrs-slice" [class.inactive]="cqrsMode() !== 'query'" [attr.data-status]="stepsById().get('dispatcher')?.status">
+              <span class="slice-label mono">{{ 'flow.arch.cqrs.query' | t }}: {{ 'flow.arch.cqrs.querySliceLabel' | t:{ entity: entityText() } }}</span>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('query') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('query')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('qry-handler') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('qry-handler')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('read-abstraction') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('read-abstraction')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('qry-adapter') }" />
+              <div class="step-connector" [attr.data-status]="stepsById().get('qry-adapter')?.status"></div>
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: stepsById().get('result') }" />
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- The legend lives right under the diagram it explains, not at the page
+       bottom - by the time a visitor reaches the prose below, they shouldn't
+       need to scroll back up to remember what the dots meant. -->
+  <div class="arch-legend mono">
+    @switch (selectedArch()) {
+      @case ('onion') {
+        <span class="dot accent"></span><span>{{ 'flow.arch.legend.runtime' | t }}</span>
+        <span class="dot neutral"></span><span>{{ 'flow.arch.legend.dependency' | t }}</span>
+      }
+      @case ('hexagonal') {
+        <span class="dot accent"></span><span>{{ 'flow.arch.legend.active.desc' | t }}</span>
+        <span><strong>{{ 'flow.arch.legend.port' | t }}</strong> {{ 'flow.arch.legend.port.desc' | t }}</span>
+        <span><strong>{{ 'flow.arch.legend.adapter' | t }}</strong> {{ 'flow.arch.legend.adapter.desc' | t }}</span>
+      }
+      @default {
+        <span class="dot accent"></span><span>{{ 'flow.arch.legend.active.desc' | t }}</span>
+        <span class="dot neutral"></span><span>{{ 'flow.arch.legend.completed.desc' | t }}</span>
+      }
+    }
+  </div>
+
+  <!-- One consistent explanation shape for all four architectures: KEY IDEA
+       gets the weight (it's the one sentence worth remembering), USE IT WHEN
+       / WATCH OUT sit underneath as a compact scannable pair rather than a
+       third equally-weighted column. No cards - just labels, a rule, and
+       whitespace, the same way the rest of this page reads. -->
+  <div class="arch-explain">
+    <div class="arch-key-idea">
+      <span class="arch-info-label mono">{{ 'flow.arch.keyIdea' | t }}</span>
+      <p>{{ currentFlow().keyIdeaKey | t }}</p>
+    </div>
+
+    <hr class="arch-divider" />
+
+    <div class="arch-use-watch">
+      <div class="arch-info">
+        <span class="arch-info-label mono">{{ 'flow.arch.useItWhen' | t }}</span>
+        <p>{{ currentFlow().useItWhenKey | t }}</p>
+      </div>
+      <div class="arch-info">
+        <span class="arch-info-label mono">{{ 'flow.arch.watchOut' | t }}</span>
+        <p>{{ currentFlow().watchOutKey | t }}</p>
+      </div>
+    </div>
+
+    @if (currentFlow().noteKey) {
+      <p class="arch-note mono">{{ currentFlow().noteKey! | t }}</p>
+    }
+  </div>
+
+  <!-- ============ code shape: supporting detail, not the main attraction -
+       kept visually lighter than the architecture canvas above it ============ -->
+  <div class="code-shape">
+    <div class="code-shape-header">
+      <span class="eyebrow">{{ 'flow.arch.codeShape.eyebrow' | t }}</span>
+      <h3>{{ 'flow.arch.codeShape.title' | t }}</h3>
+    </div>
+
+    @switch (selectedArch()) {
+      @case ('layered') {
+        <div class="code-tree mono">
+          <div>src/</div>
+          <div class="i1">├── Api/</div>
+          <div class="i2">└── Controllers/</div>
+          <div class="i1">├── Application/</div>
+          <div class="i2">└── Services/</div>
+          <div class="i1">├── DataAccess/</div>
+          <div class="i2">└── Repositories/</div>
+          <div class="i1">└── Infrastructure/</div>
+          <div class="i2">└── Database/</div>
+        </div>
+      }
+      @case ('onion') {
+        <div class="code-tree mono">
+          <div>src/</div>
+          <div class="i1">├── Domain/</div>
+          <div class="i2">├── Entities/</div>
+          <div class="i2">└── Rules/</div>
+          <div class="i1">├── Application/</div>
+          <div class="i2">├── UseCases/</div>
+          <div class="i2">└── Abstractions/</div>
+          <div class="i1">├── Infrastructure/</div>
+          <div class="i2">├── Persistence/</div>
+          <div class="i2">└── External/</div>
+          <div class="i1">└── Api/</div>
+        </div>
+      }
+      @case ('hexagonal') {
+        <div class="code-tree mono">
+          <div>src/</div>
+          <div class="i1">├── Domain/</div>
+          <div class="i1">├── Application/</div>
+          <div class="i2">├── UseCases/</div>
+          <div class="i2">└── Ports/</div>
+          <div class="i3">├── Inbound/</div>
+          <div class="i3">└── Outbound/</div>
+          <div class="i1">└── Adapters/</div>
+          <div class="i2">├── Inbound/</div>
+          <div class="i3">└── Web/</div>
+          <div class="i2">└── Outbound/</div>
+          <div class="i3">├── Database/</div>
+          <div class="i3">├── Directory/</div>
+          <div class="i3">└── ExternalApi/</div>
+        </div>
+      }
+      @case ('cqrs') {
+        <div class="code-tree mono">
+          <div>Application/</div>
+          <div class="i1">└── {{ entityText() }}s/</div>
+          <div class="i2" [class.accent-line]="cqrsMode() === 'command'">├── Commands/</div>
+          <div class="i3" [class.accent-line]="cqrsMode() === 'command'">└── {{ 'flow.arch.codeShape.cqrs.createFolder' | t:{ entity: entityText(), verbCapitalized: verbCapitalizedText() } }}/</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'command'">├── Command</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'command'">├── Handler</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'command'">└── Validator</div>
+          <div class="i2" [class.accent-line]="cqrsMode() === 'query'">└── Queries/</div>
+          <div class="i3" [class.accent-line]="cqrsMode() === 'query'">└── {{ 'flow.arch.codeShape.cqrs.getFolder' | t:{ entity: entityText() } }}/</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'query'">├── Query</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'query'">├── Handler</div>
+          <div class="i4" [class.accent-line]="cqrsMode() === 'query'">└── Result</div>
+        </div>
+      }
+    }
+  </div>
+</div>

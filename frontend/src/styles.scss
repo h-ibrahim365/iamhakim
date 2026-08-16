@@ -75,7 +75,16 @@
   --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   --max: 1180px;
+  /* Sticky topbar height + a small gap, for anchor targets' scroll-margin-top
+     (see app.scss .topbar). Measured directly (Playwright), not guessed:
+     ~63px single-row desktop topbar. Bumped at 1100px to match .topbar
+     wrapping to two rows there - measured ~121px worst case in that range. */
+  --topbar-scroll-offset: 4.75rem;
   color-scheme: light;
+}
+
+@media (max-width: 1100px) {
+  :root { --topbar-scroll-offset: 8.25rem; }
 }
 
 :root[data-theme='dark'] {

@@ -1,0 +1,79 @@
+<section class="page services-page">
+  <header class="services-head rise">
+    <span class="eyebrow">{{ 'services.eyebrow' | t }}</span>
+    <h1>{{ 'services.title.1' | t }} <span class="accent">{{ 'services.title.accent' | t }}</span></h1>
+    <p class="lead">{{ 'services.intro' | t }}</p>
+  </header>
+
+  <section class="stack-scope rise">
+    <span class="eyebrow">{{ 'services.scope.eyebrow' | t }}</span>
+    <h2>{{ 'services.scope.title.1' | t }} <span class="accent">{{ 'services.scope.title.accent' | t }}</span></h2>
+    <p>{{ 'services.scope.body' | t }}</p>
+  </section>
+
+  <div class="service-list">
+    @for (service of services; track service.id) {
+      <article class="service-row rise" [id]="service.id">
+        <div class="service-head">
+          <span class="service-index mono">{{ service.index }}</span>
+          <h2>{{ service.titleKey | t }}</h2>
+        </div>
+
+        <div class="service-body">
+          <p class="service-desc">{{ service.bodyKey | t }}</p>
+
+          <div>
+            <span class="service-label mono">{{ 'services.typical.label' | t }}</span>
+            <ul class="service-work">
+              @for (w of service.workKeys; track w) {
+                <li>{{ w | t }}</li>
+              }
+            </ul>
+          </div>
+
+          <div>
+            <span class="service-label mono">{{ 'services.stack.label' | t }}</span>
+            <p class="service-stack mono">{{ service.stackKey | t }}</p>
+          </div>
+
+          <div class="service-proof">
+            <span class="service-label mono">{{ 'services.proof.label' | t }}</span>
+            <strong>{{ service.proofTitleKey | t }}</strong>
+            <p>{{ service.proofBodyKey | t }}</p>
+            @if (service.proofStatusKey) {
+              <p class="service-proof-status mono">{{ service.proofStatusKey | t }}</p>
+            }
+            <a [routerLink]="'/projects' | loc" [fragment]="service.proofFragment">{{ 'services.proof.link' | t }} →</a>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <section class="work-process rise">
+    <span class="eyebrow">{{ 'services.work.eyebrow' | t }}</span>
+    <h2>{{ 'services.work.title.1' | t }} <span class="accent">{{ 'services.work.title.accent' | t }}</span></h2>
+    <div class="work-steps">
+      @for (step of workSteps; track step.index) {
+        <div class="work-step">
+          <span class="work-index mono">{{ step.index }}</span>
+          <h3>{{ step.titleKey | t }}</h3>
+          <p>{{ step.bodyKey | t }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="good-fit rise">
+    <span class="eyebrow">{{ 'services.fit.eyebrow' | t }}</span>
+    <h2>{{ 'services.fit.title.1' | t }} <span class="accent">{{ 'services.fit.title.accent' | t }}</span></h2>
+    <ul class="fit-list">
+      @for (f of fitKeys; track f) {
+        <li>{{ f | t }}</li>
+      }
+    </ul>
+    <p class="fit-note">{{ 'services.fit.note' | t }}</p>
+  </section>
+
+  <app-book-cta titleKey="cta.services.title" accentKey="cta.services.accent" bodyKey="cta.services.body" />
+</section>

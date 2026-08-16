@@ -1,0 +1,10 @@
+<section class="cta-band card rise">
+  <div>
+    <span class="eyebrow">{{ 'cta.eyebrow' | t }}</span>
+    <h2>{{ titleKey() | t }} <span class="accent">{{ accentKey() | t }}</span></h2>
+    @if (bodyKey(); as key) {
+      <p>{{ key | t }}</p>
+    }
+  </div>
+  <a class="primary-button" [routerLink]="'/book' | loc">{{ 'cta.button' | t }}</a>
+</section>

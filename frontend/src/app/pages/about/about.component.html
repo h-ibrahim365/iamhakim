@@ -1,7 +1,7 @@
 <section class="page about-page">
   <header class="about-head rise">
     <span class="eyebrow">{{ 'about.eyebrow' | t }}</span>
-    <h1>{{ 'about.title.1' | t }}<br>{{ 'about.title.2' | t }} <span class="accent">{{ 'about.title.accent' | t }}</span></h1>
+    <h1>{{ 'about.title.1' | t }} <span class="accent">{{ 'about.title.accent' | t }}</span></h1>
     <p class="lead">
 {{ 'about.lead' | t }}
     </p>
@@ -66,11 +66,5 @@
     </div>
   </section>
 
-  <section class="cta-band card rise">
-    <div>
-      <h2>{{ 'about.cta.title' | t }}</h2>
-      <p>{{ 'about.cta.body' | t }}</p>
-    </div>
-    <a class="primary-button" [routerLink]="'/book' | loc">{{ 'about.cta.button' | t }}</a>
-  </section>
+  <app-book-cta titleKey="cta.about.title" accentKey="cta.about.accent" />
 </section>

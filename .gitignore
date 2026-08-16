@@ -27,6 +27,8 @@ backend/IAmHakim.Api/App_Data/
 .vscode/
 .idea/
 
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db

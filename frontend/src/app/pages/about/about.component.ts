@@ -1,23 +1,26 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../i18n/translate.pipe';
-import { LocalizedLinkPipe } from '../../i18n/localized-link.pipe';
+import { BookCtaComponent } from '../../shared/book-cta/book-cta.component';
 
 interface Skill { groupKey: string; items: string[]; }
 interface Milestone { yearKey: string; titleKey: string; detailKey: string; }
 
 @Component({
   selector: 'app-about',
-  imports: [RouterLink, TranslatePipe, LocalizedLinkPipe],
+  imports: [TranslatePipe, BookCtaComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
 export class AboutComponent {
   protected readonly skills: Skill[] = [
-    { groupKey: 'about.skill.backend', items: ['C#', 'ASP.NET Core', 'Java', 'Spring Boot'] },
-    { groupKey: 'about.skill.frontend', items: ['Angular', 'TypeScript', 'RxJS', 'Signals'] },
-    { groupKey: 'about.skill.identity', items: ['Active Directory', 'LDAP', 'Entra ID', 'IAM / IGA'] },
-    { groupKey: 'about.skill.foundations', items: ['Graph algorithms', 'A* / Dijkstra', 'SQL', 'Refactoring'] }
+    { groupKey: 'about.skill.backend', items: ['C#', 'ASP.NET Core', 'Java', 'Spring Boot', 'REST APIs'] },
+    { groupKey: 'about.skill.frontend', items: ['Angular', 'TypeScript', 'JavaScript', 'RxJS', 'Signals'] },
+    { groupKey: 'about.skill.architecture', items: ['Layered / N-tier', 'Onion', 'Hexagonal / Ports & Adapters', 'CQRS', 'Vertical Slices', 'Dependency Injection', 'Dependency Inversion'] },
+    { groupKey: 'about.skill.data', items: ['SQL', 'MySQL', 'Entity Framework Core'] },
+    { groupKey: 'about.skill.identity', items: ['Active Directory', 'LDAP', 'Microsoft Entra ID', 'IAM / IGA'] },
+    { groupKey: 'about.skill.algorithms', items: ['A*', 'Dijkstra', 'Graph algorithms', 'Railway routing'] },
+    { groupKey: 'about.skill.engineering', items: ['Git', 'Testing', 'Refactoring', 'Benchmarking'] },
+    { groupKey: 'about.skill.academic', items: ['C'] }
   ];
 
   protected readonly milestones: Milestone[] = [

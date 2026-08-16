@@ -19,6 +19,7 @@ export const serverRoutes: ServerRoute[] = [
   // Each localized page is generated 3 times (en / fr / nl) at build.
   { path: ':lang',          renderMode: RenderMode.Prerender, getPrerenderParams: langParams },
   { path: ':lang/projects', renderMode: RenderMode.Prerender, getPrerenderParams: langParams },
+  { path: ':lang/services', renderMode: RenderMode.Prerender, getPrerenderParams: langParams },
   { path: ':lang/about',    renderMode: RenderMode.Prerender, getPrerenderParams: langParams },
   { path: ':lang/flow',     renderMode: RenderMode.Prerender, getPrerenderParams: langParams },
   { path: ':lang/status',   renderMode: RenderMode.Prerender, getPrerenderParams: langParams },

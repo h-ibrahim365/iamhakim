@@ -3,10 +3,11 @@ import { ApiService } from '../../core/api.service';
 import { HealthResponse } from '../../core/contracts';
 import { LiveConnectionService } from '../../core/live-connection.service';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { BookCtaComponent } from '../../shared/book-cta/book-cta.component';
 
 @Component({
   selector: 'app-status',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, BookCtaComponent],
   templateUrl: './status.component.html',
   styleUrl: './status.component.scss'
 })

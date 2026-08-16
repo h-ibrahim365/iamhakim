@@ -1,4 +1,9 @@
-.flow-page {
+/* Outer page: simple vertical stack (intro+board grid, then the CTA below
+   it in normal flow - the CTA must never join the sticky 2-column grid,
+   or grid auto-placement drops it into the narrow intro column). */
+.flow-page { display: grid; gap: clamp(2.4rem, 5vw, 3.6rem); }
+
+.flow-grid {
   display: grid;
   grid-template-columns: 0.72fr 1.28fr;
   gap: clamp(2rem, 5vw, 4rem);
@@ -7,6 +12,20 @@
 .intro { position: sticky; top: 6.5rem; }
 .intro h1 { margin-bottom: 1.1rem; }
 .intro p { max-width: 520px; }
+
+.flow-transition {
+  max-width: 640px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.arch-explorer {
+  padding-top: clamp(1.6rem, 3vw, 2.2rem);
+  border-top: 1px solid var(--line-strong);
+}
+.arch-explorer h2 .accent { color: var(--accent); background: none; }
 
 .flow-board { padding: 0; border-color: var(--line-strong); overflow: hidden; }
 .progress,
@@ -35,22 +54,13 @@
 .flow-result strong { font-family: var(--font-mono); color: var(--accent-deep); font-weight: 600; }
 
 .steps {
-  position: relative;
   display: grid;
   gap: 0;
   margin: 0;
   padding: 0.7rem 0;
 }
-.steps::before {
-  content: "";
-  position: absolute;
-  top: 1.9rem;
-  bottom: 1.9rem;
-  left: 2.18rem;
-  width: 1px;
-  background: var(--line-strong);
-}
 .step {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
@@ -60,6 +70,22 @@
   border-radius: 0;
   background: transparent;
   transition: border-color 0.14s ease, background 0.14s ease;
+}
+/* Connector: drawn per step, from the previous step's own node-center down
+   to this step's own node-center (-1.825rem = padding-top + half the node
+   height, reaching back into the previous step's box). Bounded entirely by
+   fixed padding/node-size constants rather than total step height, so it
+   stays correct even though steps aren't all the same height (descriptions
+   vary in length) - and the last step simply never draws one, so the line
+   genuinely ends at its node instead of being clipped after the fact. */
+.step:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: -1.825rem;
+  left: 2.025rem;
+  width: 1px;
+  height: 3.65rem;
+  background: var(--line-strong);
 }
 .step[data-status='running'] { transform: none; border-left-color: var(--accent); background: var(--accent-tint); }
 .step[data-status='done'] { border-left-color: var(--success); background: transparent; }
@@ -84,6 +110,6 @@
 .step p { margin: 0; font-size: 0.9rem; }
 
 @media (max-width: 920px) {
-  .flow-page { grid-template-columns: 1fr; }
+  .flow-grid { grid-template-columns: 1fr; }
   .intro { position: static; }
 }

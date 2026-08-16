@@ -6,6 +6,7 @@ import { FlowComponent } from './pages/flow/flow.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
+import { ServicesComponent } from './pages/services/services.component';
 import { StatusComponent } from './pages/status/status.component';
 import { langMatchGuard, rootLangRedirect } from './core/lang.guard';
 import type { Lang } from './i18n/translations';
@@ -46,6 +47,23 @@ const seo = {
       title: 'Projecten - Hakim Id Brahim, .NET/Angular-ontwikkelaar',
       description:
         'Geselecteerde projecten: A*-routeringsengine, intern toegangsbeheerplatform, RootShell Discord-bot, en meer.',
+    },
+  },
+  services: {
+    en: {
+      title: 'Freelance .NET & Angular Services - Hakim Id Brahim',
+      description:
+        'Freelance .NET and Angular development, application refactoring and identity & access integration in Belgium.',
+    },
+    fr: {
+      title: 'Services freelance .NET & Angular - Hakim Id Brahim',
+      description:
+        'Développement freelance .NET et Angular, refactoring d’applications et intégration identité & accès en Belgique.',
+    },
+    nl: {
+      title: 'Freelance .NET & Angular diensten - Hakim Id Brahim',
+      description:
+        'Freelance .NET- en Angular-ontwikkeling, applicatie-refactoring en identity & access-integratie in België.',
     },
   },
   about: {
@@ -208,6 +226,7 @@ const localizedRoutes: Routes = [
       ],
     },
   },
+  { path: 'services', component: ServicesComponent, data: { seo: seo.services, path: 'services' } },
   { path: 'about', component: AboutComponent, data: { seo: seo.about, path: 'about' } },
   { path: 'flow', component: FlowComponent, data: { seo: seo.flow, path: 'flow' } },
   { path: 'status', component: StatusComponent, data: { seo: seo.status, path: 'status' } },
@@ -229,6 +248,7 @@ export const routes: Routes = [
 
   // Backward compatibility: legacy un-prefixed URLs
   { path: 'projects', pathMatch: 'full', redirectTo: '/en/projects' },
+  { path: 'services', pathMatch: 'full', redirectTo: '/en/services' },
   { path: 'about', pathMatch: 'full', redirectTo: '/en/about' },
   { path: 'flow', pathMatch: 'full', redirectTo: '/en/flow' },
   { path: 'status', pathMatch: 'full', redirectTo: '/en/status' },

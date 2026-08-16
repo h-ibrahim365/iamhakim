@@ -7,7 +7,7 @@
 
   <div class="project-grid">
     @for (project of projects; track project.titleKey) {
-      <article class="card project-card rise">
+      <article class="card project-card rise" [id]="project.id">
         <div class="proj-top">
           <span class="proj-index mono">{{ project.index }}</span>
           <span class="tag mono">{{ project.tagKey | t }}</span>
@@ -21,25 +21,41 @@
             <li>{{ point | t }}</li>
           }
         </ul>
+        @if (project.serviceLabelKey) {
+          <p class="proj-service mono">
+            {{ 'projects.related' | t }}
+            <a [routerLink]="'/services' | loc" [fragment]="project.serviceFragment">{{ project.serviceLabelKey | t }} →</a>
+          </p>
+        }
+        @if (project.demoKey) {
+          <p class="proj-service mono">
+            {{ project.demoLabelKey! | t }}
+            <a [routerLink]="project.demoHref! | loc">{{ project.demoKey | t }} →</a>
+          </p>
+        }
         <div class="proj-bottom">
           <div class="proj-stack mono">
             @for (s of project.stack; track s) {
               <span>{{ s }}</span>
             }
           </div>
-          <div class="proj-links mono">
-            @for (link of project.links; track link.labelKey) {
-              @if (link.href.startsWith('http')) {
-                <a [href]="link.href" target="_blank" rel="noopener noreferrer">{{ link.labelKey | t }}</a>
-              } @else if (link.href === '#') {
-                <a [href]="link.href">{{ link.labelKey | t }}</a>
-              } @else {
-                <a [routerLink]="link.href | loc">{{ link.labelKey | t }}</a>
+          @if (project.links.length > 0) {
+            <div class="proj-links mono">
+              @for (link of project.links; track link.labelKey) {
+                @if (link.href.startsWith('http')) {
+                  <a [href]="link.href" target="_blank" rel="noopener noreferrer">{{ link.labelKey | t }}</a>
+                } @else {
+                  <a [routerLink]="link.href | loc">{{ link.labelKey | t }}</a>
+                }
               }
-            }
-          </div>
+            </div>
+          } @else if (project.statusKey) {
+            <span class="proj-status mono">{{ project.statusKey | t }}</span>
+          }
         </div>
       </article>
     }
   </div>
+
+  <app-book-cta titleKey="cta.projects.title" accentKey="cta.projects.accent" />
 </section>

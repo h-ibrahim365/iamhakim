@@ -1,5 +1,4 @@
 .about-page { display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
-.about-head h1 .accent { color: var(--accent); background: none; }
 .about-head .lead { max-width: 760px; margin-top: 1.4rem; font-size: clamp(1rem, 1.3vw, 1.1rem); }
 
 .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1rem; align-items: start; }
@@ -67,21 +66,6 @@
 .tl-item h3 { font-size: 1.02rem; margin-bottom: 0.45rem; }
 .tl-item p { font-size: 0.84rem; }
 
-.cta-band {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: clamp(1.45rem, 3vw, 2rem);
-  border: 1px solid var(--line-strong);
-  border-left: 4px solid var(--accent);
-  border-radius: 0;
-  background: var(--panel);
-}
-.cta-band h2 { font-size: clamp(1.45rem, 3vw, 2rem); margin-bottom: 0.45rem; }
-.cta-band p { max-width: 48ch; }
-
 .about-page .long-form {
   display: grid;
   gap: 1rem;
@@ -115,10 +99,6 @@
   .tl-track { grid-template-columns: repeat(2, 1fr); }
   .tl-item:nth-child(2) { border-right: 0; }
   .tl-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-}
-@media (max-width: 600px) {
-  .cta-band { flex-direction: column; align-items: flex-start; }
-  .cta-band .primary-button { width: 100%; }
 }
 @media (max-width: 520px) {
   .tl-track { grid-template-columns: 1fr; }

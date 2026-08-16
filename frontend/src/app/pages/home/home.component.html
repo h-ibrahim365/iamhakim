@@ -8,6 +8,7 @@
       <a class="primary-button" [routerLink]="'/projects' | loc">{{ 'home.cta.work' | t }}</a>
       <a class="secondary-button" [routerLink]="'/book' | loc">{{ 'home.cta.book' | t }}</a>
     </div>
+    <p class="freelance-note mono">{{ 'home.freelance' | t }}</p>
 
     <div class="social-row" [attr.aria-label]="'a11y.findMe' | t">
       <a
@@ -45,6 +46,7 @@
         <span class="mono">{{ 'home.counter.maze' | t }}</span>
       </div>
     </div>
+    <p class="astar-disclaimer">{{ 'home.astar.disclaimer' | t }}</p>
   </aside>
 </section>
 
@@ -87,17 +89,30 @@
   </article>
 </section>
 
+<section class="services-preview">
+  <span class="eyebrow">{{ 'home.services.eyebrow' | t }}</span>
+  <h2>{{ 'home.services.title.1' | t }} <span class="accent">{{ 'home.services.title.accent' | t }}</span></h2>
+  <div class="services-preview-grid">
+    @for (s of servicePreviews; track s.titleKey) {
+      <article class="card service-preview-card">
+        <h3>{{ s.titleKey | t }}</h3>
+        <p>{{ s.bodyKey | t }}</p>
+      </article>
+    }
+  </div>
+  <a class="services-preview-link" [routerLink]="'/services' | loc">{{ 'home.services.link' | t }} →</a>
+</section>
+
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track mono">
-    <span>{{ 'home.ticker.infra' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.identity' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.graphs' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.engineer' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.architecture' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.infra' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.identity' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.graphs' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.engineer' | t }}</span><span>·</span>
-    <span>{{ 'home.ticker.architecture' | t }}</span><span>·</span>
+    <!-- Item set rendered twice so a translateX(-50%) loop is seamless (see .ticker-track in the stylesheet). -->
+    @for (key of tickerKeys; track key) {
+      <span>{{ key | t }}</span><span>·</span>
+    }
+    @for (key of tickerKeys; track key) {
+      <span>{{ key | t }}</span><span>·</span>
+    }
   </div>
 </div>
+
+<app-book-cta titleKey="cta.home.title" accentKey="cta.home.accent" />

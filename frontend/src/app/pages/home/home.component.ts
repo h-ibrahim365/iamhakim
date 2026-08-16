@@ -6,14 +6,38 @@ import { AstarComponent } from './astar.component';
 import { LiveCounterComponent } from './live-counter.component';
 import { TranslatePipe } from '../../i18n/translate.pipe';
 import { LocalizedLinkPipe } from '../../i18n/localized-link.pipe';
+import { BookCtaComponent } from '../../shared/book-cta/book-cta.component';
+
+interface ServicePreview { titleKey: string; bodyKey: string; }
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, AstarComponent, LiveCounterComponent, TranslatePipe, LocalizedLinkPipe],
+  imports: [RouterLink, AstarComponent, LiveCounterComponent, TranslatePipe, LocalizedLinkPipe, BookCtaComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  protected readonly servicePreviews: ServicePreview[] = [
+    { titleKey: 'home.services.01.title', bodyKey: 'home.services.01.body' },
+    { titleKey: 'home.services.02.title', bodyKey: 'home.services.02.body' },
+    { titleKey: 'home.services.03.title', bodyKey: 'home.services.03.body' }
+  ];
+
+  /** Capability rail: experience → stack → specialization → project domain → broader profile → freelance → direction. */
+  protected readonly tickerKeys: string[] = [
+    'home.ticker.infra',
+    'home.ticker.stack',
+    'home.ticker.java',
+    'home.ticker.identity',
+    'home.ticker.railway',
+    'home.ticker.graphs',
+    'home.ticker.ad',
+    'home.ticker.fullstack',
+    'home.ticker.engineer',
+    'home.ticker.freelance',
+    'home.ticker.architecture'
+  ];
+
   protected readonly api = inject(ApiService);
   protected readonly live = inject(LiveConnectionService);
 

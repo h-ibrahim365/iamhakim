@@ -1,0 +1,449 @@
+:host { display: block; }
+
+/* Stays an h2 (Flow's own h1 - "Follow one request..." - already owns the
+   page), just sized like h1 so it reads as the section's real headline. */
+.arch-title {
+  font-family: var(--font-display);
+  font-weight: 680;
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  padding-bottom: 0.1em;
+  /* Without this, the browser's default h2 margin (relative to this huge
+     font-size) takes over - same fix as Flow's own h1 (.intro h1) uses. */
+  margin-bottom: 1.1rem;
+}
+
+.arch-intro { max-width: none; margin: 0 0 0.5rem; }
+.arch-not-ranking { max-width: 62ch; margin: 0 0 1.1rem; color: var(--faint); font-size: 0.85rem; }
+
+/* ---- scenario picker ---- */
+.arch-scenario-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+.arch-scenario-label { color: var(--faint); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.arch-scenario-tabs { display: inline-flex; gap: 0; border: 1px solid var(--line-strong); }
+.arch-scenario-tabs button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-right: 1px solid var(--line-strong);
+  transition: color 0.14s ease, background-color 0.14s ease;
+}
+.arch-scenario-tabs button:last-child { border-right: 0; }
+.arch-scenario-tabs button:hover { color: var(--text); }
+.arch-scenario-tabs button.active { background: var(--accent); color: var(--on-accent); }
+.arch-scenario-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.arch-scenario {
+  display: inline-block;
+  margin-bottom: 1.4rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.74rem;
+}
+
+/* ---- architecture tabs: flat, underline-active ---- */
+.arch-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1.4rem;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 1.6rem;
+}
+.arch-tabs button {
+  flex: 0 0 auto;
+  padding: 0.65rem 0.05rem;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 650;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.14s ease, border-color 0.14s ease;
+}
+.arch-tabs button:hover { color: var(--text); }
+.arch-tabs button.active { color: var(--accent-deep); border-bottom-color: var(--accent); }
+.arch-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- CQRS command/query switch ---- */
+.cqrs-switch { display: inline-flex; gap: 0; margin-bottom: 0.7rem; border: 1px solid var(--line-strong); }
+.cqrs-switch button {
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--muted);
+  border-right: 1px solid var(--line-strong);
+}
+.cqrs-switch button:last-child { border-right: 0; }
+.cqrs-switch button.active { background: var(--accent); color: var(--on-accent); }
+.cqrs-hint { margin: 0 0 1.3rem; color: var(--faint); font-size: 0.78rem; }
+.cqrs-hint strong { color: var(--text); }
+.cqrs-hint .dot { margin: 0 0.3rem; }
+
+/* ============ shared node anatomy (used by all four layouts) ============ */
+.arch-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  background: var(--panel);
+  min-width: 0;
+  transition: border-color 0.16s ease, background-color 0.16s ease, transform 0.16s ease, opacity 0.2s ease;
+}
+.arch-node-number { min-width: 1.4rem; color: var(--faint); font-size: 0.72rem; font-weight: 600; padding-top: 0.1rem; }
+.arch-node h3 { margin: 0 0 0.2rem; font-size: 0.9rem; letter-spacing: -0.01em; }
+.arch-node p { margin: 0; font-size: 0.82rem; }
+.arch-node p.arch-node-example {
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--line);
+  color: var(--accent-deep);
+  font-size: 0.7rem;
+}
+.arch-node[data-status='running'] { border-color: var(--accent); border-left-color: var(--accent); background: var(--accent-tint); transform: scale(1.01); }
+.arch-node[data-status='running'] .arch-node-number { color: var(--accent-deep); font-weight: 700; }
+.arch-node[data-status='done'] { border-color: var(--line-strong); background: var(--panel); }
+.arch-node[data-status='done'] .arch-node-number { color: var(--muted); }
+.arch-node[data-status='done'] .arch-node-number::after { content: " ✓"; color: var(--success); }
+.arch-node.static { opacity: 0.55; }
+.arch-node.static .arch-node-number { color: var(--faint); }
+
+/* ---- canvas: the unified architecture+runtime diagram ---- */
+.arch-canvas {
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  border: 1px solid var(--line-strong);
+  border-top: 0;
+  background: var(--panel);
+  overflow-x: auto;
+}
+
+/* ============ layout 1: Layered - stacked horizontal bands ============ */
+.layout-layered { display: grid; gap: 0; min-width: 480px; }
+.layer {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  background: var(--sunken);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.layer[data-active='true'] { background: var(--accent-tint); border-color: var(--accent-line); }
+.layer-label { display: block; margin-bottom: 0.7rem; color: var(--faint); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.layer-nodes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.7rem; }
+/* ============ shared runtime connector (used by all four layouts) ============
+   A plain vertical line that fills top-to-bottom with the accent once the step
+   above it starts running, and stays filled once done - the same anatomy
+   Node A becomes active → connector progresses → Node B becomes active reads
+   as everywhere on this page. This is the RUNTIME connector: animated,
+   accent. Structural/dependency relationships (Onion's arch-deps, Hexagonal's
+   neutral fan-out bar) intentionally never use this class. */
+.step-connector { position: relative; height: 1.3rem; width: 1px; margin: 0 auto; background: var(--line-strong); }
+.step-connector::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.32s ease;
+}
+.step-connector[data-status='running']::after,
+.step-connector[data-status='done']::after { transform: scaleY(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .step-connector::after { transition: none; }
+}
+
+/* ============ layout 2: Onion - nested rings, core in the middle ============ */
+/* A vertical stack, like the Layered tab: each section is only as tall as its
+   own content, connected by thin fill-on-run lines, instead of forcing Port
+   and Infrastructure to stretch to match the (much taller) ring nest. */
+.layout-onion { display: flex; flex-direction: column; align-items: center; min-width: 480px; }
+
+/* Each ring is a plain block nested inside the previous one, centered on itself.
+   The browser's own box model (padding stacking on nested blocks) produces the
+   concentric shrink toward the Domain core - no absolute positioning needed. */
+.onion-ring {
+  padding: 1.3rem;
+  border: 1px solid var(--line-strong);
+  background: var(--sunken);
+  min-width: 300px;
+  text-align: center;
+}
+.onion-ring > .arch-node { max-width: 380px; margin: 0 auto; text-align: left; }
+/* No margin-top here: the .step-connector before each of these already IS
+   the gap. Adding a margin on top of it left the connector line floating,
+   short of actually reaching the box below (see the horizontal/vertical
+   connector alignment fixes further down for the same principle applied to
+   every gapped grid/flex container on this page). */
+.ring-2 { padding: 1.1rem; background: var(--panel); }
+.ring-3 {
+  padding: 1rem;
+  border: 2px solid var(--line-strong);
+  background: var(--sunken);
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+/* Domain isn't a one-off hop: the core stays visibly engaged for the whole
+   Application → Domain window, not only Domain's own brief turn (see coreEngaged()). */
+.ring-3[data-engaged='true'] { border-color: var(--accent-line); background: var(--accent-tint); }
+.ring-label { display: block; margin-bottom: 0.6rem; color: var(--faint); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+
+/* The port: a dashed box (dashed = abstraction, not a hard layer) nested
+   INSIDE ring-2 (Application) alongside Domain - the abstraction belongs to
+   the core; only its implementation (onion-outside, below) lives outside. */
+.onion-boundary {
+  padding: 1rem 1.2rem;
+  border: 1px dashed var(--line-strong);
+  text-align: center;
+}
+.onion-boundary > .arch-node { max-width: 380px; margin: 0 auto; text-align: left; }
+
+.onion-outside {
+  padding: 1.1rem;
+  border: 1px dashed var(--line-strong);
+  min-width: 300px;
+  display: grid;
+  gap: 0;
+  justify-items: center;
+}
+.onion-outside > .arch-node { max-width: 380px; width: 100%; text-align: left; }
+
+/* ============ layout 3: Hexagonal - core + ports + branching adapters ============ */
+/* Every gapped container on this page turned out to have the same problem:
+   CSS grid's `gap` puts equal space on both sides of a connector, but a
+   negative margin only reliably cancels it on the side the item can "back
+   into" (its preceding gutter) - the following gutter stays put regardless,
+   leaving a residual gap no matter what negative value is used (verified by
+   measuring the actual rendered boxes, not just eyeballing it). Zero gap
+   everywhere below, with spacing added back as a real margin on the ordinary
+   (non-connector) elements that need it, sidesteps the asymmetry entirely:
+   a connector's own height becomes the only space between two boxes, so it
+   always touches both. */
+.layout-hex { display: grid; gap: 0; min-width: 520px; }
+/* Zero gap between hex-inbound / hex-core / hex-outbound - the .step-connector
+   between each pair (in the template) is the only spacing between them. */
+.hex-inbound, .hex-core { max-width: 460px; width: 100%; margin: 0 auto; display: grid; gap: 0; }
+.hex-core { padding: 1.2rem; border: 2px solid var(--line-strong); background: var(--sunken); transition: border-color 0.25s ease, background-color 0.25s ease; }
+/* Same "core stays engaged" reinforcement as Onion's ring-3, for the Use Case → Domain window. */
+.hex-core[data-engaged='true'] { border-color: var(--accent-line); background: var(--accent-tint); }
+.hex-zone-label { display: block; margin-bottom: 0.8rem; text-align: center; color: var(--faint); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+/* margin-top gives the step-connector coming down from hex-core some
+   breathing room before the OUTBOUND zone starts - the other .step-connector
+   (hex-inbound → hex-core) stays flush, this is only about this one gap. */
+.hex-outbound { display: grid; gap: 0; justify-items: center; margin-top: 0.6rem; }
+.hex-outbound > .arch-node { max-width: 460px; width: 100%; }
+
+/* Fan-out from the shared Outbound Port into its adapters. The bar itself is
+   STRUCTURAL (always neutral: three adapters exist, the request only ever
+   takes one) - only the stem above it is a runtime connector. */
+.hex-fanout { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.hex-fanout-stem { width: 1px; height: 1rem; background: var(--line-strong); position: relative; }
+.hex-fanout-stem::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.32s ease;
+}
+.hex-fanout-stem[data-status='running']::after,
+.hex-fanout-stem[data-status='done']::after { transform: scaleY(1); }
+/* Spans exactly from the leftmost branch's center to the rightmost branch's
+   center: for N equal columns with gap G, that span is (N-1)/N of the row
+   width plus (N-1)/N of one gap - not just "two thirds of the row", which
+   undershoots by half a gap on each side and leaves the bar short of lining
+   up with the branches it's supposed to connect to. */
+.hex-fanout-bar { width: calc(66.667% + 0.667rem); height: 1px; background: var(--line-strong); }
+
+.hex-branches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; width: 100%; }
+.hex-branch { position: relative; display: grid; gap: 0; align-content: start; padding-top: 1rem; }
+/* Static branches (adapter card + system card, no connector between them)
+   still want breathing room; the active branch's own step-connector already
+   provides it, so this only ever matches the static pair. */
+.hex-branch > .arch-node.static + .arch-node.static { margin-top: 0.5rem; }
+.hex-branch:not(.active-branch) { opacity: 0.5; }
+/* The drop from the fan-out bar down into each branch - neutral for every
+   branch except the one actually used by the current scenario. */
+.hex-branch::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  width: 1px; height: 1rem;
+  background: var(--line-strong);
+  transform: translateX(-50%);
+  transition: background-color 0.2s ease;
+}
+.hex-branch.active-branch[data-status='running']::before,
+.hex-branch.active-branch[data-status='done']::before { background: var(--accent); }
+
+/* ============ layout 4: CQRS - shared entry + two vertical-slice branches ============ */
+.layout-cqrs { display: grid; gap: 0; min-width: 480px; }
+.cqrs-entry { display: flex; flex-direction: column; align-items: center; max-width: 380px; margin: 0 auto; width: 100%; }
+.cqrs-entry .arch-node { width: 100%; }
+/* Same structural-bar / runtime-stem split as Hexagonal's fan-out, just two
+   branches instead of three - the bar always spans both slice centers.
+   .layout-cqrs has no gap of its own, so (unlike Hexagonal's fan-out) there's
+   no surrounding gap to cancel here - the stem/bar height alone is the gap. */
+.cqrs-fanout { margin: 0; }
+/* Two columns: the bar spans from the left slice's center to the right
+   slice's center, i.e. half the row width plus half of one gap. */
+.cqrs-fanout .hex-fanout-bar { width: calc(50% + 0.6rem); }
+.cqrs-slices { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.cqrs-slice {
+  position: relative;
+  padding: 1.3rem 1rem 1rem;
+  border: 1px solid var(--line-strong);
+  background: var(--sunken);
+  display: grid;
+  gap: 0;
+  transition: opacity 0.2s ease;
+}
+.cqrs-slice.inactive { opacity: 0.5; }
+.slice-label { display: block; margin-bottom: 0.6rem; color: var(--accent-deep); font-size: 0.72rem; font-weight: 700; }
+.cqrs-slice.inactive .slice-label { color: var(--faint); }
+/* The drop from the shared fan-out bar into this slice - only the active,
+   currently-selected branch's drop (and steps) ever pick up the accent. */
+.cqrs-slice::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  width: 1px; height: 0.5rem;
+  background: var(--line-strong);
+  transform: translateX(-50%);
+  transition: background-color 0.2s ease;
+}
+.cqrs-slice:not(.inactive)[data-status='running']::before,
+.cqrs-slice:not(.inactive)[data-status='done']::before { background: var(--accent); }
+
+/* ============ static (Onion dependency direction) diagram, unchanged pattern from before ============ */
+.arch-deps { margin-top: 1.1rem; padding: 0.8rem 1rem; border: 1px solid var(--line); background: var(--sunken); }
+.arch-deps-label { display: block; margin-bottom: 0.5rem; color: var(--faint); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.arch-deps-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted); }
+.arch-deps-row + .arch-deps-row { margin-top: 0.4rem; }
+.arch-deps-row .arrow { color: var(--faint); }
+.arch-deps-row .core { color: var(--accent-deep); font-weight: 700; }
+
+/* ============ explanation below the canvas: KEY IDEA gets the weight (the
+   one sentence worth remembering), USE IT WHEN / WATCH OUT sit underneath as
+   a compact two-column scan - never a third equally-weighted column next to
+   it. Labels, a rule and whitespace; no cards. ============ */
+.arch-explain { margin: 2rem 0; }
+.arch-info-label { display: block; margin-bottom: 0.4rem; color: var(--faint); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.arch-key-idea p { margin: 0; max-width: 60ch; font-size: 1.04rem; line-height: 1.6; color: var(--text); }
+.arch-divider { margin: 1.4rem 0; border: 0; border-top: 1px solid var(--line); }
+.arch-use-watch { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem 2.4rem; }
+.arch-info p { margin: 0; max-width: 42ch; font-size: 0.86rem; line-height: 1.55; }
+/* Architecture-specific aside (Onion's runtime-vs-dependency note, CQRS's
+   "composes with other architectures" clarification) - deliberately quieter
+   than KEY IDEA / USE IT WHEN / WATCH OUT, not another explanatory block. */
+.arch-note {
+  display: block;
+  margin-top: 1.4rem;
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--line-strong);
+  color: var(--faint);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+/* ---- controls ---- */
+/* Attached directly to .arch-canvas below it, forming one continuous box
+   (toolbar header + diagram body) rather than a floating row with its own
+   separator line. */
+.arch-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 0.9rem clamp(1.4rem, 3vw, 2.4rem);
+  border: 1px solid var(--line-strong);
+  background: var(--sunken);
+}
+.arch-progress { color: var(--faint); font-size: 0.78rem; }
+.arch-speed { display: inline-flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.arch-speed span { color: var(--faint); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.arch-speed button {
+  min-width: 2rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+.arch-speed button.active { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-tint); }
+
+/* ---- code shape: supporting detail, kept visually lighter than the
+   interactive architecture canvas above it (that stays the main attraction) ---- */
+.code-shape { margin-top: 1.3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.code-shape-header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.1rem 0.6rem; margin-bottom: 0.7rem; }
+.code-shape-header .eyebrow { margin: 0; }
+.code-shape h3 { font-family: var(--font-body); font-size: 0.78rem; font-weight: 500; color: var(--faint); letter-spacing: 0; margin: 0; }
+.code-tree {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  background: var(--sunken);
+  font-size: 0.76rem;
+  color: var(--muted);
+  overflow-x: auto;
+}
+.code-tree .i1 { padding-left: 1.2rem; }
+.code-tree .i2 { padding-left: 2.4rem; }
+.code-tree .i3 { padding-left: 3.6rem; }
+.code-tree .i4 { padding-left: 4.8rem; }
+.code-tree .accent-line { color: var(--accent-deep); font-weight: 650; }
+
+/* ---- legend ---- */
+.arch-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.3rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 0.7rem;
+}
+.arch-legend strong { color: var(--muted); margin-right: 0.3rem; }
+.arch-legend .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; display: inline-block; }
+.arch-legend .dot.accent { background: var(--accent); }
+.arch-legend .dot.neutral { background: var(--line-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .arch-node { transform: none !important; }
+  .hex-fanout-stem::after,
+  .hex-branch::before,
+  .cqrs-slice::before { transition: none; }
+}
+
+@media (max-width: 900px) {
+  .arch-explain { margin: 1.6rem 0; }
+}
+
+@media (max-width: 700px) {
+  .layout-layered, .layout-onion, .layout-hex, .layout-cqrs { min-width: 0; }
+  .hex-branches { grid-template-columns: 1fr; }
+  .cqrs-slices { grid-template-columns: 1fr; }
+  .onion-ring, .onion-boundary, .onion-outside { min-width: 0; width: 100%; }
+  /* Branches stack in a single column here, so the shared fan-out bar (sized
+     for several column centers) has nothing left to span - each branch's own
+     drop tick still shows it connects upward. */
+  .hex-fanout-bar { display: none; }
+  /* USE IT WHEN / WATCH OUT always stack on narrow screens, never side by side. */
+  .arch-use-watch { grid-template-columns: 1fr; gap: 1.2rem; }
+}
+
+@media (max-width: 560px) {
+  .arch-controls { gap: 0.8rem; }
+  .arch-speed { margin-left: 0; width: 100%; }
+  /* Reduce the nesting offset itself rather than shrinking node text - three
+     stacked paddings (ring-1 → ring-2 → ring-3) otherwise eat a lot of a
+     narrow phone's width. */
+  .onion-ring { padding: 0.8rem; }
+  .ring-2 { padding: 0.7rem; }
+  .ring-3 { padding: 0.6rem; }
+}

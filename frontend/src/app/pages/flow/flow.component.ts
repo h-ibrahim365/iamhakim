@@ -2,6 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ApiService } from '../../core/api.service';
 import { LiveConnectionService } from '../../core/live-connection.service';
 import { TranslatePipe } from '../../i18n/translate.pipe';
+import { BookCtaComponent } from '../../shared/book-cta/book-cta.component';
+import { ArchitectureExplorerComponent } from './architecture-explorer.component';
 
 type StepStatus = 'idle' | 'running' | 'done';
 
@@ -14,7 +16,7 @@ interface FlowStep {
 
 @Component({
   selector: 'app-flow',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, BookCtaComponent, ArchitectureExplorerComponent],
   templateUrl: './flow.component.html',
   styleUrl: './flow.component.scss'
 })

@@ -1,0 +1,111 @@
+.services-page { display: grid; gap: 0; }
+
+.services-head { margin-bottom: clamp(1.6rem, 4vw, 2.4rem); }
+.services-head h1 .accent { color: var(--accent); background: none; }
+.services-head .lead { max-width: 640px; margin-top: 1.1rem; font-size: clamp(1rem, 1.3vw, 1.08rem); }
+
+.stack-scope { padding: clamp(1.5rem, 3vw, 2rem) 0 clamp(1.8rem, 3.5vw, 2.4rem); border-top: 1px solid var(--line-strong); }
+.stack-scope h2 { font-size: clamp(1.25rem, 2.4vw, 1.55rem); margin: 0.6rem 0 0.9rem; }
+.stack-scope h2 .accent { color: var(--accent); background: none; }
+.stack-scope p { max-width: 66ch; margin: 0; color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+
+/* ---- service rows: editorial two-column rows instead of equal SaaS cards ---- */
+.service-list { display: grid; }
+.service-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) 1fr;
+  gap: clamp(1.4rem, 4vw, 2.4rem);
+  padding: clamp(2rem, 4vw, 2.8rem) 0;
+  border-top: 1px solid var(--line-strong);
+  scroll-margin-top: var(--topbar-scroll-offset);
+}
+.service-head { display: flex; flex-direction: column; gap: 0.6rem; }
+.service-index { color: var(--accent-deep); font-weight: 600; font-size: 0.8rem; }
+.service-head h2 { font-size: clamp(1.25rem, 2.4vw, 1.55rem); line-height: 1.15; letter-spacing: -0.02em; }
+
+.service-body { display: grid; gap: 1.2rem; max-width: 64ch; }
+.service-desc { margin: 0; font-size: 0.95rem; }
+
+.service-label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--faint);
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.service-work { display: grid; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
+.service-work li { position: relative; padding-left: 0.85rem; color: var(--muted); font-size: 0.86rem; line-height: 1.5; }
+.service-work li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--line-strong);
+}
+
+.service-stack { margin: 0; color: var(--muted); font-size: 0.78rem; }
+
+.service-proof {
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--sunken);
+}
+.service-proof strong { display: block; font-size: 0.98rem; margin: 0.1rem 0 0.4rem; letter-spacing: -0.01em; }
+.service-proof p { margin: 0 0 0.65rem; color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+.service-proof p.service-proof-status { color: var(--faint); font-size: 0.72rem; }
+.service-proof a { color: var(--accent-deep); font-size: 0.82rem; text-decoration: none; border-bottom: 1px solid transparent; }
+.service-proof a:hover { border-color: var(--accent); }
+
+/* ---- how I work ---- */
+.work-process { padding: clamp(2.2rem, 4vw, 3.2rem) 0; border-top: 1px solid var(--line-strong); }
+.work-process h2 { font-size: clamp(1.4rem, 2.8vw, 1.85rem); margin: 0.6rem 0 1.6rem; }
+.work-process h2 .accent { color: var(--accent); background: none; }
+
+.work-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); }
+.work-step { padding: 1.3rem 1.4rem; border-right: 1px solid var(--line); }
+.work-step:last-child { border-right: 0; }
+.work-index { display: block; color: var(--accent-deep); font-weight: 600; font-size: 0.76rem; margin-bottom: 0.6rem; }
+.work-step h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
+.work-step p { margin: 0; font-size: 0.87rem; }
+
+/* ---- good fit ---- */
+.good-fit { padding: clamp(2.2rem, 4vw, 3.2rem) 0; border-top: 1px solid var(--line-strong); }
+.good-fit h2 { font-size: clamp(1.4rem, 2.8vw, 1.85rem); margin: 0.6rem 0 1.4rem; }
+.good-fit h2 .accent { color: var(--accent); background: none; }
+
+.fit-list { display: grid; gap: 0.65rem; margin: 0 0 1.4rem; padding: 0; list-style: none; max-width: 62ch; }
+.fit-list li { position: relative; padding-left: 1rem; color: var(--text); font-size: 0.92rem; line-height: 1.55; }
+.fit-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--line-strong);
+}
+
+.fit-note {
+  max-width: 62ch;
+  margin: 0;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line);
+  color: var(--faint);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 780px) {
+  .service-row { grid-template-columns: 1fr; }
+  .work-steps { grid-template-columns: 1fr; }
+  .work-step { border-right: 0; border-bottom: 1px solid var(--line); }
+  .work-step:last-child { border-bottom: 0; }
+}

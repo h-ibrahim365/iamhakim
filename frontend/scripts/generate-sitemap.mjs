@@ -22,6 +22,7 @@ const SHARED_PATHS = [
 const SITE_PAGES = [
   { path: '',         dir: 'src/app/pages/home',     changefreq: 'weekly',  priority: '1.0' },
   { path: 'projects', dir: 'src/app/pages/projects', changefreq: 'weekly',  priority: '0.9' },
+  { path: 'services', dir: 'src/app/pages/services', changefreq: 'monthly', priority: '0.8' },
   { path: 'about',    dir: 'src/app/pages/about',    changefreq: 'monthly', priority: '0.8' },
   { path: 'flow',     dir: 'src/app/pages/flow',     changefreq: 'monthly', priority: '0.7' },
   { path: 'book',     dir: 'src/app/pages/book',     changefreq: 'monthly', priority: '0.6' },

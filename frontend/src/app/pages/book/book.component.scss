@@ -217,7 +217,7 @@
   font-size: 1.8rem;
   color: var(--on-success);
   background: var(--success);
-  box-shadow: 0 8px 24px var(--success-line);
+  box-shadow: none;
 }
 .confirm h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.5rem; }
 .confirm-when { color: var(--text); font-size: 1.05rem; font-weight: 600; }
